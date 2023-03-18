@@ -1,0 +1,210 @@
+unit untUnidVenda;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, BmsXPButton, StdCtrls, ExtCtrls,
+  IBQuery;
+
+type
+  TfrmUnidVenda = class(TForm)
+    ibeaSair: TBmsXPButton;
+    ibeaIncluir: TBmsXPButton;
+    dbgUnidVenda: TDBGrid;
+    ibeaExcluir: TBmsXPButton;
+    lbl_Info: TLabel;
+    Image1: TImage;
+    ibeaAlterar: TBmsXPButton;
+    lbl_edtNomeUnidade: TLabeledEdit;
+    procedure ibeaSairClick(Sender: TObject);
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ExecSELECT;
+    procedure AlteraRegistro;
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ibeaIncluirClick(Sender: TObject);
+    procedure dbgUnidVendaCellClick(Column: TColumn);
+    procedure ibeaAlterarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnidVenda: TfrmUnidVenda;
+  MontaColunas : Boolean;
+  IDUnidVenda : Integer;
+  
+implementation
+
+uses untdmModule, DB;
+
+{$R *.dfm}
+
+procedure TfrmUnidVenda.ibeaSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmUnidVenda.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmUnidVenda.AlteraRegistro;
+
+begin
+
+  with dmModule do begin
+
+    ibUnidVenda.Close;
+    ibUnidVenda.SQL.Clear;
+    ibUnidVenda.SQL.Add('UPDATE TBLUNIDADEDEVENDA SET '
+    +'TIPODEUNIDADE= ''' + lbl_edtNomeUnidade.Text + ''' WHERE IDTIPOUNID='''+IntToStr(IDUnidVenda)+'''');
+    ibUnidVenda.ExecSQL;
+
+  end;//with
+
+end;
+
+procedure TfrmUnidVenda.ExecSELECT;
+
+begin
+
+  with dmModule do begin
+
+    ibUnidVenda.Close;
+    ibUnidVenda.SQL.Clear;
+    ibUnidVenda.SQL.Add('SELECT * FROM TBLUNIDADEDEVENDA');
+    ibUnidVenda.Open;
+
+  end;//with
+
+end;
+
+procedure TfrmUnidVenda.FormShow(Sender: TObject);
+begin
+
+  with dmModule do begin
+
+    ExecSELECT;
+
+    with dbgUnidVenda do begin
+
+      if MontaColunas Then begin
+
+      DataSource := dtsUnidVenda;
+
+        Columns.Insert(0);
+
+
+        //Parametros da Coluna que exibe o Código do Cadastro
+        Columns.Items[0].Title.Caption := 'Unidade de Venda';
+        Columns.Items[0].FieldName     := 'TIPODEUNIDADE';
+        Columns.Items[0].Width         := 170;
+        Columns.Items[0].Alignment     := taLeftJustify;
+
+        MontaColunas := False;
+
+      end;{if}
+
+    end;{with}
+
+  end;//with
+
+end;
+
+procedure TfrmUnidVenda.FormCreate(Sender: TObject);
+begin
+MontaColunas := True;
+end;
+
+procedure TfrmUnidVenda.ibeaIncluirClick(Sender: TObject);
+
+var
+
+ConfirmaInclusao : Integer;
+
+begin
+
+  with dmModule do begin
+
+  ConfirmaInclusao := Application.MessageBox('Confirma Lançamento?','Inclusão de registro',+MB_YESNO+MB_ICONQUESTION);
+
+    if ConfirmaInclusao = 6 Then begin
+
+      ibUnidVenda.Close;
+      ibUnidVenda.SQL.Clear;
+      ibUnidVenda.SQL.Add('INSERT INTO TBLUNIDADEDEVENDA'
+      +'(TIPODEUNIDADE) values '
+      +'(''' + lbl_edtNomeUnidade.Text + ''')');
+      ibUnidVenda.ExecSQL;
+
+      ExecSELECT;
+
+    end;//if confirmainclusao
+
+    lbl_edtNomeUnidade.Clear;
+
+  end;//with
+
+end;
+
+procedure TfrmUnidVenda.dbgUnidVendaCellClick(Column: TColumn);
+begin
+
+  with dmModule do begin
+
+  IDUnidVenda := ibUnidVenda.FieldByName('IDTIPOUNID').AsInteger;
+
+    if ibUnidVenda.RecordCount > 0 Then begin
+
+      lbl_edtNomeUnidade.Text := ibUnidVenda.FieldByName('TIPODEUNIDADE').AsString;
+
+    end;//if record count
+
+  end;//with
+
+end;
+
+procedure TfrmUnidVenda.ibeaAlterarClick(Sender: TObject);
+
+var
+
+ConfirmaAlteracao : Integer;
+
+begin
+
+  with dmModule do begin
+
+  ConfirmaAlteracao := Application.MessageBox('Confirma Alteração','Alteração de Registro',+MB_YESNO+MB_ICONQUESTION);
+
+    if ConfirmaAlteracao = 6 Then begin
+
+      AlteraRegistro;
+
+      ExecSELECT;
+
+      lbl_edtNomeUnidade.Clear;
+
+    end;//if confirma alteração
+
+  end;//with
+
+end;
+
+end.

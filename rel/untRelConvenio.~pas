@@ -1,0 +1,45 @@
+unit untRelConvenio;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, QuickRpt, QRCtrls, ExtCtrls;
+
+type
+  TfrmRelConvenio = class(TForm)
+    qrpRelConvenio: TQuickRep;
+    DetailBand1: TQRBand;
+    PageHeaderBand1: TQRBand;
+    TitleBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    qrlCliente: TQRLabel;
+    qrdbCliente: TQRDBText;
+    qrlServico: TQRLabel;
+    qrdbTipoServ: TQRDBText;
+    qrlData: TQRLabel;
+    qrdbData: TQRDBText;
+    qrlValor: TQRLabel;
+    qrdbValor: TQRDBText;
+    PageFooterBand1: TQRBand;
+    QRLabel2: TQRLabel;
+    QqrpValor: TQRExpr;
+    QRLabel3: TQRLabel;
+    qrlDtPagto: TQRLabel;
+    qrlProd: TQRLabel;
+    qrdbPoduto: TQRDBText;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+
+  frmRelConvenio: TfrmRelConvenio;
+
+implementation
+
+{$R *.dfm}
+
+end.

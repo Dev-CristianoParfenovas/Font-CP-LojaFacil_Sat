@@ -1,0 +1,187 @@
+17/02/22 09:04:15:923 - ACBrSAT.Inicializado
+29/07/22 08:25:25:912 - ACBrSAT.Inicializado
+29/07/22 08:31:11:103 - ACBrSAT.Inicializado
+03/10/22 15:18:11:540 - ACBrSAT.Inicializado
+03/10/22 15:20:38:821 - ACBrSAT.Inicializado
+03/10/22 15:22:19:627 - ACBrSAT.Inicializado
+03/10/22 15:22:31:423 - ACBrSAT.Inicializado
+03/10/22 15:23:48:671 - ACBrSAT.Inicializado
+11/10/22 13:05:09:615 - ACBrSAT.Inicializado
+11/10/22 13:06:51:701 - ACBrSAT.Inicializado
+24/10/22 09:35:43:484 - ACBrSAT.Inicializado
+24/10/22 09:43:43:168 - ACBrSAT.Inicializado
+24/10/22 09:44:27:642 - ACBrSAT.Inicializado
+24/10/22 09:44:32:953 - NumeroSessao: 19905 - Comando: EnviarDadosVenda( <?xml version="1.0" encoding="UTF-8"?><CFe>
+   <infCFe versaoDadosEnt="0.07">
+      <ide>
+         <CNPJ>16716114000172</CNPJ>
+         <signAC>SGR-SAT SISTEMA DE GESTAO E RETAGUARDA DO SAT</signAC>
+         <numeroCaixa>001</numeroCaixa>
+      </ide>
+      <emit>
+         <CNPJ>08238299000129</CNPJ>
+         <IE>149392863111</IE>
+         <indRatISSQN>N</indRatISSQN>
+      </emit>
+      <dest>
+      </dest>
+      <det nItem="1">
+         <prod>
+            <cProd>1</cProd>
+            <xProd>PRODUTO5</xProd>
+            <NCM>12345678</NCM>
+            <CFOP>5102</CFOP>
+            <uCom>un</uCom>
+            <qCom>1.0000</qCom>
+            <vUnCom>5.00</vUnCom>
+            <indRegra>A</indRegra>
+         </prod>
+         <imposto>
+            <ICMS>
+               <ICMSSN102>
+                  <Orig>0</Orig>
+                  <CSOSN>102</CSOSN>
+               </ICMSSN102>
+            </ICMS>
+            <PIS>
+               <PISSN>
+                  <CST>49</CST>
+               </PISSN>
+            </PIS>
+            <COFINS>
+               <COFINSSN>
+                  <CST>49</CST>
+               </COFINSSN>
+            </COFINS>
+         </imposto>
+      </det>
+      <total>
+         <vCFeLei12741>0.00</vCFeLei12741>
+      </total>
+      <pgto>
+         <MP>
+            <cMP>01</cMP>
+            <vMP>5.00</vMP>
+         </MP>
+      </pgto>
+      <infAdic>
+         <infCpl>OBRIGADO VOLTE SEMPRE</infCpl>
+      </infAdic>
+   </infCFe>
+</CFe> )
+24/10/22 09:44:32:969 -   Gravando XML Venda enviado: C:\CP Sistemmas\CP FinalizaVendas\Enviado\08238299000129\CFe\2022\10\24\AD20221024094432-019905-env.xml
+24/10/22 09:44:32:969 - NumeroSessao: 19905
+27/10/22 09:09:31:160 - ACBrSAT.Inicializado
+16/11/22 17:10:32:499 - ACBrSAT.Inicializado
+16/11/22 17:13:10:542 - ACBrSAT.Inicializado
+16/11/22 17:14:18:315 - ACBrSAT.Inicializado
+16/11/22 17:23:29:476 - ACBrSAT.Inicializado
+16/11/22 17:24:59:785 - ACBrSAT.Inicializado
+16/11/22 17:25:47:055 - ACBrSAT.Inicializado
+16/11/22 17:28:59:265 - ACBrSAT.Inicializado
+16/11/22 17:41:02:190 - ACBrSAT.Inicializado
+16/11/22 17:42:43:894 - ACBrSAT.Inicializado
+16/11/22 17:43:26:029 - ACBrSAT.Inicializado
+16/11/22 17:44:11:038 - ACBrSAT.Inicializado
+16/11/22 17:46:06:544 - ACBrSAT.Inicializado
+16/11/22 17:46:58:606 - ACBrSAT.Inicializado
+16/11/22 17:59:53:547 - ACBrSAT.Inicializado
+16/11/22 18:50:03:964 - ACBrSAT.Inicializado
+17/11/22 16:30:02:924 - ACBrSAT.Inicializado
+17/11/22 16:32:05:965 - ACBrSAT.Inicializado
+17/11/22 16:35:05:888 - ACBrSAT.Inicializado
+17/11/22 16:36:47:650 - ACBrSAT.Inicializado
+17/11/22 16:36:55:907 - NumeroSessao: 339713 - Comando: EnviarDadosVenda( <?xml version="1.0" encoding="UTF-8"?><CFe>
+   <infCFe versaoDadosEnt="0.07">
+      <ide>
+         <CNPJ>16716114000172</CNPJ>
+         <signAC>SGR-SAT SISTEMA DE GESTAO E RETAGUARDA DO SAT</signAC>
+         <numeroCaixa>001</numeroCaixa>
+      </ide>
+      <emit>
+         <CNPJ>08238299000129</CNPJ>
+         <IE>149392863111</IE>
+         <indRatISSQN>N</indRatISSQN>
+      </emit>
+      <dest>
+         <CPF>15192513863</CPF>
+      </dest>
+      <det nItem="1">
+         <prod>
+            <cProd>1</cProd>
+            <xProd>PRODUTO5</xProd>
+            <NCM>12345678</NCM>
+            <CFOP>5102</CFOP>
+            <uCom>un</uCom>
+            <qCom>1.0000</qCom>
+            <vUnCom>5.00</vUnCom>
+            <indRegra>A</indRegra>
+         </prod>
+         <imposto>
+            <ICMS>
+               <ICMSSN102>
+                  <Orig>0</Orig>
+                  <CSOSN>102</CSOSN>
+               </ICMSSN102>
+            </ICMS>
+            <PIS>
+               <PISSN>
+                  <CST>49</CST>
+               </PISSN>
+            </PIS>
+            <COFINS>
+               <COFINSSN>
+                  <CST>49</CST>
+               </COFINSSN>
+            </COFINS>
+         </imposto>
+      </det>
+      <total>
+         <vCFeLei12741>0.00</vCFeLei12741>
+      </total>
+      <pgto>
+         <MP>
+            <cMP>01</cMP>
+            <vMP>5.00</vMP>
+         </MP>
+      </pgto>
+      <infAdic>
+         <infCpl>OBRIGADO VOLTE SEMPRE</infCpl>
+      </infAdic>
+   </infCFe>
+</CFe> )
+17/11/22 16:36:55:947 -   Gravando XML Venda enviado: C:\CP Sistemmas\CP FinalizaVendas\Enviado\08238299000129\CFe\2022\11\17\AD20221117163655-339713-env.xml
+17/11/22 16:36:55:947 - NumeroSessao: 339713 - Resposta:DLLSAT.dll necessita zlib.dll
+17/11/22 16:39:29:781 - ACBrSAT.Inicializado
+17/11/22 16:43:31:773 - ACBrSAT.Inicializado
+10/03/23 11:51:38:297 - ACBrSAT.Inicializado
+10/03/23 11:51:41:350 - NumeroSessao: 525443 - Comando: EnviarDadosVenda( <?xml version="1.0" encoding="UTF-8"?><CFe>
+   <infCFe versaoDadosEnt="0.07">
+      <ide>
+         <CNPJ>16716114000172</CNPJ>
+         <signAC>SGR-SAT SISTEMA DE GESTAO E RETAGUARDA DO SAT</signAC>
+         <numeroCaixa>001</numeroCaixa>
+      </ide>
+      <emit>
+         <CNPJ>08238299000129</CNPJ>
+         <IE>149392863111</IE>
+         <indRatISSQN>N</indRatISSQN>
+      </emit>
+      <dest>
+      </dest>
+      <total>
+         <vCFeLei12741>0.00</vCFeLei12741>
+      </total>
+      <pgto>
+         <MP>
+            <cMP>01</cMP>
+            <vMP>15.00</vMP>
+         </MP>
+      </pgto>
+      <infAdic>
+         <infCpl>OBRIGADO VOLTE SEMPRE</infCpl>
+      </infAdic>
+   </infCFe>
+</CFe> )
+10/03/23 11:51:41:350 -   Gravando XML Venda enviado: C:\CP Sistemmas\CP FinalizaVendas\Enviado\08238299000129\CFe\2023\03\10\AD20230310115141-525443-env.xml
+10/03/23 11:51:41:350 - NumeroSessao: 525443 - Resposta:DLLSAT.dll necessita zlib.dll

@@ -1,0 +1,119 @@
+object frmPedidoFunc: TfrmPedidoFunc
+  Left = 186
+  Top = 113
+  Caption = 'Pedido por Vendedor Per'#237'odo'
+  ClientHeight = 194
+  ClientWidth = 315
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_DtIni: TLabel
+    Left = 24
+    Top = 32
+    Width = 70
+    Height = 13
+    Caption = 'Data Inicial:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_DtF: TLabel
+    Left = 122
+    Top = 32
+    Width = 63
+    Height = 13
+    Caption = 'Data Final:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Vendedor: TLabel
+    Left = 28
+    Top = 82
+    Width = 55
+    Height = 13
+    Caption = 'Vendedor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Cliente: TLabel
+    Left = 28
+    Top = 126
+    Width = 40
+    Height = 13
+    Caption = 'Cliente'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object dtpDataIni: TDateTimePicker
+    Left = 24
+    Top = 48
+    Width = 91
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 41550.000000000000000000
+    Time = 0.600067997678706900
+    TabOrder = 0
+  end
+  object dtpDataF: TDateTimePicker
+    Left = 120
+    Top = 48
+    Width = 91
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 41550.000000000000000000
+    Time = 0.600067997678706900
+    TabOrder = 1
+  end
+  object cboVendedor: TComboBox
+    Left = 26
+    Top = 103
+    Width = 183
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    TabOrder = 2
+  end
+  object cboCliente: TComboBox
+    Left = 26
+    Top = 144
+    Width = 183
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    TabOrder = 3
+  end
+  object ckPedido: TCheckBox
+    Left = 191
+    Top = 9
+    Width = 97
+    Height = 17
+    Caption = 'ckPedido'
+    TabOrder = 4
+  end
+end

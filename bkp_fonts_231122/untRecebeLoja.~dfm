@@ -1,0 +1,544 @@
+object frmRecebeLoja: TfrmRecebeLoja
+  Left = 189
+  Top = 149
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Recebimento'
+  ClientHeight = 311
+  ClientWidth = 565
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 4
+    Top = 16
+    Width = 131
+    Height = 20
+    Caption = 'Tipo Pagamento'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Data: TLabel
+    Left = 477
+    Top = 213
+    Width = 43
+    Height = 20
+    Caption = 'Vcto.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object Bevel1: TBevel
+    Left = -129
+    Top = 208
+    Width = 695
+    Height = 3
+  end
+  object lbl_F3: TLabel
+    Left = 3
+    Top = 270
+    Width = 234
+    Height = 18
+    Caption = 'F3 - Abre a consulta de clientes'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lbl_CondPagto: TLabel
+    Left = 7
+    Top = 155
+    Width = 119
+    Height = 13
+    Caption = 'Condi'#231#245'es de Pagto.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object Label3: TLabel
+    Left = 5
+    Top = 115
+    Width = 153
+    Height = 20
+    Caption = 'Tipo Pagamento(2)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CodVendaMPV: TLabel
+    Left = 244
+    Top = 271
+    Width = 75
+    Height = 20
+    AutoSize = False
+    Transparent = True
+  end
+  object lbl_edtValor: TLabeledEdit
+    Left = 329
+    Top = 40
+    Width = 126
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 89
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Valor Pago'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 0
+    Text = '0,00'
+    OnEnter = lbl_edtValorEnter
+    OnExit = lbl_edtValorExit
+    OnKeyPress = lbl_edtValorKeyPress
+  end
+  object cboTipoPagto: TComboBox
+    Left = 5
+    Top = 41
+    Width = 180
+    Height = 24
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 1
+    OnEnter = cboTipoPagtoEnter
+    OnExit = cboTipoPagtoExit
+    OnKeyPress = cboTipoPagtoKeyPress
+    OnKeyUp = cboTipoPagtoKeyUp
+  end
+  object lbl_edtTotalVenda: TLabeledEdit
+    Left = 349
+    Top = 106
+    Width = 147
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 123
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Total da Venda'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    OnEnter = lbl_edtTotalVendaEnter
+    OnExit = lbl_edtTotalVendaExit
+    OnKeyPress = lbl_edtTotalVendaKeyPress
+  end
+  object lbl_edtTroco: TLabeledEdit
+    Left = 349
+    Top = 168
+    Width = 147
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 46
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Troco'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 3
+    OnEnter = lbl_edtTrocoEnter
+    OnExit = lbl_edtTrocoExit
+    OnKeyPress = lbl_edtTrocoKeyPress
+  end
+  object lbl_edtSair: TLabeledEdit
+    Left = 496
+    Top = 162
+    Width = 1
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 3
+    EditLabel.Height = 13
+    EditLabel.Caption = '.'
+    EditLabel.Transparent = True
+    TabOrder = 4
+    OnExit = lbl_edtSairExit
+    OnKeyPress = lbl_edtSairKeyPress
+  end
+  object lbl_edtDesconto: TLabeledEdit
+    Left = 190
+    Top = 40
+    Width = 134
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 78
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Desconto'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 5
+    OnEnter = lbl_edtDescontoEnter
+    OnExit = lbl_edtDescontoExit
+    OnKeyPress = lbl_edtDescontoKeyPress
+  end
+  object lbl_edtNumCheque: TLabeledEdit
+    Left = 367
+    Top = 236
+    Width = 106
+    Height = 25
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 87
+    EditLabel.Height = 20
+    EditLabel.Caption = 'N'#186' Cheque'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 6
+    OnEnter = lbl_edtNumChequeEnter
+    OnExit = lbl_edtNumChequeExit
+    OnKeyPress = lbl_edtNumChequeKeyPress
+  end
+  object lbl_edtCodCli: TLabeledEdit
+    Left = 4
+    Top = 236
+    Width = 101
+    Height = 25
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 60
+    EditLabel.Height = 18
+    EditLabel.Caption = 'C'#243'digo'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 7
+    OnEnter = lbl_edtCodCliEnter
+    OnExit = lbl_edtCodCliExit
+  end
+  object lbl_edtNomeCliente: TLabeledEdit
+    Left = 108
+    Top = 236
+    Width = 253
+    Height = 25
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 65
+    EditLabel.Height = 18
+    EditLabel.Caption = 'Cliente '
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 8
+    OnEnter = lbl_edtNomeClienteEnter
+    OnExit = lbl_edtNomeClienteExit
+  end
+  object lbl_edtAcrescimo: TLabeledEdit
+    Left = 459
+    Top = 40
+    Width = 92
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 84
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Acr'#233'scimo'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 9
+    OnEnter = lbl_edtAcrescimoEnter
+    OnExit = lbl_edtAcrescimoExit
+    OnKeyPress = lbl_edtAcrescimoKeyPress
+  end
+  object cboTPagto: TComboBox
+    Left = 5
+    Top = 140
+    Width = 180
+    Height = 24
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 10
+    OnEnter = cboTPagtoEnter
+    OnExit = cboTPagtoExit
+    OnKeyPress = cboTPagtoKeyPress
+    OnKeyUp = cboTPagtoKeyUp
+  end
+  object lbl_edtValorPago: TLabeledEdit
+    Left = 188
+    Top = 141
+    Width = 147
+    Height = 35
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 104
+    EditLabel.Height = 20
+    EditLabel.Caption = 'Valor Pago 2'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 11
+    Text = '0,00'
+    OnEnter = lbl_edtValorPagoEnter
+    OnExit = lbl_edtValorPagoExit
+    OnKeyPress = lbl_edtValorPagoKeyPress
+  end
+  object lbl_edtKM: TLabeledEdit
+    Left = 453
+    Top = 278
+    Width = 106
+    Height = 22
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 26
+    EditLabel.Height = 20
+    EditLabel.Caption = 'KM'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    LabelPosition = lpLeft
+    ParentFont = False
+    TabOrder = 12
+    Visible = False
+    OnKeyPress = lbl_edtNumChequeKeyPress
+  end
+  object lbl_edtDescontoP: TLabeledEdit
+    Left = 287
+    Top = 18
+    Width = 36
+    Height = 20
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 16
+    EditLabel.Height = 20
+    EditLabel.Caption = '%'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clRed
+    EditLabel.Font.Height = -16
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    LabelPosition = lpLeft
+    ParentFont = False
+    TabOrder = 13
+    OnEnter = lbl_edtDescontoPEnter
+    OnExit = lbl_edtDescontoPExit
+    OnKeyPress = lbl_edtDescontoPKeyPress
+  end
+  object cboCondPagto: TComboBox
+    Left = 5
+    Top = 180
+    Width = 180
+    Height = 24
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 14
+    Visible = False
+  end
+  object dtpDataCheque: TDateTimePicker
+    Left = 477
+    Top = 236
+    Width = 84
+    Height = 21
+    Date = 42436.923333506940000000
+    Time = 42436.923333506940000000
+    TabOrder = 15
+  end
+  object MainMenu1: TMainMenu
+    Left = 8
+    Top = 64
+    object iposdedesconto1: TMenuItem
+      Caption = 'Tipos de desconto'
+      Visible = False
+      object Valor1: TMenuItem
+        Caption = '&Valor'
+        ShortCut = 112
+        OnClick = Valor1Click
+      end
+      object Porcentagem1: TMenuItem
+        Caption = '&Porcentagem'
+        ShortCut = 113
+        OnClick = Porcentagem1Click
+      end
+      object LimparCampos1: TMenuItem
+        Caption = '&Limpar Campos'
+        ShortCut = 16460
+        OnClick = LimparCampos1Click
+      end
+      object NotaPaulista1: TMenuItem
+        Caption = '&Nota Paulista'
+        ShortCut = 16462
+        OnClick = NotaPaulista1Click
+      end
+      object LimparCamposNFPaulista1: TMenuItem
+        Caption = '&Limpar Campos NF Paulista'
+        ShortCut = 16465
+      end
+    end
+  end
+end

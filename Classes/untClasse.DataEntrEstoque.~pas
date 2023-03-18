@@ -1,0 +1,42 @@
+unit untClasse.DataEntrEstoque;
+
+interface
+
+  type
+    TDataEntrEstoque = class
+  private
+    FQtdeEstoque: String;
+    FIDProduto: Integer;
+    FDataEntradaProd: TDateTime;
+    procedure SetQtdeEstoque(const Value: String);
+    procedure SetIDProduto(const Value: Integer);
+    procedure SetDataEntradaProd(const Value: TDateTime);
+
+
+    public
+      property QtdeEstoque : String read FQtdeEstoque write SetQtdeEstoque;
+      property IDProduto : Integer read FIDProduto write SetIDProduto;
+      property DataEntradaProd : TDateTime read FDataEntradaProd write SetDataEntradaProd;
+    end;
+
+
+implementation
+
+{ TDataEntrEstoque }
+
+procedure TDataEntrEstoque.SetDataEntradaProd(const Value: TDateTime);
+begin
+  FDataEntradaProd := Value;
+end;
+
+procedure TDataEntrEstoque.SetIDProduto(const Value: Integer);
+begin
+  FIDProduto := Value;
+end;
+
+procedure TDataEntrEstoque.SetQtdeEstoque(const Value: String);
+begin
+  FQtdeEstoque := Value;
+end;
+
+end.

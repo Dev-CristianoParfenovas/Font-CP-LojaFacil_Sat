@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2022/01/04 15:30:56.000.691,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRelCRBaixado.pas=</Transaction>
+    <Transaction>2022/01/04 15:30:56.000.644,C:\CP Sistemmas\CP LojaFacil_Sat\untRelCRCartao.pas=</Transaction>
+    <Transaction>2022/01/04 15:30:56.000.723,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRelContasaReceber.pas=</Transaction>
+    <Transaction>2022/01/04 15:30:56.000.707,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRelCPBaixado.pas=</Transaction>
+    <Transaction>2022/01/04 15:31:48.000.196,C:\CP Sistemmas\CP LojaFacil_Sat\rel\unrRelPedOrcamento.pas=</Transaction>
+    <Transaction>2022/01/04 15:34:28.000.384,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untPedDetalhado.pas=</Transaction>
+    <Transaction>2022/01/04 16:19:18.000.827,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRelPedido.pas=</Transaction>
+    <Transaction>2022/01/04 16:19:56.000.477,C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRelPendentePedido.pas=</Transaction>
+    <Transaction>2022/01/04 17:32:41.000.781,C:\CP Sistemmas\CP LojaFacil_Sat\untPosVenda.pas=</Transaction>
+    <Transaction>2022/01/04 17:43:29.000.524,C:\CP Sistemmas\CP LojaFacil_Sat\untPedidosLoja.pas=</Transaction>
+    <Transaction>2022/02/22 18:10:42.000.249,=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.pas</Transaction>
+    <Transaction>2022/02/22 18:11:22.000.284,C:\CP Sistemmas\CP LojaFacil_Sat\Server\untServer.dfm=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.dfm</Transaction>
+    <Transaction>2022/02/22 18:11:22.000.284,C:\CP Sistemmas\CP LojaFacil_Sat\Server\untServer.pas=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.pas</Transaction>
+    <Transaction>2022/08/31 12:05:06.000.598,=C:\CP Sistemmas\CP LojaFacil_Sat\Firebase\Firebase.Auth.pas</Transaction>
+    <Transaction>2022/08/31 12:05:06.000.708,=C:\CP Sistemmas\CP LojaFacil_Sat\Firebase\Firebase.Request.pas</Transaction>
+    <Transaction>2022/08/31 12:05:06.000.677,=C:\CP Sistemmas\CP LojaFacil_Sat\Firebase\Firebase.Interfaces.pas</Transaction>
+    <Transaction>2022/08/31 12:05:06.000.630,=C:\CP Sistemmas\CP LojaFacil_Sat\Firebase\Firebase.Database.pas</Transaction>
+    <Transaction>2022/08/31 12:05:06.000.739,=C:\CP Sistemmas\CP LojaFacil_Sat\Firebase\Firebase.Response.pas</Transaction>
+    <Transaction>2022/09/09 16:15:45.000.051,=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.pas</Transaction>
+    <Transaction>2022/09/09 16:17:28.000.386,C:\CP Sistemmas\CP LojaFacil_Sat\untPedidosNuvem.dfm=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.dfm</Transaction>
+    <Transaction>2022/09/09 16:17:28.000.386,C:\CP Sistemmas\CP LojaFacil_Sat\untPedidosNuvem.pas=C:\CP Sistemmas\CP LojaFacil_Sat\Unit2.pas</Transaction>
+    <Transaction>2022/09/16 15:09:36.000.949,=C:\CP Sistemmas\CP LojaFacil_Sat\class_json\RootUnit.pas</Transaction>
+    <Transaction>2022/09/16 15:09:36.000.902,=C:\CP Sistemmas\CP LojaFacil_Sat\class_json\Pkg.Json.DTO.pas</Transaction>
+  </Transactions>
+</BorlandProject>

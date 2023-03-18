@@ -1,0 +1,396 @@
+unit untGravarCP;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, IBQuery, classComboBox,
+  Buttons;
+
+type
+  TfrmGravarCP = class(TForm)
+    lbl_edtNNota: TLabeledEdit;
+    cboCondPagto: TComboBox;
+    lbl_CondPagto: TLabel;
+    dtpVcto: TDateTimePicker;
+    lbl_Vcto: TLabel;
+    lbl_edtVlrTotal: TLabeledEdit;
+    lbl_edtNomeFornecedor: TLabeledEdit;
+    lbl_edtIDFornecedor: TLabeledEdit;
+    lbl_F1: TLabel;
+    cboBco: TComboBox;
+    cboTipoDoc: TComboBox;
+    lbl_Bco: TLabel;
+    lbl_TipoDoc: TLabel;
+    btnIncluir: TSpeedButton;
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ExecSELECTCondPagto;
+    procedure ExecSELECTTipoDoc;
+    procedure ExecSELECTBancos;
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure btnIncluirClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGravarCP: TfrmGravarCP;
+
+implementation
+
+uses untdmModule, funcPosto, DB, untEntradadeEstoque;
+
+{$R *.dfm}
+
+procedure TfrmGravarCP.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmGravarCP.ExecSELECTCondPagto;
+
+var
+IDClassCondPagto : TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    //TRAZ NO COMBO SOMENTE OS COMBUSTIVEIS DO CADASTRO DE PRODUTOS.
+    ibCondicoesPagto.Close;
+    ibCondicoesPagto.SQL.Clear;
+    ibCondicoesPagto.SQL.Add('SELECT * FROM CONDICOESPAGAMENTO');
+    ibCondicoesPagto.Open;
+
+    cboCondPagto.Clear;
+
+    while not ibCondicoesPagto.Eof do begin//TRAZ A IDENTIFICACAO NO COMBO ATRAVES DO IDENQUANTO NAO FOR FIM DOS REGISTROS
+
+      IDClassCondPagto := TClasseCombo.Create;// ATRIBUI A CLASSE CRIADA NA VARIAVEL.
+      IDClassCondPagto.ID := ibCondicoesPagto.FieldByName('IDCONDPAGTO').AsInteger;//ATRIBUI A IDENTIFICACAO DO CAMPO DA TABELA NA VARIAVEL
+      cboCondPagto.Items.AddObject(ibCondicoesPagto.FieldByName('DESCRICAO').AsString,IDClassCondPagto);//ADICIONA O OBJETO OU ITEM CONTENTO TEXTO VINDOS DE UMA TABELA.
+      ibCondicoesPagto.Next;
+
+    end;
+
+  end;{with}
+
+end;
+
+procedure TfrmGravarCP.ExecSELECTTipoDoc;
+
+var
+
+IDTipoDoc : TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    ibTipodoc.Close;
+    ibTipodoc.SQL.Clear;
+    ibTipodoc.SQL.Add('SELECT * FROM TBLTIPODOCUMENTO');
+    ibTipodoc.Open;
+
+    cboTipodoc.Clear;// LIMPA O COMBO
+
+    while not ibTipodoc.Eof do begin//enquanto nao for fim do registro
+
+      IDTipoDoc := TClasseCombo.Create;//ATRIBUI A CLASSE COMBO NA VARIAVEL
+      IDTipoDoc.ID := ibTipodoc.FieldByName('IDTIPODOC').AsInteger;//O FIELD ATRIBUI NA VARIAVEL
+      cboTipodoc.Items.AddObject(ibTipodoc.FieldByName('TIPO').AsString,IDTipoDoc);//TRAZ NO COMBO OS DADOS ARMAZENADOS NA VARIAVEL
+      ibTipodoc.Next;//VAI PRO PROXIMO REGISTRO PARA O LOOPING NAO FICAR INFINITO.
+
+    end;{while}
+
+  end;{with}
+
+end;
+
+procedure TfrmGravarCP.ExecSELECTBancos;
+
+var
+
+IDTipoBancos : TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    Commit(ibBancos);
+    ibBancos.Close;
+    ibBancos.SQL.Clear;
+    ibBancos.SQL.Add('SELECT * FROM BANCOS');
+    ibBancos.Open;
+
+    cboBco.Clear;// LIMPA O COMBO
+
+    while not ibBancos.Eof do begin//enquanto nao for fim do registro
+
+      IDTipoBancos := TClasseCombo.Create;//ATRIBUI A CLASSE COMBO NA VARIAVEL
+      IDTipoBancos.ID := ibBancos.FieldByName('IDBCO').AsInteger;//O FIELD ATRIBUI NA VARIAVEL
+      cboBco.Items.AddObject(ibBancos.FieldByName('DESCRICAO').AsString,IDTipoBancos);//TRAZ NO COMBO OS DADOS ARMAZENADOS NA VARIAVEL
+      ibBancos.Next;//VAI PRO PROXIMO REGISTRO PARA O LOOPING NAO FICAR INFINITO.
+
+    end;{while}
+
+  end;{with}
+
+end;
+
+procedure TfrmGravarCP.FormShow(Sender: TObject);
+begin
+
+  dtpVcto.DateTime := StrToDateTime(FormatDateTime('dd/mm/yyyy',Date));
+  lbl_edtNNota.Clear;
+  cboCondPagto.ClearSelection;
+  lbl_edtVlrTotal.Clear;
+  cboBco.ClearSelection;
+  cboTipoDoc.ClearSelection;
+  lbl_edtIDFornecedor.Clear;
+  lbl_edtNomeFornecedor.Clear;
+
+
+  with dmModule do begin
+
+    ExecSELECTBancos;
+    ExecSELECTTipoDoc;
+    ExecSELECTCondPagto;
+
+    if frmEntradadeEstoque.Showing Then begin
+
+      with frmEntradadeEstoque do begin
+
+        if frmEntradadeEstoque.lbl_edtNNota.Text <> '' Then begin
+
+          frmGravarCP.lbl_edtNNota.Text := frmEntradadeEstoque.lbl_edtNNota.Text;
+
+        end;  
+
+        if frmEntradadeEstoque.lbl_edtTotal.Text <> '' Then begin
+
+          frmGravarCP.lbl_edtVlrTotal.Text := frmEntradadeEstoque.lbl_edtTotal.Text;
+
+        end;
+
+        if frmEntradadeEstoque.lbl_edtIDFornecedor.Text <> '' Then begin
+
+          frmGravarCP.lbl_edtIDFornecedor.Text := frmEntradadeEstoque.lbl_edtIDFornecedor.Text;
+
+        end;
+
+        if frmEntradadeEstoque.cboFornecedor.Text <> '' Then begin
+
+          frmGravarCP.lbl_edtNomeFornecedor.Text := frmEntradadeEstoque.cboFornecedor.Text;
+
+        end;
+
+      end;
+
+    end;
+
+  end;//with
+
+end;
+
+procedure TfrmGravarCP.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+
+begin
+
+  with dmModule do begin
+
+    case Key of
+
+      VK_F1 :begin
+
+        btnIncluirClick(Sender);
+
+      end;
+
+    end;
+
+  end;
+
+end;
+
+procedure TfrmGravarCP.btnIncluirClick(Sender: TObject);
+
+  var
+
+StringFornecedor, StringServicos, StringTipoDoc, StringBanco, ValorEmitido : String;
+Baixado : String;
+IDGravaServicosForn, IDGravaServicos, IDGravaTipoDoc, IDGravaBanco : TClasseCombo;
+
+  A : TStrArray;
+  CountIDUsuarios : longint;
+  Dia,Mes,Ano : Word;
+  DataInicial,DataFinal,DataPagto: TDate;
+  TotalData,str,DataEmissao,CondPagto,VlrTotalParc,ValorParcelado : String;
+  i,IDFornecedor : integer;
+  
+begin
+
+  with dmModule do begin
+
+        if cboCondPagto.ItemIndex <> - 1 Then begin
+
+          if cboTipodoc.ItemIndex = -1 Then begin
+
+            StringTipoDoc     := ' ''0'',';
+
+          end else begin
+
+            IDGravaTipoDoc     := TClasseCombo( cboTipodoc.Items.Objects[cboTipodoc.ItemIndex] );
+            StringTipoDoc := ' ''' + InttoStr( IDGravaTipoDoc.ID ) + ''',';
+
+          end;
+
+          if cboBco.ItemIndex = -1 Then begin
+
+            StringBanco     := ' ''0'',';
+
+          end else begin
+            IDGravaBanco     := TClasseCombo( cboBco.Items.Objects[cboBco.ItemIndex] );
+            StringBanco := ' ''' + InttoStr( IDGravaBanco.ID ) + ''',';
+
+          end;
+
+          ValorEmitido := StringReplace(lbl_edtVlrTotal.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+          ValorEmitido := StringReplace(ValorEmitido,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+          if ValorEmitido = '' Then
+            ValorEmitido := '0';
+
+          Baixado := '';
+
+////////////////////////////////////////////////////////////////////////////////
+
+          str := cboCondpagto.Text;//atribui o conteudo na variavel
+          CountIDUsuarios := Explode(A, '/', str); //a tribuia funcao na variavel pegando os dados separados pela /
+
+          VlrTotalParc   := StringReplace(ValorEmitido,'.',',',[rfReplaceAll]);
+          ValorParcelado := FloatToStr(StrtoFloat(VlrTotalParc) / CountIDUsuarios);
+          ValorParcelado := StringReplace(ValorParcelado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          for i := 0 to CountIDUsuarios -1 do begin //busca pelo primeiro registro antes da barra
+
+           decodedaTe(dtpVcto.Date,ano,mes,dia);//decodifica a data do combo
+           DataInicial := StrToInt(A[i]);//atribui na variavel os valores sem a barra da condicao de pagto
+           DataEmissao := FormatDateTime('DD/MM/YYYY',Now);//atribui na variavel a data formatada
+           DataPagto   := (DataInicial) + StrToDate(DataEmissao);//atribui na variavel a soma da data com a condicao de pagto.
+
+            if Mes=12 Then //se mes for igual a 12
+              begin
+                Mes:=+1;//no mes atribui 1
+                Ano:=Ano+1;//no ano atribui 1
+              end
+            else
+
+            Mes:=Mes+1;//senao soma mais um no mes
+            DataFinal:=encodeDate(Ano,Mes,Dia);//atribui na varival a data codificada
+            DataInicial:=DataFinal;//atribui na varivel a data ja codificada  }
+
+////////////////////////////////////////////////////////////////////////////////
+
+          if lbl_edtIDFornecedor.Text <> '' Then begin
+            IDFornecedor := StrToInt(lbl_edtIDFornecedor.Text);
+          end else begin
+            IDFornecedor := 0;
+          end;
+
+          ibAPagar.Close;
+          ibAPagar.SQL.Clear;
+          ibAPagar.SQL.Add('INSERT INTO TBLCONTASAPAGAR'
+          + '(VLREMITIDO,IDFORNECEDOR,IDTIPODOC,IDBANCO,NUMDOC,'
+          + 'BAIXADO,EMISSAO,VCTO) values '
+          + ' (''' + ValorParcelado + ''','
+          + ' ''' + IntToStr(IDFornecedor) + ''','
+          + StringTipoDoc
+          + StringBanco
+          + ' ''' + lbl_edtNNota.Text + ''','
+          + ' ''' + Baixado + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',DataPagto) + ''')');
+          ibAPagar.ExecSQL;
+          Commit(ibAPagar);
+
+        end;
+        end;
+
+        if cboCondPagto.Text = '' Then begin
+
+          if cboTipodoc.ItemIndex = -1 Then begin
+
+            StringTipoDoc     := ' ''0'',';
+
+          end else begin
+
+            IDGravaTipoDoc     := TClasseCombo( cboTipodoc.Items.Objects[cboTipodoc.ItemIndex] );
+            StringTipoDoc := ' ''' + InttoStr( IDGravaTipoDoc.ID ) + ''',';
+
+          end;
+
+          if cboBco.ItemIndex = -1 Then begin
+
+            StringBanco     := ' ''0'',';
+
+          end else begin
+            IDGravaBanco     := TClasseCombo( cboBco.Items.Objects[cboBco.ItemIndex] );
+            StringBanco := ' ''' + InttoStr( IDGravaBanco.ID ) + ''',';
+
+          end;
+
+          ValorEmitido := StringReplace(lbl_edtVlrTotal.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+          ValorEmitido := StringReplace(ValorEmitido,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+          if ValorEmitido = '' Then
+            ValorEmitido := '0';
+
+          Baixado := '';
+
+          if lbl_edtIDFornecedor.Text <> '' Then begin
+            IDFornecedor := StrToInt(lbl_edtIDFornecedor.Text);
+          end else begin
+            IDFornecedor := 0;
+          end;
+
+          ibAPagar.Close;
+          ibAPagar.SQL.Clear;
+          ibAPagar.SQL.Add('INSERT INTO TBLCONTASAPAGAR'
+          + '(VLREMITIDO,IDFORNECEDOR,IDTIPODOC,IDBANCO,NUMDOC,'
+          + 'BAIXADO,EMISSAO,VCTO) values '
+          + ' (''' + ValorEmitido + ''','
+          + ' ''' + IntToStr(IDFornecedor) + ''','
+          + StringTipoDoc
+          + StringBanco
+          + ' ''' + lbl_edtNNota.Text + ''','
+          + ' ''' + Baixado + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',dtpVcto.Date) + ''')');
+          ibAPagar.ExecSQL;
+          Commit(ibAPagar);
+
+        end;//if cbo condpagto
+
+    frmGravarCP.Close;
+
+  end;//with
+
+end;
+
+end.

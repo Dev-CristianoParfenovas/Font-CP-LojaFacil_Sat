@@ -1,0 +1,362 @@
+unit untRProdutos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, BmsXPButton, StdCtrls, ExtCtrls, BmsXPCheckBox, IBQuery, ComObj;
+
+type
+  TfrmRProdutos = class(TForm)
+    ckGeral: TBmsXPCheckBox;
+    lbl_edtPorLetra: TLabeledEdit;
+    ibeaSair: TBmsXPButton;
+    ibeaVisualizar: TBmsXPButton;
+    ibeaLimpar: TBmsXPButton;
+    ckImprimirRef: TBmsXPCheckBox;
+    ckImprimirCod: TBmsXPCheckBox;
+    procedure ibeaSairClick(Sender: TObject);
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ibeaVisualizarClick(Sender: TObject);
+    procedure lbl_edtPorLetraChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ckImprimirCodCheck(Sender: TObject);
+    procedure ibeaLimparClick(Sender: TObject);
+    procedure ckImprimirRefCheck(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRProdutos: TfrmRProdutos;
+
+implementation
+
+uses funcPosto, DB, untdmModule, untRelProd;
+
+{$R *.dfm}
+
+procedure TfrmRProdutos.ibeaSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmRProdutos.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+  with IBQueryExec do begin
+
+    with dmModule do begin
+
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+
+    end;//with dmmodule
+
+  end;//with ibquery exec
+
+end;
+
+procedure TfrmRProdutos.ibeaVisualizarClick(Sender: TObject);
+
+var
+
+ConfirmaRelatorioWord,ConfirmaRelatorioExcel : Integer;
+Excel,MSWord : Variant;
+Linha,Coluna:Integer;
+RelatorioWord,RelatorioExcel : String;
+
+begin
+
+  with dmModule do begin
+
+    if (ckGeral.Checked = True) Then begin
+
+      Commit(ibProdutos);
+      ibProdutos.Close;
+      ibProdutos.SQL.Clear;                        //WHERE CADPRODUTOS.NOME LIKE''%%'' LIKE '+''''+'%'+lbl_edtNome.text+'%'+''''   '+''''+'%CADPRODUTOS.NOME%'+''''
+      ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS ORDER BY CADPRODUTOS.NOME');
+     { .*,TBLCADASTRO.NOME As NomeFornecedor FROM CADPRODUTOS '                 
+      + 'LEFT OUTER JOIN TBLCADASTRO ON CADPRODUTOS.FORNECEDOR=TBLCADASTRO.IDCAD}
+      ibProdutos.Open;
+
+  //    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+
+      Application.CreateForm(TfrmRelProd, frmRelProd);
+
+      TRY
+
+        with frmRelProd do begin
+
+          frmRelProd.qrpProdutos.DataSet := ibProdutos;
+
+
+          //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+          if ckImprimirCod.Checked Then begin
+
+            qrdbCodigo.DataSet    := ibProdutos;
+            qrdbCodigo.DataField  := ibProdutos.FieldByName('IDPROD').FieldName;
+
+          end;
+
+          if ckImprimirRef.Checked Then begin
+
+            qrdbCodigo.DataSet    := ibProdutos;
+            qrdbCodigo.DataField  := ibProdutos.FieldByName('REF').FieldName;
+
+          end;
+
+         { qrdbCodbarras.DataSet     := ibProdutos;
+          qrdbCodBarras.DataField   := ibProdutos.FieldByName('CODBARRAS').FieldName; }
+
+          qrdbDescricao.DataSet       := ibProdutos;
+          qrdbDescricao.DataField     := ibProdutos.FieldByName('NOME').FieldName;
+
+          qrdbCodFabr.DataSet       := ibProdutos;
+          qrdbCodFabr.DataField     := ibProdutos.FieldByName('CODBARRAS').FieldName;
+
+          qrdbValorVenda.DataSet    := ibProdutos;
+          qrdbValorVenda.DataField  := ibProdutos.FieldByName('VALORVENDAA').FieldName;
+          (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO }
+
+
+
+
+          qrpProdutos.Preview;
+
+        end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelProd.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+
+    end;//if ckgeral checked
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if (lbl_edtPorLetra.Text <> '')and(ckGeral.Checked = False) Then begin
+
+      Commit(ibProdutos);
+      ibProdutos.Close;
+      ibProdutos.SQL.Clear;
+      ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE CADPRODUTOS.NOME LIKE '+''''+lbl_edtPorLetra.text+'%'+''' ORDER BY CADPRODUTOS.NOME');
+      ibProdutos.Open;
+
+  //    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+
+      Application.CreateForm(TfrmRelProd, frmRelProd);
+
+      TRY
+
+        with frmRelProd do begin
+
+          frmRelProd.qrpProdutos.DataSet := ibProdutos;
+
+
+          //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+          if ckImprimirCod.Checked Then begin
+
+            qrdbCodigo.DataSet    := ibProdutos;
+            qrdbCodigo.DataField  := ibProdutos.FieldByName('IDPROD').FieldName;
+
+          end;
+
+          if ckImprimirRef.Checked Then begin
+
+            qrdbCodigo.DataSet    := ibProdutos;
+            qrdbCodigo.DataField  := ibProdutos.FieldByName('REF').FieldName;
+
+          end;
+         { qrdbCodbarras.DataSet     := ibProdutos;
+          qrdbCodBarras.DataField   := ibProdutos.FieldByName('CODBARRAS').FieldName; }
+
+          qrdbCodFabr.DataSet       := ibProdutos;
+          qrdbCodFabr.DataField     := ibProdutos.FieldByName('CODIGOFABRICANTE').FieldName;
+
+          qrdbDescricao.DataSet       := ibProdutos;
+          qrdbDescricao.DataField     := ibProdutos.FieldByName('NOME').FieldName;
+
+         // qrdbFornecedor.DataSet       := ibProdutos;
+         // qrdbFornecedor.DataField     := ibProdutos.FieldByName('NomeFornecedor').FieldName;
+
+          qrdbValorVenda.DataSet    := ibProdutos;
+          qrdbValorVenda.DataField  := ibProdutos.FieldByName('VALORVENDAA').FieldName;
+          (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO }
+
+////////////////////////////////////////////////////////////////////////////////
+
+          Commit(ibConfig);
+          ibConfig.Close;
+          ibConfig.SQL.Clear;
+          ibConfig.SQL.Add('SELECT * FROM TBLCONFIGURACOES');
+          ibConfig.Open;
+
+          RelatorioWord   := ibConfig.FieldByName('RWORD').AsString;
+          RelatorioExcel  := ibConfig.FieldByName('REXCEL').AsString;
+
+////////////////////////////////////////////////////////////////////////////////
+
+  if RelatorioWord = 'Sim' Then begin
+
+    ConfirmaRelatorioWord := Application.MessageBox('Deseja Emitir Relatório para o Word?','Relatório para Word',+MB_YESNO+MB_ICONQUESTION);
+
+    if ConfirmaRelatorioWord = 6 Then begin
+
+      MSWord:= CreateOleObject('Word.Basic');
+      MSWord.AppShow;//mostra o word
+      MSWord.FileNew;//inicia um novo documento
+      MSWord.FontSize(24);//muda o tamanho da fonte
+      MSWord.italic;//coloca italico
+      MSWord.bold;//coloca negrito
+      MSWord.underline;//sublina
+      MSWord.insert(#13+'Relação de Produtos');//pula a linha e escreve novamente
+      MSWord.FontSize(10);//muda o tamanho da fonte
+      MSWord.Font('Verdana');//muda a fonte usada
+      MSWord.underline(false);//retira o sublinhado
+      MSWord.italic(false);//retira o italico
+      MSWord.bold(false);//retira o bold
+      //MSWord.insert(#13 +'teste');
+      //MSWord.insert(#13+#9 +'teste');//nova linha e um TAB
+      MSWord.insert(#13 +'');
+
+      while not ibProdutos.Eof do begin
+
+        MSWord.insert(#13+ibProdutos.FieldByName('NOME').AsString +' '+' '+' '+ ' R$ ' + (FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat)));//insere algo de uma tabela
+        MSWord.insert(#13'----------------------------------------------------------------------------------------');
+        ibProdutos.Next;
+
+      end;//while
+
+    end;//confirma
+
+  end;//if relatorio word
+
+//MSWord.LineUp(2, 1); //seleciona uma parte do texto
+//MSWord.TextToTable(ConvertFrom := 2, NumColumns := 1);// monta uma tabela com o texto selecionado
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  if RelatorioExcel = 'Sim' Then begin
+
+    ConfirmaRelatorioExcel := Application.MessageBox('Deseja Emitir Relatório para o Excel?','Relatório para Excel',+MB_YESNO+MB_ICONQUESTION);
+
+    if ConfirmaRelatorioExcel = 6 Then begin
+
+        Excel := CreateOleObject('Excel.Application');
+        Excel.Visible :=True;
+        Excel.Workbooks.Add;
+
+       { for Coluna := 1 to ibCadastro.FieldCount - 1 do
+        begin
+        Excel.Cells[1,Coluna] := ibCadastro.Fields[Coluna].DisplayName;
+        end;}
+        Linha := 2;
+        ibProdutos.First;
+        while not ibProdutos.Eof do
+        begin
+        for Coluna := 1 to ibProdutos.FieldCount - 1 do
+        begin          //
+        Excel.Cells[Linha,Coluna] := ibProdutos.Fields[Coluna].AsString;
+        end;
+        Inc(Linha);
+        ibProdutos.Next;
+        end;
+        Excel.Columns.AutoFit;
+        //Excel.WorkBooks[1].Save;
+        //Excel.WorkBooks[1].Close; }
+
+      end;
+
+    end;//if relatorio excel
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+          qrpProdutos.Preview;
+
+        end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelProd.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+
+    end;//if ckgeral checked
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+  end;{with}
+
+end;
+
+procedure TfrmRProdutos.lbl_edtPorLetraChange(Sender: TObject);
+begin
+ckGeral.Checked := False;
+end;
+
+procedure TfrmRProdutos.FormShow(Sender: TObject);
+begin
+ckGeral.Checked := False;
+lbl_edtPorLetra.Clear;
+
+end;
+
+procedure TfrmRProdutos.FormCreate(Sender: TObject);
+begin
+
+  if ckImprimirRef.Checked Then begin
+
+    ckImprimirCod.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmRProdutos.ckImprimirCodCheck(Sender: TObject);
+begin
+
+  if ckImprimirCod.Checked Then begin
+
+    ckImprimirRef.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmRProdutos.ibeaLimparClick(Sender: TObject);
+begin
+
+  ckGeral.Checked := False;
+  ckImprimirRef.Checked := False;
+  ckImprimirCod.Checked := False;
+  lbl_edtPorLetra.Clear;
+  
+end;
+
+procedure TfrmRProdutos.ckImprimirRefCheck(Sender: TObject);
+begin
+
+  if ckImprimirRef.Checked Then begin
+
+    ckImprimirCod.Checked := False;
+
+  end;
+  
+end;
+
+end.

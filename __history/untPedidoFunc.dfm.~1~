@@ -1,0 +1,201 @@
+object frmPedidoFunc: TfrmPedidoFunc
+  Left = 186
+  Top = 113
+  Width = 331
+  Height = 233
+  Caption = 'Pedido por Vendedor Per'#237'odo'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_DtIni: TLabel
+    Left = 24
+    Top = 32
+    Width = 70
+    Height = 13
+    Caption = 'Data Inicial:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_DtF: TLabel
+    Left = 122
+    Top = 32
+    Width = 63
+    Height = 13
+    Caption = 'Data Final:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Vendedor: TLabel
+    Left = 28
+    Top = 82
+    Width = 55
+    Height = 13
+    Caption = 'Vendedor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Cliente: TLabel
+    Left = 28
+    Top = 126
+    Width = 40
+    Height = 13
+    Caption = 'Cliente'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object ibeaSair: TBmsXPButton
+    Left = 240
+    Top = 8
+    Width = 80
+    Height = 21
+    Caption = '&Sair'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 0
+    OnClick = ibeaSairClick
+  end
+  object ibeaVisualizar: TBmsXPButton
+    Left = 216
+    Top = 96
+    Width = 80
+    Height = 21
+    Caption = '&Visualizar'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 1
+    OnClick = ibeaVisualizarClick
+  end
+  object ibeaLimpar: TBmsXPButton
+    Left = 216
+    Top = 120
+    Width = 80
+    Height = 21
+    Caption = '&Limpar'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 2
+    OnClick = ibeaLimparClick
+  end
+  object ibeaDetalhado: TBmsXPButton
+    Left = 216
+    Top = 145
+    Width = 80
+    Height = 21
+    Caption = '&Detalhado'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 3
+    OnClick = ibeaDetalhadoClick
+  end
+  object ckPedido: TBmsXPCheckBox
+    Left = 216
+    Top = 48
+    Width = 65
+    Height = 13
+    WordWrap = False
+    ShowAccelChar = True
+    Layout = tlTop
+    AutoSize = False
+    Alignment = taLeftJustify
+    Shadow.Color = clWindow
+    Shadow.Style = ssTopLeft
+    Shadow.OffSet = 0
+    Caption = 'Pedido'
+    TabOrder = 4
+    onCheck = ckPedidoCheck
+  end
+  object ckOrcamento: TBmsXPCheckBox
+    Left = 216
+    Top = 66
+    Width = 81
+    Height = 13
+    WordWrap = False
+    ShowAccelChar = True
+    Layout = tlTop
+    AutoSize = False
+    Alignment = taLeftJustify
+    Shadow.Color = clWindow
+    Shadow.Style = ssTopLeft
+    Shadow.OffSet = 0
+    Caption = 'Or'#231'amento'
+    TabOrder = 5
+    onCheck = ckOrcamentoCheck
+  end
+  object dtpDataIni: TDateTimePicker
+    Left = 24
+    Top = 48
+    Width = 91
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 41550.600067997680000000
+    Time = 41550.600067997680000000
+    TabOrder = 6
+  end
+  object dtpDataF: TDateTimePicker
+    Left = 120
+    Top = 48
+    Width = 91
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 41550.600067997680000000
+    Time = 41550.600067997680000000
+    TabOrder = 7
+  end
+  object cboVendedor: TComboBox
+    Left = 26
+    Top = 103
+    Width = 183
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    ItemHeight = 13
+    TabOrder = 8
+  end
+  object cboCliente: TComboBox
+    Left = 26
+    Top = 144
+    Width = 183
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    ItemHeight = 13
+    TabOrder = 9
+  end
+end

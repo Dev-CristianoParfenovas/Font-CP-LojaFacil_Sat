@@ -1,0 +1,187 @@
+unit untEtiquetaTermica;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ACBrBase, ACBrETQ, ACBrDevice, StdCtrls, ExtCtrls, IBQuery;
+
+type
+  TfrmEtiquetaTermica = class(TForm)
+    cbModelo: TComboBox;
+    lbl_edtCodBarras: TLabeledEdit;
+    lbl_edtNomeProd: TLabeledEdit;
+    lbl_edtValor: TLabeledEdit;
+    lbl_edtQtdeCopias: TLabeledEdit;
+    cbPorta: TComboBox;
+    lbl_edtAvanco: TLabeledEdit;
+    lbl_F2: TLabel;
+    lbl_F3: TLabel;
+    lbl_F5: TLabel;
+    ACBrETQ1: TACBrETQ;
+    procedure btSairClick(Sender: TObject);
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure btImprimirClick(Sender: TObject);
+    procedure lbl_edtCodBarrasChange(Sender: TObject);
+    procedure btLimparClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure lbl_edtCodBarrasKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmEtiquetaTermica: TfrmEtiquetaTermica;
+
+implementation
+
+uses untdmModule, funcPosto, DB, uBuscaProdutos;
+
+{$R *.dfm}
+
+procedure TfrmEtiquetaTermica.btSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmEtiquetaTermica.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmEtiquetaTermica.btImprimirClick(Sender: TObject);
+begin
+
+  with ACBrETQ1 do
+  begin
+
+   Modelo := TACBrETQModelo(cbModelo.ItemIndex);
+   Porta := cbPorta.Text;
+   Ativar;
+
+   ImprimirTexto(orNormal, 2, 2, 2, 150, 5  ,lbl_edtNomeProd.Text);
+  /// ImprimirTexto(orNormal, 2, '2', '1', 158, 5, 'CHOC BRANCO');
+   ImprimirBarras(orNormal, 'F', '2', '2', 32, 0, lbl_edtCodBarras.Text, 90);
+  // ImprimirTexto(orNormal, 3, 3, 2, 15, 300, 'R$');
+   ImprimirTexto(orNormal, 3, 4, 4, 15, 200, lbl_edtValor.Text);
+
+   Imprimir(StrToInt(lbl_edtQtdeCopias.Text), StrToInt(lbl_edtAvanco.Text));
+   Desativar;
+   
+   end;
+
+end;
+
+procedure TfrmEtiquetaTermica.lbl_edtCodBarrasChange(Sender: TObject);
+begin
+
+  with dmModule do begin
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE CODBARRAS=''' + lbl_edtCodBarras.Text + '''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat         := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat        := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibProdutos.FieldByName('QTDE')as TFloatField).DisplayFormat :='0';
+
+    if ibProdutos.RecordCount > 0 then begin
+
+      lbl_edtNomeProd.Text := '   ' + ibProdutos.FieldByName('NOME').AsString;
+      lbl_edtValor.Text    := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+
+    end;//if
+
+    ///lbl_edtQtdeCopias.SetFocus;
+
+  end;{with}
+  
+end;
+
+procedure TfrmEtiquetaTermica.btLimparClick(Sender: TObject);
+begin
+
+  lbl_edtCodBarras.Clear;
+  lbl_edtNomeProd.Clear;
+  lbl_edtValor.Clear;
+  lbl_edtCodBarras.SetFocus;
+  
+end;
+
+procedure TfrmEtiquetaTermica.FormShow(Sender: TObject);
+begin
+  lbl_edtCodBarras.SetFocus;
+end;
+
+procedure TfrmEtiquetaTermica.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  with dmModule do begin
+
+    case key of
+
+       VK_F2:begin
+
+        btImprimirClick(Sender);
+
+        end;{begin}
+
+       VK_F3:begin
+
+        lbl_edtCodBarras.Clear;
+        lbl_edtNomeProd.Clear;
+        lbl_edtValor.Clear;
+        lbl_edtCodBarras.SetFocus;
+
+        end;{begin}
+
+       VK_F5:begin
+
+        Close;
+
+        end;{begin}
+
+       VK_f7:begin
+
+        frmBuscaProdutos.ShowModal;
+
+        end;{begin}
+
+    end;
+
+  end;
+
+end;
+
+procedure TfrmEtiquetaTermica.lbl_edtCodBarrasKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key =#13 Then begin
+
+    lbl_edtQtdeCopias.SetFocus;
+
+  end;//if//
+
+end;
+
+end.

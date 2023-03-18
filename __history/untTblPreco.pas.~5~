@@ -1,0 +1,1168 @@
+unit untTblPreco;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, IBQuery, classComboBox,
+  ComCtrls, ExtCtrls;
+
+type
+  TfrmTblPreco = class(TForm)
+    ProgressBar1: TProgressBar;
+    StatusBar1: TStatusBar;
+    lbl_AtualizaVenda: TLabel;
+    Shape1: TShape;
+    lbl_AtualizaCusto: TLabel;
+    cboFornecedores: TComboBox;
+    Label1: TLabel;
+    GroupBox1: TGroupBox;
+    lbl_edtFabricante: TLabeledEdit;
+    lbl_edtPorcentagem: TLabeledEdit;
+    lbl_edtValorCusto: TLabeledEdit;
+    GroupBox2: TGroupBox;
+    ckPorcentagem: TCheckBox;
+    ckValor: TCheckBox;
+    ckGeral: TCheckBox;
+    ckEstoqueZero: TCheckBox;
+    ckPorcentagemCusto: TCheckBox;
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ExecSELECTFornecedor;
+    procedure AtualizarPreco;
+    procedure AtualizarCusto;
+    procedure EstornarLancto;
+    procedure FormShow(Sender: TObject);
+    procedure ibeaAtualizarClick(Sender: TObject);
+    procedure ckPorcentagemCheck(Sender: TObject);
+    procedure ckValorCheck(Sender: TObject);
+    procedure StatusBar1DrawPanel(StatusBar: TStatusBar;
+      Panel: TStatusPanel; const Rect: TRect);
+    procedure ibeaCorrecaoClick(Sender: TObject);
+    procedure ibeaSairClick(Sender: TObject);
+    procedure cboFornecedoresChange(Sender: TObject);
+    procedure lbl_edtFabricanteChange(Sender: TObject);
+    procedure ckGeralCheck(Sender: TObject);
+    procedure ckEstoqueZeroCheck(Sender: TObject);
+    procedure ckPorcentagemCustoCheck(Sender: TObject);
+    procedure ckValorCustoCheck(Sender: TObject);
+    procedure BmsXPButton1Click(Sender: TObject);
+
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTblPreco: TfrmTblPreco;
+  ClassForn : TClasseCombo;
+  IDClassForn : Integer;
+
+implementation
+
+uses untdmModule, funcPosto, DB;
+
+{$R *.dfm}
+
+
+procedure TfrmTblPreco.Commit(IBQueryExec : TIBQuery);
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ExecSELECTFornecedor;
+begin
+  with dmModule do begin
+
+    ibClassificacao.Close;
+    ibClassificacao.SQL.Clear;
+    ibClassificacao.SQL.Add('SELECT IDCLASS FROM TBLCLASSIFICACAO WHERE DESCRICAO=''Fornecedores''');
+    ibClassificacao.Open;
+    IDClassForn := ibClassificacao.FieldByName('IDCLASS').AsInteger; // ATRIBUI A IDENTIFICAÇÃO DO FORNECEDOR NA VARIAVEL.
+
+    ibCadastro.Close;
+    ibCadastro.SQL.Clear;
+    ibCadastro.SQL.Add('SELECT * FROM TBLCADASTRO WHERE IDCLASS=' + IntToStr(IDClassForn));//('SELECT * FROM TBLCADASTRO WHERE IDCLASS=''' + InttoStr(IDClass) + ''' ORDER BY NOME');
+    ibCadastro.Open;
+
+    {ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT CADPRODUTOS.*,TBLCADASTRO.NOME As Fornecedor FROM CADPRODUTOS '
+    + 'INNER JOIN TBLCADASTRO ON CADPRODUTOS.FORNECEDOR=TBLCADASTRO.IDCAD');
+    ibProdutos.Open;}
+
+    cboFornecedores.Clear; //LIMPA O COMBOBOX
+    while not ibCadastro.Eof do begin
+      ClassForn    := TClasseCombo.Create;
+      ClassForn.ID  := ibCadastro.FieldByName('IDCAD').AsInteger;
+      cboFornecedores.Items.AddObject(ibCadastro.FieldByName('NOME').AsString,ClassForn);
+      ibCadastro.Next;
+    end;
+  end;
+end;
+
+procedure TfrmTblPreco.AtualizarPreco;
+
+var
+
+IDFornecedor, IDFornecedorProd : TClasseCombo;
+ValorVenda, ValorPorcentagem, Valor1, Valor2, VaLor3, Valor4, Valor5  : Real;
+ValorAlteracao, Valor6, Valor7, Valor8 : Real;
+StringFornecedor, Total, TotalSomado, Fabricante, TotalEstoque : String;
+IDProduto : Integer;
+QtdeEstoque : Real;
+ConfirmaEstoque : Integer;
+AutorizaAutEstoque : Boolean;
+
+begin
+
+  with dmModule do begin
+
+    if cboFornecedores.ItemIndex > -1 Then begin
+
+      IDFornecedor := TClasseCombo(cboFornecedores.Items.Objects[cboFornecedores.ItemIndex]);
+      StringFornecedor :=  InttoStr( IDFornecedor.ID );
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FORNECEDOR='''+ IntToStr(IDFornecedor.ID) +'''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;
+
+    if lbl_edtFabricante.Text <> '' Then begin
+
+      Fabricante :=  lbl_edtFabricante.Text;
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FABRICANTE=''' + Fabricante + '''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;//if
+
+
+    ConfirmaEstoque := Application.MessageBox('Este procedimento também atualiza o valor de estoque, clique em sim para atualizar ou não para bloquear o procedimento','Atualizar Valor de Estoque',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaEstoque = 6 Then begin
+
+    AutorizaAutEstoque := True;
+
+    end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckPorcentagem.Checked Then begin
+
+    while not ibProdutos.Eof do begin
+
+      IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+      if lbl_edtPorcentagem.Text <> '' Then begin
+
+        if lbl_edtPorcentagem.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtPorcentagem.Text)>0) and (lbl_edtPorcentagem.Text <> '') Then begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (Valor4 + ValorVenda);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end else begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (Valor4 + ValorVenda);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;{if}
+
+        end;{if}
+
+      end;//label custo
+
+       if IDProduto > 0 Then begin
+
+          ibTempProd.Close;
+          ibTempProd.SQL.Clear;
+          ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+          + 'VALORVENDAA = ''' + Total + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+          ibTempProd.ExecSQL;
+
+          Commit(ibTempProd);
+
+
+          if AutorizaAutEstoque Then begin
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.Open;
+
+            QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+            QtdeEstoque := QtdeEstoque * Valor5;
+
+            TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+            + 'VLRTOTAL = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.ExecSQL;
+
+            Commit(ibEntrProdEstoque);
+
+          end;//if autoriza estoque
+
+       end;//if
+    ibProdutos.Next;
+
+    end;//WHILE
+  ////////////////////////////////////////////////////////////////////////////////
+
+    end;//if ck porcentagem
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckValor.Checked Then begin
+
+      while not ibProdutos.Eof do begin
+
+        IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+        if lbl_edtPorcentagem.Text <> '' Then begin
+
+          if lbl_edtPorcentagem.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+            if (Pos(',',lbl_edtPorcentagem.Text)>0) and (lbl_edtPorcentagem.Text <> '') Then begin
+
+              ValorAlteracao := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor7 := Valor6 + ValorAlteracao;
+
+              Valor8 := Valor7;
+
+              TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            end else begin
+
+              ValorAlteracao := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor7 := Valor6 + ValorAlteracao;
+
+              Valor8 := Valor7;
+
+              TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            end;{if}
+
+          end;{if}
+
+        end;//label custo
+
+         if IDProduto > 0 Then begin
+
+            ibTempProd.Close;
+            ibTempProd.SQL.Clear;
+            ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+            + 'VALORVENDAA = ''' + TotalSomado + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibTempProd.ExecSQL;
+
+            Commit(ibTempProd);
+
+
+            if AutorizaAutEstoque Then begin
+
+              ibEntrProdEstoque.Close;
+              ibEntrProdEstoque.SQL.Clear;
+              ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+              ibEntrProdEstoque.Open;
+
+              QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+              QtdeEstoque := QtdeEstoque * Valor8;
+
+              TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+              ibEntrProdEstoque.Close;
+              ibEntrProdEstoque.SQL.Clear;
+              ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+              + 'VLRTOTAL = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+              ibEntrProdEstoque.ExecSQL;
+
+              Commit(ibEntrProdEstoque);
+
+            end;//if autoriza estoque
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+        ibProdutos.Next;
+
+         end;//if prod >0
+
+      end;//while
+
+    end;//if ckvalor
+
+  end;//with
+
+end;
+
+procedure TfrmTblPreco.AtualizarCusto;
+
+var
+
+IDFornecedor, IDFornecedorProd : TClasseCombo;
+ValorVenda, ValorPorcentagem, Valor1, Valor2, VaLor3, Valor4, Valor5  : Real;
+ValorAlteracao, Valor6, Valor7, Valor8 : Real;
+StringFornecedor, Total, TotalSomado, Fabricante, TotalEstoque : String;
+IDProduto : Integer;
+QtdeEstoque, ValorCusto : Real;
+ConfirmaEstoque : Integer;
+AutorizaAutEstoque : Boolean;
+
+begin
+
+  with dmModule do begin
+
+  {  if cboFornecedores.ItemIndex > -1 Then begin
+
+      IDFornecedor := TClasseCombo(cboFornecedores.Items.Objects[cboFornecedores.ItemIndex]);
+      StringFornecedor :=  InttoStr( IDFornecedor.ID );
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FORNECEDOR='''+ IntToStr(IDFornecedor.ID) +'''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;
+
+    if lbl_edtFabricante.Caption <> '' Then begin
+
+      Fabricante :=  lbl_edtFabricante.Caption;
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FABRICANTE=''' + Fabricante + '''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;//if }
+
+
+    if ckGeral.Checked Then begin
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+    end;
+
+    if ckEstoqueZero.Checked Then begin
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE VALORCUSTO < 1');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORCUSTO') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+    end;
+
+    ConfirmaEstoque := Application.MessageBox('Este procedimento também atualiza o valor de estoque, clique em sim para atualizar ou não para bloquear o procedimento','Atualizar Valor de Estoque',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaEstoque = 6 Then begin
+
+    AutorizaAutEstoque := True;
+
+    end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckPorcentagemCusto.Checked Then begin
+
+    while not ibProdutos.Eof do begin
+
+      IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+      if lbl_edtValorCusto.Text <> '' Then begin
+
+        if lbl_edtValorCusto.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtValorCusto.Text)>0) and (lbl_edtValorCusto.Text <> '') Then begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtValorCusto.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorCusto := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORCUSTO').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (ValorVenda - Valor4);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end else begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtValorCusto.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorCusto := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORCUSTO').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (ValorVenda - Valor4);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;{if}
+
+        end;{if}
+
+      end;//label custo
+
+       if IDProduto > 0 Then begin
+
+          ibTempProd.Close;
+          ibTempProd.SQL.Clear;
+          ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+          + 'VALORCUSTO = ''' + Total + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+          ibTempProd.ExecSQL;
+
+          Commit(ibTempProd);
+
+
+          if AutorizaAutEstoque Then begin
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.Open;
+
+            QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+            QtdeEstoque := QtdeEstoque * Valor5;
+
+            TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+            + 'TOTALCUSTO = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.ExecSQL;
+
+            Commit(ibEntrProdEstoque);
+
+          end;//if autoriza estoque
+
+       end;//if
+    ibProdutos.Next;
+
+    end;//WHILE
+  ////////////////////////////////////////////////////////////////////////////////
+
+    end;//if ck porcentagem
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckValor.Checked Then begin
+
+      while not ibProdutos.Eof do begin
+
+        IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+        if lbl_edtValorCusto.Text <> '' Then begin
+
+          if lbl_edtValorCusto.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+            if (Pos(',',lbl_edtValorCusto.Text)>0) and (lbl_edtValorCusto.Text <> '') Then begin
+
+              ValorAlteracao := StrToFloat(StringReplace(lbl_edtValorCusto.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORCUSTO').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor7 := Valor6 + ValorAlteracao;
+
+              Valor8 := Valor7;
+
+              TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            end else begin
+
+              ValorAlteracao := StrToFloat(StringReplace(lbl_edtValorCusto.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORCUSTO').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+              Valor7 := Valor6 + ValorAlteracao;
+
+              Valor8 := Valor7;
+
+              TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            end;{if}
+
+          end;{if}
+
+        end;//label custo
+
+         if IDProduto > 0 Then begin
+
+            ibTempProd.Close;
+            ibTempProd.SQL.Clear;
+            ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+            + 'VALORCUSTO = ''' + TotalSomado + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibTempProd.ExecSQL;
+
+            Commit(ibTempProd);
+
+
+            if AutorizaAutEstoque Then begin
+
+              ibEntrProdEstoque.Close;
+              ibEntrProdEstoque.SQL.Clear;
+              ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+              ibEntrProdEstoque.Open;
+
+              QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+              QtdeEstoque := QtdeEstoque * Valor8;
+
+              TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+              TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+              ibEntrProdEstoque.Close;
+              ibEntrProdEstoque.SQL.Clear;
+              ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+              + 'TOTALCUSTO = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+              ibEntrProdEstoque.ExecSQL;
+
+              Commit(ibEntrProdEstoque);
+
+            end;//if autoriza estoque
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+        ibProdutos.Next;
+
+         end;//if prod >0
+
+      end;//while
+
+    end;//if ckvalor
+
+  end;//with
+
+end;
+  
+procedure TfrmTblPreco.EstornarLancto;
+
+var
+
+IDFornecedor, IDFornecedorProd : TClasseCombo;
+ValorVenda, ValorPorcentagem, Valor1, Valor2, VaLor3, Valor4, Valor5  : Real;
+ValorAlteracao, Valor6, Valor7, Valor8 : Real;
+StringFornecedor, Total, TotalSomado, Fabricante, TotalEstoque : String;
+IDProduto : Integer;
+QtdeEstoque : Real;
+ConfirmaEstoque : Integer;
+AutorizaAutEstoque : Boolean;
+
+begin
+
+  with dmModule do begin
+
+    if cboFornecedores.ItemIndex > -1 Then begin
+
+      IDFornecedor := TClasseCombo(cboFornecedores.Items.Objects[cboFornecedores.ItemIndex]);
+      StringFornecedor :=  InttoStr( IDFornecedor.ID );
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FORNECEDOR='''+ IntToStr(IDFornecedor.ID) +'''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;
+
+    if lbl_edtFabricante.Text <> '' Then begin
+
+      Fabricante :=  lbl_edtFabricante.Text;
+
+    Commit(ibProdutos);
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE FABRICANTE=''' + Fabricante + '''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+    end;//if
+
+
+    ConfirmaEstoque := Application.MessageBox('Este procedimento também atualiza o valor de estoque, clique em sim para atualizar ou não para bloquear o procedimento','Atualizar Valor de Estoque',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaEstoque = 6 Then begin
+
+    AutorizaAutEstoque := True;
+
+    end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckPorcentagem.Checked Then begin
+
+    while not ibProdutos.Eof do begin
+
+      IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+      if lbl_edtPorcentagem.Text <> '' Then begin
+
+        if lbl_edtPorcentagem.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtPorcentagem.Text)>0) and (lbl_edtPorcentagem.Text <> '') Then begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (ValorVenda - Valor4);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end else begin
+
+            ValorPorcentagem := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            ValorVenda := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := ValorVenda * ValorPorcentagem;
+
+            Valor4 := Valor3 /100;
+
+            Valor5 := (ValorVenda - Valor4);
+
+            Total := StringReplace(FloattoStr(Valor5),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            Total := StringReplace(Total,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;{if}
+
+        end;{if}
+
+      end;//label custo
+
+       if IDProduto > 0 Then begin
+
+          ibTempProd.Close;
+          ibTempProd.SQL.Clear;
+          ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+          + 'VALORVENDAA = ''' + Total + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+          ibTempProd.ExecSQL;
+
+          Commit(ibTempProd);
+
+          if AutorizaAutEstoque Then begin
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.Open;
+
+            QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+            QtdeEstoque := QtdeEstoque * Valor5;
+
+            TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+            + 'VLRTOTAL = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.ExecSQL;
+
+            Commit(ibEntrProdEstoque);
+
+          end;//if autoriza estoque
+
+       end;//if
+    ibProdutos.Next;
+
+    end;//WHILE
+  ////////////////////////////////////////////////////////////////////////////////
+
+    end;//if ck porcentagem
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckValor.Checked Then begin
+
+    while not ibProdutos.Eof do begin
+
+      IDProduto := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+
+      if lbl_edtPorcentagem.Text <> '' Then begin
+
+        if lbl_edtPorcentagem.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtPorcentagem.Text)>0) and (lbl_edtPorcentagem.Text <> '') Then begin
+
+            ValorAlteracao := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor7 := Valor6 - ValorAlteracao;
+
+            Valor8 := Valor7;
+
+            TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end else begin
+
+            ValorAlteracao := StrToFloat(StringReplace(lbl_edtPorcentagem.Text,FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor6 := StrToFloat(StringReplace(FloatToStr(ibProdutos.FieldByName('VALORVENDAA').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+            Valor7 := Valor6 - ValorAlteracao;
+
+            Valor8 := Valor7;
+
+            TotalSomado := StringReplace(FloattoStr(Valor8),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalSomado := StringReplace(TotalSomado,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;{if}
+
+        end;{if}
+
+      end;//label custo
+
+       if IDProduto > 0 Then begin
+
+          ibTempProd.Close;
+          ibTempProd.SQL.Clear;
+          ibTempProd.SQL.Add('UPDATE CADPRODUTOS SET '
+          + 'VALORVENDAA = ''' + TotalSomado + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+          ibTempProd.ExecSQL;
+
+          Commit(ibTempProd);
+
+          if AutorizaAutEstoque Then begin
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('SELECT * FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.Open;
+
+            QtdeEstoque := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),FormatSettings.ThousandSeparator,'',[rfReplaceAll]));
+
+            QtdeEstoque := QtdeEstoque * Valor8;
+
+            TotalEstoque := StringReplace(FloattoStr(QtdeEstoque),FormatSettings.ThousandSeparator,'',[rfReplaceAll]);
+            TotalEstoque := StringReplace(TotalEstoque,FormatSettings.DecimalSeparator,'.',[rfReplaceAll]);
+
+            ibEntrProdEstoque.Close;
+            ibEntrProdEstoque.SQL.Clear;
+            ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+            + 'VLRTOTAL = ''' + TotalEstoque + ''' WHERE IDPROD=''' + IntToStr(IDProduto) + '''');
+            ibEntrProdEstoque.ExecSQL;
+
+            Commit(ibEntrProdEstoque);
+
+          end;//if autoriza estoque
+
+       end;//if
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+      ibProdutos.Next;
+
+      end;//while
+
+    end;//if ckvalor
+
+  end;//with
+
+end;
+
+
+procedure TfrmTblPreco.FormShow(Sender: TObject);
+begin
+
+  ckPorcentagem.Checked := False;
+  ckValor.Checked := False;
+  lbl_edtPorcentagem.Text := '';
+  cboFornecedores.ClearSelection;
+
+  with dmModule do begin
+
+    ExecSELECTFornecedor;
+
+  end;//with
+
+end;
+
+procedure TfrmTblPreco.ibeaAtualizarClick(Sender: TObject);
+
+var
+
+ConfirmaAtualizacao : Integer;
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+    if (ckPorcentagem.Checked = False) and (ckValor.Checked = False) Then begin
+
+      Application.MessageBox('Atenção é necessário clicar em porcentagem ou valor','Notificação:Opção não escolhida',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+    end else begin
+
+      if (lbl_edtPorcentagem.Text = '') or (lbl_edtPorcentagem.Text = '0') Then begin
+
+
+        Application.MessageBox('O campo valor/porcentagem está sem valor para alteração??','Notificação:Campo em branco ou com valor zero',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+      end else begin
+
+        ConfirmaAtualizacao :=Application.MessageBox(Pchar('Este procedimento atualiza todos os preços do Fornecedor:"' + cboFornecedores.Text
+          +'"deseja continuar?'),'Notificação:Atualização de preços',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+
+        if ConfirmaAtualizacao = 6 Then begin
+
+          AtualizarPreco;
+
+          for I := ProgressBar1.Min to ProgressBar1.Max do begin
+          { Atualiza a posição da ProgressBar }
+          ProgressBar1.Position := I;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+          { Aguarda 50 milisegundos }
+          Sleep(50);
+          end;
+
+          { Aguarde 500 milisegundos }
+          Sleep(500);
+          { Reseta (zera) a ProgressBar }
+          ProgressBar1.Position := ProgressBar1.Min;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+
+          Application.MessageBox('Procedimento realizado com sucesso!!','Notificação:Preços atualizados',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+          ckPorcentagem.Checked := False;
+          ckValor.Checked := False;
+          lbl_edtPorcentagem.Text := '';
+          cboFornecedores.ClearSelection;
+
+        end;//if
+
+      end;//if campo porcentagem
+
+    end;//if campo porcentagem valor em branco
+
+  end;//with
+
+end;
+
+procedure TfrmTblPreco.ckPorcentagemCheck(Sender: TObject);
+begin
+
+  if ckPorcentagem.Checked Then begin
+
+    ckValor.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ckValorCheck(Sender: TObject);
+begin
+
+  if ckValor.Checked Then begin
+
+    ckPorcentagem.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.StatusBar1DrawPanel(StatusBar: TStatusBar;
+  Panel: TStatusPanel; const Rect: TRect);
+begin
+  { Se for o primeiro painel... }
+  if Panel.Index = 0 then begin
+  { Ajusta a tamanho da ProgressBar de acordo com
+  o tamanho do painel }
+  ProgressBar1.Width := Rect.Right - Rect.Left +1;
+  ProgressBar1.Height := Rect.Bottom - Rect.Top +1;
+  { Pinta a ProgressBar no DC (device-context) da StatusBar }
+  ProgressBar1.PaintTo(StatusBar.Canvas.Handle, Rect.Left, Rect.Top);
+  end;
+end;
+
+procedure TfrmTblPreco.ibeaCorrecaoClick(Sender: TObject);
+
+var
+
+ConfirmaAtualizacao : Integer;
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+    if (ckPorcentagem.Checked = False) and (ckValor.Checked = False) Then begin
+
+      Application.MessageBox('Atenção é necessário clicar em porcentagem ou valor','Notificação:Opção não escolhida',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+    end else begin
+
+
+      if (lbl_edtPorcentagem.Text = '') or (lbl_edtPorcentagem.Text = '0') Then begin
+
+
+        Application.MessageBox('O campo valor/porcentagem está sem valor para alteração??','Notificação:Campo em branco ou com valor zero',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+      end else begin
+
+        ConfirmaAtualizacao :=Application.MessageBox(Pchar('Este procedimento Estorna todos os preços do Fornecedor:"' + cboFornecedores.Text
+          +'"deseja continuar?'),'Notificação:Estorno de preços',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+
+        if ConfirmaAtualizacao = 6 Then begin
+
+          EstornarLancto;
+
+          for I := ProgressBar1.Min to ProgressBar1.Max do begin
+          { Atualiza a posição da ProgressBar }
+          ProgressBar1.Position := I;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+          { Aguarda 50 milisegundos }
+          Sleep(50);
+          end;
+
+          { Aguarde 500 milisegundos }
+          Sleep(500);
+          { Reseta (zera) a ProgressBar }
+          ProgressBar1.Position := ProgressBar1.Min;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+
+          Application.MessageBox('Procedimento realizado com sucesso!!','Notificação:Preços atualizados',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+          ckPorcentagem.Checked := False;
+          ckValor.Checked := False;
+          lbl_edtPorcentagem.Text := '';
+          cboFornecedores.ClearSelection;
+
+        end;//if
+
+      end;//if campo porcentagem
+
+    end;//if campo porcentagem valor
+
+  end;//with
+
+
+end;
+
+procedure TfrmTblPreco.ibeaSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmTblPreco.cboFornecedoresChange(Sender: TObject);
+begin
+
+  if lbl_edtFabricante.Text <> '' Then begin
+
+    lbl_edtFabricante.Text := '';
+
+  end;//if
+
+end;
+
+procedure TfrmTblPreco.lbl_edtFabricanteChange(Sender: TObject);
+begin
+
+  if cboFornecedores.Text <> '' Then begin
+
+    cboFornecedores.ClearSelection;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ckGeralCheck(Sender: TObject);
+begin
+
+  if ckGeral.Checked Then begin
+
+    ckEstoqueZero.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ckEstoqueZeroCheck(Sender: TObject);
+begin
+
+  if ckEstoqueZero.Checked Then begin
+
+    ckGeral.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ckPorcentagemCustoCheck(Sender: TObject);
+begin
+
+  if ckPorcentagemCusto.Checked Then begin
+
+    ckValorCusto.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.ckValorCustoCheck(Sender: TObject);
+begin
+
+  if ckValorCusto.Checked Then begin
+
+    ckPorcentagemCusto.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmTblPreco.BmsXPButton1Click(Sender: TObject);
+
+var
+
+ConfirmaAtualizacao : Integer;
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+    if (ckPorcentagemCusto.Checked = False) and (ckValorCusto.Checked = False) Then begin
+
+      Application.MessageBox('Atenção é necessário clicar em porcentagem ou valor','Notificação:Opção não escolhida',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+    end else begin
+
+      if (lbl_edtValorCusto.Text = '') or (lbl_edtValorCusto.Text = '0') Then begin
+
+
+        Application.MessageBox('O campo valor/porcentagem está sem valor para alteração??','Notificação:Campo em branco ou com valor zero',+MB_OK+MB_DEFBUTTON1+MB_ICONERROR);
+
+      end else begin
+
+        ConfirmaAtualizacao :=Application.MessageBox('Este procedimento atualiza todos os preços ','Notificação:Atualização de preços',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+
+        if ConfirmaAtualizacao = 6 Then begin
+
+          AtualizarCusto;
+
+          for I := ProgressBar1.Min to ProgressBar1.Max do begin
+          { Atualiza a posição da ProgressBar }
+          ProgressBar1.Position := I;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+          { Aguarda 50 milisegundos }
+          Sleep(50);
+          end;
+
+          { Aguarde 500 milisegundos }
+          Sleep(500);
+          { Reseta (zera) a ProgressBar }
+          ProgressBar1.Position := ProgressBar1.Min;
+          { Repinta a StatusBar para forçar a atualização visual }
+          StatusBar1.Repaint;
+
+          Application.MessageBox('Procedimento realizado com sucesso!!','Notificação:Preços atualizados',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+          ckPorcentagemCusto.Checked := False;
+          ckValorCusto.Checked := False;
+          lbl_edtValorCusto.Text := '';
+          //cboFornecedores.ClearSelection;
+
+        end;//if
+
+      end;//if campo porcentagem
+
+    end;//if campo porcentagem valor em branco
+
+  end;//with
+
+end;
+
+end.

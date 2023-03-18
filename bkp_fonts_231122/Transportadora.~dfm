@@ -1,0 +1,667 @@
+object frmTransportadora: TfrmTransportadora
+  Left = -1
+  Top = 16
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Transportadora'
+  ClientHeight = 540
+  ClientWidth = 792
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 2
+    Top = 1
+    Width = 164
+    Height = 16
+    Caption = 'Dados da Transportadora:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = [fsBold, fsUnderline]
+    ParentFont = False
+    Transparent = True
+  end
+  object lblData: TLabel
+    Left = 642
+    Top = 41
+    Width = 32
+    Height = 13
+    Caption = 'Data:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_edtCodigo: TLabeledEdit
+    Left = 16
+    Top = 56
+    Width = 46
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 36
+    EditLabel.Height = 13
+    EditLabel.Caption = 'C'#243'digo:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    ParentFont = False
+    TabOrder = 0
+  end
+  object lbl_edtNome: TLabeledEdit
+    Left = 74
+    Top = 56
+    Width = 300
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 118
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Nome/Raz'#227'o Social:'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 1
+  end
+  object lbl_edtEndereco: TLabeledEdit
+    Left = 18
+    Top = 154
+    Width = 280
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 49
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Endere'#231'o:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 8
+    OnExit = lbl_edtEnderecoExit
+  end
+  object lbl_edtBairro: TLabeledEdit
+    Left = 477
+    Top = 153
+    Width = 195
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 30
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Bairro:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 11
+  end
+  object lbl_edtCep: TLabeledEdit
+    Left = 685
+    Top = 153
+    Width = 77
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 22
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Cep:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 9
+    TabOrder = 12
+    OnChange = lbl_edtCepChange
+  end
+  object lbl_edtCidade: TLabeledEdit
+    Left = 20
+    Top = 201
+    Width = 168
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 36
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Cidade:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 13
+  end
+  object lbl_edtEstado: TLabeledEdit
+    Left = 198
+    Top = 200
+    Width = 45
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 36
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Estado:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 2
+    TabOrder = 14
+  end
+  object lbl_edtCnpj: TLabeledEdit
+    Left = 17
+    Top = 105
+    Width = 124
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 30
+    EditLabel.Height = 13
+    EditLabel.Caption = 'CNPJ:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 18
+    TabOrder = 3
+    OnExit = lbl_edtCnpjExit
+  end
+  object lbl_edtIe: TLabeledEdit
+    Left = 156
+    Top = 105
+    Width = 124
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 93
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Inscri'#231#227'o Estadual::'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 4
+  end
+  object ibeaSair: TIBEAntialiasButton
+    Left = 640
+    Top = 280
+    Width = 72
+    Height = 31
+    Cursor = crHandPoint
+    Caption = '&Sair'
+    Glyph.Data = {
+      F6060000424DF606000000000000360000002800000018000000180000000100
+      180000000000C0060000120B0000120B00000000000000000000FF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B4E1E
+      1FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B
+      8C4B4B914B4B4E1E1FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B89
+      4B4B9C4B4CB64B4CBD4B4C9F4B4C4E1E1FFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B
+      4B9A4D4EAF4E4FC14E4FC04D4EBF4C4DBF4C4D9F4B4C4E1E1F994B4B824B4B82
+      4B4B824B4B824B4B824B4B824B4B824B4B824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BC55455C95455C75354C65253C55152C45051C24F50A04C4D4E1E
+      1FFE8B8CFC9293FB9A9CFAA3A4F8AAABF7B1B1F7B5B6F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BCE5859CC5758CB5657CA5556C95455C75354
+      C65253A34E4F4E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BD15B5CD05A5BCF595ACE
+      5859CC5758CB5657CA5556A550504E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C
+      1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BD55E
+      5FD55E5FD45D5ED35C5DD15B5CD05A5BCF595AA651524E1E1F3F9E4C1EBC4C1E
+      BC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BDA6364D96263D86062D75F60D55E5FD45D5ED35C5DA953544E1E
+      1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BDE6667DD6566DC6465DA6364D96263D86062
+      D75F60AB55554E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BE2696AE16869E06768DE
+      6667E06D6EE69091DC6465AC56574E1E1F58A55B1EBC4C1EBC4C1EBC4C1EBC4C
+      1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BE76D
+      6EE66C6DE56B6CE36A6BEEA6A7FFFFFFEB9C9CAF58594E1E1FEECEAFB7EBAA5E
+      D3775ED37745CA6745CA6745CA67F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BEB7072EA6F70E96E6FE76D6EF2A9AAFFFFFFEB9596B15A5A4E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3D9F6BDD9F6BDF7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BEF7475EE7374ED7273EB7072EA6F70EF9091
+      E76D6EB25B5C4E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF37778F37778F27677F0
+      7576EF7475EE7374ED7273B55D5D4E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3
+      FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF87B
+      7DF77A7BF6797AF47879F37778F27677F07576B75F5F4E1E1FEECEAFFFFFD3FF
+      FFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BFC7F80FB7E7FFA7D7EF87B7DF77A7BF6797AF47879B860624E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BFF8182FF8182FE8081FC7F80FC7F80FB7E7F
+      FA7D7EBB63634E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BFF8182FF8182FF8182FF
+      8182FF8182FE8081FE8081BD65654E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3
+      FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF77E
+      7FFF8182FF8182FF8182FF8182FF8182FF8182BF66664E1E1FEECEAFFFFFD3FF
+      FFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4B824B4BAF5E5FD56F70FF8182FF8182FF8182FF8182BF66664E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B915152B66263EE7A7B
+      FF8182BF66664E1E1F914B4B824B4B824B4B824B4B824B4B824B4B824B4B824B
+      4B824B4BFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FF824B4B824B4B9855559F58584E1E1FFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B4E1E1FFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+    Properties.Disabled.Border = clBtnHighlight
+    Properties.Disabled.Color = clBtnShadow
+    Properties.Disabled.Font.Charset = DEFAULT_CHARSET
+    Properties.Disabled.Font.Color = clCaptionText
+    Properties.Disabled.Font.Height = -11
+    Properties.Disabled.Font.Name = 'MS Sans Serif'
+    Properties.Disabled.Font.Style = []
+    Properties.FocusColor = clBtnShadow
+    Properties.MouseAway.Border = clBtnShadow
+    Properties.MouseAway.Color = clBtnFace
+    Properties.MouseAway.Font.Charset = DEFAULT_CHARSET
+    Properties.MouseAway.Font.Color = clBtnText
+    Properties.MouseAway.Font.Height = -11
+    Properties.MouseAway.Font.Name = 'MS Sans Serif'
+    Properties.MouseAway.Font.Style = []
+    Properties.MouseDown.Border = clBtnShadow
+    Properties.MouseDown.Color = clBtnFace
+    Properties.MouseDown.Font.Charset = DEFAULT_CHARSET
+    Properties.MouseDown.Font.Color = clBtnText
+    Properties.MouseDown.Font.Height = -11
+    Properties.MouseDown.Font.Name = 'MS Sans Serif'
+    Properties.MouseDown.Font.Style = []
+    Properties.MouseUp.Border = clBtnShadow
+    Properties.MouseUp.Color = clBtnHighlight
+    Properties.MouseUp.Font.Charset = DEFAULT_CHARSET
+    Properties.MouseUp.Font.Color = clBtnText
+    Properties.MouseUp.Font.Height = -11
+    Properties.MouseUp.Font.Name = 'MS Sans Serif'
+    Properties.MouseUp.Font.Style = []
+    TabStop = True
+    TabOrder = 24
+    OnClick = ibeaSairClick
+  end
+  object GroupBox1: TGroupBox
+    Left = -7
+    Top = 320
+    Width = 800
+    Height = 38
+    TabOrder = 22
+    object lbl_edtPesqtransp: TLabeledEdit
+      Left = 204
+      Top = 12
+      Width = 121
+      Height = 19
+      BevelInner = bvSpace
+      BevelKind = bkFlat
+      BiDiMode = bdLeftToRight
+      BorderStyle = bsNone
+      EditLabel.Width = 186
+      EditLabel.Height = 16
+      EditLabel.BiDiMode = bdLeftToRight
+      EditLabel.Caption = 'Pesquisa de Transportadora: '
+      EditLabel.Font.Charset = ANSI_CHARSET
+      EditLabel.Font.Color = clMaroon
+      EditLabel.Font.Height = -13
+      EditLabel.Font.Name = 'Arial'
+      EditLabel.Font.Style = [fsBold]
+      EditLabel.ParentBiDiMode = False
+      EditLabel.ParentFont = False
+      LabelPosition = lpLeft
+      LabelSpacing = 3
+      ParentBiDiMode = False
+      TabOrder = 0
+    end
+  end
+  object dbgTransportadora: TDBGrid
+    Left = -1
+    Top = 364
+    Width = 792
+    Height = 171
+    BorderStyle = bsNone
+    DataSource = dmModule.dtsCadastro
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 23
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = dbgTransportadoraCellClick
+  end
+  object lbl_edtSite: TLabeledEdit
+    Left = 292
+    Top = 105
+    Width = 180
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 96
+    EditLabel.Height = 13
+    EditLabel.Caption = 'WebSite(Comercial):'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 5
+  end
+  object lbl_edtEmail: TLabeledEdit
+    Left = 484
+    Top = 105
+    Width = 150
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 31
+    EditLabel.Height = 13
+    EditLabel.Caption = 'E-mail:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 6
+  end
+  object lbl_edtContato: TLabeledEdit
+    Left = 646
+    Top = 105
+    Width = 114
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 40
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Contato:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 7
+  end
+  object lbl_edtNumero: TLabeledEdit
+    Left = 309
+    Top = 153
+    Width = 55
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 40
+    EditLabel.Height = 13
+    EditLabel.Caption = 'N'#250'mero:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 9
+  end
+  object lbl_edtCompl: TLabeledEdit
+    Left = 379
+    Top = 153
+    Width = 85
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 67
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Complemento:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 10
+  end
+  object lbl_edtDDD: TLabeledEdit
+    Left = 253
+    Top = 201
+    Width = 45
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 27
+    EditLabel.Height = 13
+    EditLabel.Caption = 'DDD:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 3
+    TabOrder = 15
+  end
+  object lbl_edtTelcom: TLabeledEdit
+    Left = 309
+    Top = 201
+    Width = 123
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 44
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Tel.Coml:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 9
+    TabOrder = 16
+    OnExit = lbl_edtTelcomExit
+  end
+  object lbl_edtDDDFax: TLabeledEdit
+    Left = 444
+    Top = 201
+    Width = 45
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 27
+    EditLabel.Height = 13
+    EditLabel.Caption = 'DDD:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 3
+    TabOrder = 17
+  end
+  object lbl_edtTelFax: TLabeledEdit
+    Left = 501
+    Top = 201
+    Width = 123
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 38
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Tel.Fax:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 9
+    TabOrder = 18
+    OnExit = lbl_edtTelFaxExit
+  end
+  object lbl_edtCelular: TLabeledEdit
+    Left = 635
+    Top = 201
+    Width = 123
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 35
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Celular:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    MaxLength = 9
+    TabOrder = 19
+    OnExit = lbl_edtCelularExit
+  end
+  object lbl_edtPontoreferencia: TLabeledEdit
+    Left = 20
+    Top = 247
+    Width = 234
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 101
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Ponto de Referencia:'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = []
+    EditLabel.ParentFont = False
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 20
+  end
+  object lbl_edtObs: TLabeledEdit
+    Left = 271
+    Top = 247
+    Width = 491
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 61
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Observa'#231#227'o:'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clRed
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = []
+    EditLabel.ParentFont = False
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 21
+  end
+  object lbl_edtNomefantasia: TLabeledEdit
+    Left = 386
+    Top = 56
+    Width = 245
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 74
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Nome Fantasia:'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 2
+  end
+  object dtpDataTransp: TmxFlatDateTimePicker
+    Left = 641
+    Top = 55
+    Width = 83
+    Height = 21
+    Cursor = crHandPoint
+    CalAlignment = dtaLeft
+    Date = 38296.4262078009
+    Time = 38296.4262078009
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = 25
+    Activate = True
+    BorderColor = clBtnShadow
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+  end
+  object ibeaNovo: TBmsXPButton
+    Left = 24
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Novo'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 26
+    OnClick = ibeaNovoClick
+  end
+  object ibeaPrimeiro: TBmsXPButton
+    Left = 120
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Primeiro'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 27
+    OnClick = ibeaPrimeiroClick
+  end
+  object ibeaAnterior: TBmsXPButton
+    Left = 208
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Anterior'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 28
+    OnClick = ibeaAnteriorClick
+  end
+  object ibeaProximo: TBmsXPButton
+    Left = 296
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Proximo'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 29
+    OnClick = ibeaProximoClick
+  end
+  object ibeaUltimo: TBmsXPButton
+    Left = 392
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Ultimo'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 30
+    OnClick = ibeaUltimoClick
+  end
+  object ibeaAlterar: TBmsXPButton
+    Left = 488
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Alterar'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 31
+    OnClick = ibeaAlterarClick
+  end
+  object ibeaExcluir: TBmsXPButton
+    Left = 576
+    Top = 280
+    Width = 80
+    Height = 21
+    Caption = '&Excluir'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 32
+    OnClick = ibeaExcluirClick
+  end
+end

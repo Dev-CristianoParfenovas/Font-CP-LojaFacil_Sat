@@ -1,0 +1,5064 @@
+unit untPosVenda;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, StdCtrls, ExtCtrls, Printers, PrnDOS, 
+  classComboBox, IBQuery, BmsXPCheckBox, Menus, Buttons, BmsXPButton,
+  ACBrBase, ACBrECF;
+
+type
+  TfrmPosVenda = class(TForm)
+    dbgPosVenda: TDBGrid;
+    lbl_edtCodCartao: TLabeledEdit;
+    lbl_edtCodBarras: TLabeledEdit;
+    cboProd: TComboBox;
+    lbl_Prod: TLabel;
+    lbl_edtQtde: TLabeledEdit;
+    lbl_edtVlrUnit: TLabeledEdit;
+    lbl_edtVlrTotal: TLabeledEdit;
+    cboFunc: TComboBox;
+    lbl_Vendedor: TLabel;
+    lbl_edtNomerazao: TLabeledEdit;
+    lbl_edtCnpj_cpf: TLabeledEdit;
+    lbl_edtIE_rg: TLabeledEdit;
+    lbl_edtEndereco: TLabeledEdit;
+    lbl_edtNumero: TLabeledEdit;
+    lbl_edtComplemento: TLabeledEdit;
+    lbl_edtBairro: TLabeledEdit;
+    lbl_edtCep: TLabeledEdit;
+    lbl_edtTelCom: TLabeledEdit;
+    lbl_edtCelular: TLabeledEdit;
+    lbl_edtCodProd: TLabeledEdit;
+    lbl_edtNumPedido: TLabeledEdit;
+    lbl_edtCodCli: TLabeledEdit;
+    lbl_F1: TLabel;
+    lbl_F2: TLabel;
+    lbl_F4: TLabel;
+    lbl_edtTotalGeral: TLabeledEdit;
+    lbl_F3: TLabel;
+    lbl_F5: TLabel;
+    lbl_F6: TLabel;
+    lbl_F7: TLabel;
+    lbl_F8: TLabel;
+    lbl_F9: TLabel;
+    ckVenda: TBmsXPCheckBox;
+    ckOrcamento: TBmsXPCheckBox;
+    lbl_Informacao: TLabel;
+    MainMenu1: TMainMenu;
+    Venda1: TMenuItem;
+    Venda2: TMenuItem;
+    Orcamento1: TMenuItem;
+    Sair1: TMenuItem;
+    lbl_CtrlS: TLabel;
+    lbl_Sair: TLabel;
+    dbgOrcamento: TDBGrid;
+    lbl_Vendas: TLabel;
+    lbl_Orcamento: TLabel;
+    lbl_F10: TLabel;
+    Devolucao1: TMenuItem;
+    CodigodeBarras1: TMenuItem;
+    ibeaExcluir: TSpeedButton;
+    ibeaConsulta: TSpeedButton;
+    ibeaConsultaCli: TSpeedButton;
+    ibeaSair: TSpeedButton;
+    ibeaCadCli: TSpeedButton;
+    ibeaIncluir: TSpeedButton;
+    lbl_QtdeEstoque: TLabel;
+    lbl_edtNOrc: TLabeledEdit;
+    ImprimeOrcamento1: TMenuItem;
+    Label1: TLabel;
+    LimpaOrcamento1: TMenuItem;
+    Label2: TLabel;
+    DeletarOrcamento1: TMenuItem;
+    Label3: TLabel;
+    Label4: TLabel;
+    BuscarOrcamento1: TMenuItem;
+    lbl_edtFoneOrc: TLabeledEdit;
+    Label5: TLabel;
+    BuscarOramentoportelefone1: TMenuItem;
+    lbl_edtQtdeItens: TLabeledEdit;
+    lbl_edtDesconto: TLabeledEdit;
+    lbl_edtIDPosVenda: TLabeledEdit;
+    imgFundoCx: TImage;
+    ComboBox1: TComboBox;
+    PrintDialog1: TPrintDialog;
+    btImprimir: TBmsXPButton;
+    lbl_Imprimir: TLabel;
+    ACBrECF1: TACBrECF;
+    lbl_edtPorcentagemDesc: TLabeledEdit;
+    procedure ibeaSairClick(Sender: TObject);
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure GravarPosVenda;
+    procedure GravarDetalheOrcamento;
+    procedure LimpaProdutos;
+    procedure LimpaClientes;
+    procedure ibeaConsultaClick(Sender: TObject);
+    procedure ExecSELECT;
+    procedure ExecSELECTOrcamento;
+    procedure ExecSELECTFuncionario;
+    procedure ExecSELECTProdutos;
+    procedure FormShow(Sender: TObject);
+    procedure lbl_edtCodBarrasKeyPress(Sender: TObject; var Key: Char);
+    procedure ibeaIncluirClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cboFuncKeyPress(Sender: TObject; var Key: Char);
+    procedure cboProdClick(Sender: TObject);
+    procedure lbl_edtQtdeKeyPress(Sender: TObject; var Key: Char);
+    procedure ibeaCadCliClick(Sender: TObject);
+    procedure lbl_edtTelComExit(Sender: TObject);
+    procedure lbl_edtCelularExit(Sender: TObject);
+    procedure ibeaConsultaCliClick(Sender: TObject);
+    procedure lbl_edtTelComKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtCelularKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtVlrTotalKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure lbl_edtNomerazaoKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtIE_rgKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtCnpj_cpfKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtEnderecoKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtNumeroKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtComplementoKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtBairroKeyPress(Sender: TObject; var Key: Char);
+    procedure dbgPosVendaCellClick(Column: TColumn);
+    procedure ibeaExcluirClick(Sender: TObject);
+    procedure dbgPosVendaKeyPress(Sender: TObject; var Key: Char);
+    procedure ckVendaCheck(Sender: TObject);
+    procedure ckOrcamentoCheck(Sender: TObject);
+    procedure Venda2Click(Sender: TObject);
+    procedure Orcamento1Click(Sender: TObject);
+    procedure Sair1Click(Sender: TObject);
+    procedure dbgOrcamentoKeyPress(Sender: TObject; var Key: Char);
+    procedure dbgOrcamentoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure dbgOrcamentoKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Devolucao1Click(Sender: TObject);
+    procedure CodigodeBarras1Click(Sender: TObject);
+    procedure lbl_edtCodBarrasExit(Sender: TObject);
+    procedure lbl_edtCodBarrasChange(Sender: TObject);
+    procedure lbl_edtQtdeExit(Sender: TObject);
+    procedure ImprimeOrcamento1Click(Sender: TObject);
+    procedure lbl_edtNOrcExit(Sender: TObject);
+    procedure lbl_edtNOrcKeyPress(Sender: TObject; var Key: Char);
+    procedure LimpaOrcamento1Click(Sender: TObject);
+    procedure DeletarOrcamento1Click(Sender: TObject);
+    procedure BuscarOrcamento1Click(Sender: TObject);
+    procedure lbl_edtFoneOrcExit(Sender: TObject);
+    procedure BuscarOramentoportelefone1Click(Sender: TObject);
+    procedure lbl_edtFoneOrcKeyPress(Sender: TObject; var Key: Char);
+    procedure lbl_edtDescontoExit(Sender: TObject);
+    procedure lbl_edtDescontoKeyPress(Sender: TObject; var Key: Char);
+    procedure btImprimirClick(Sender: TObject);
+    procedure lbl_edtPorcentagemDescKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure lbl_edtPorcentagemDescExit(Sender: TObject);
+    procedure cboFuncEnter(Sender: TObject);
+    procedure cboFuncExit(Sender: TObject);
+    procedure lbl_edtIDPosVendaEnter(Sender: TObject);
+    procedure lbl_edtNumPedidoEnter(Sender: TObject);
+    procedure lbl_edtNOrcEnter(Sender: TObject);
+    procedure lbl_edtFoneOrcEnter(Sender: TObject);
+    procedure lbl_edtTelComEnter(Sender: TObject);
+    procedure lbl_edtCelularEnter(Sender: TObject);
+    procedure lbl_edtNomerazaoEnter(Sender: TObject);
+    procedure lbl_edtCnpj_cpfEnter(Sender: TObject);
+    procedure lbl_edtIE_rgEnter(Sender: TObject);
+    procedure lbl_edtEnderecoEnter(Sender: TObject);
+    procedure lbl_edtNumeroEnter(Sender: TObject);
+    procedure lbl_edtComplementoEnter(Sender: TObject);
+    procedure lbl_edtBairroEnter(Sender: TObject);
+    procedure lbl_edtCepEnter(Sender: TObject);
+    procedure lbl_edtCodCartaoEnter(Sender: TObject);
+    procedure lbl_edtCodBarrasEnter(Sender: TObject);
+    procedure cboProdEnter(Sender: TObject);
+    procedure lbl_edtQtdeEnter(Sender: TObject);
+    procedure lbl_edtPorcentagemDescEnter(Sender: TObject);
+    procedure lbl_edtDescontoEnter(Sender: TObject);
+    procedure lbl_edtVlrUnitEnter(Sender: TObject);
+    procedure lbl_edtVlrTotalEnter(Sender: TObject);
+    procedure ComboBox1Enter(Sender: TObject);
+    procedure lbl_edtIDPosVendaExit(Sender: TObject);
+    procedure lbl_edtNumPedidoExit(Sender: TObject);
+    procedure lbl_edtNomerazaoExit(Sender: TObject);
+    procedure lbl_edtCnpj_cpfExit(Sender: TObject);
+    procedure lbl_edtIE_rgExit(Sender: TObject);
+    procedure lbl_edtEnderecoExit(Sender: TObject);
+    procedure lbl_edtNumeroExit(Sender: TObject);
+    procedure lbl_edtComplementoExit(Sender: TObject);
+    procedure lbl_edtBairroExit(Sender: TObject);
+    procedure lbl_edtCepExit(Sender: TObject);
+    procedure lbl_edtCodCartaoExit(Sender: TObject);
+    procedure cboProdExit(Sender: TObject);
+    procedure lbl_edtVlrUnitExit(Sender: TObject);
+    procedure lbl_edtVlrTotalExit(Sender: TObject);
+    procedure ComboBox1Exit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPosVenda: TfrmPosVenda;
+  IDClassProd : TClasseCombo;
+  ClassVendaProduto   : TClasseCombo;
+  StringProd          : String;
+  ValorUnit           : String;
+  ValorTotal          : String;
+  Qtde                : String;
+  ConfirmaGravacao    : Integer;
+  LocalEstoque : String;
+  MontaColunas, MontaColunasOrcamento, InsereVenda : Boolean;
+  IDServs, IDProdutoPedido,IDPosVendaCanc : Integer;
+  IDCancelaOrcamento, IDVendasServs : Integer;
+  PathSistema : String;
+  
+implementation
+
+uses untdmModule, DB, funcPosto, uBuscaProdutos, BuscaClientes;
+
+{$R *.dfm}
+
+procedure TfrmPosVenda.ibeaSairClick(Sender: TObject);
+
+begin
+
+  if (cboFunc.Text <>'')and(lbl_edtIDPosVenda.Text <>'')Then begin
+
+    Application.MessageBox('É necessário encerrar este cupom para fechar o programa!','Cupom em aberto',+MB_DEFBUTTON1+MB_OK+MB_ICONINFORMATION);
+
+  end else begin
+
+    Close;
+
+  end;
+  
+end;
+
+procedure TfrmPosVenda.ibeaConsultaClick(Sender: TObject);
+begin
+frmBuscaProdutos.ShowModal;
+end;
+
+procedure TfrmPosVenda.Commit(IBQueryExec : TIBQuery);
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmPosVenda.GravarPosVenda;
+
+var
+IDDetalheCli,IDDetalhePosVenda,IDServs : Integer;
+IDDetalheVendedor : TClasseCombo;
+StringDetalheVendedor : String;
+begin
+
+  with dmModule do begin
+
+    if cboFunc.ItemIndex = -1 Then begin
+
+      StringDetalheVendedor := ' ''0'',';
+
+    end else begin
+
+      IDDetalheVendedor := TClasseCombo(cboFunc.Items.Objects[cboFunc.ItemIndex]);
+      StringDetalheVendedor := ' ''' + IntToStr(IDDetalheVendedor.ID) + ''','
+
+    end;
+
+    if lbl_edtCodCli.Text <> '' Then begin
+
+      IDDetalheCli := StrToInt(lbl_edtCodCli.Text);
+
+    end else begin
+
+      IDDetalheCli := 0;
+
+    end;
+
+    ibDetalhePosVenda.Close;
+    ibDetalhePosVenda.SQL.Clear;
+    ibDetalhePosVenda.SQL.Add('INSERT INTO TBLDETALHEPOSVENDA'
+    + '(NOMECLIENTE,NOMEVENDEDOR,IDCLIENTE,IDVENDEDOR,DATA) values '
+    + '(''' + lbl_edtNomerazao.Text + ''','
+    + ' ''' + cboFunc.Text + ''','
+    + ' ''' + IntToStr(IDDetalheCli) + ''','
+    + StringDetalheVendedor
+    + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+    ibDetalhePosVenda.ExecSQL;
+    Commit(ibDetalhePosVenda);
+
+    ibDetalhePosVenda.Close;
+    ibDetalhePosVenda.SQL.Clear;
+    ibDetalhePosVenda.SQL.Add('SELECT * FROM TBLDETALHEPOSVENDA ORDER BY IDDETALHEPOSVENDA DESC');
+    ibDetalhePosVenda.Open;
+
+    IDDetalhePosVenda := ibDetalhePosVenda.FieldByName('IDDETALHEPOSVENDA').AsInteger;
+
+    Commit(ibServsVenda);
+    ibServsVenda.Close;
+    ibServsVenda.SQL.Clear;
+    ibServsVenda.SQL.Add('SELECT * FROM TBLSERVICOSVENDAS WHERE IDVENDEDOR=''' + IntToStr(IDDetalheVendedor.ID) + ''' ORDER BY IDSERVS DESC');
+    ibServsVenda.Open;
+
+    IDServs := ibServsVenda.FieldByName('IDSERVS').AsInteger;
+
+    Commit(ibServsVenda);
+    ibServsVenda.Close;
+    ibServsVenda.SQL.Clear;
+    ibServsVenda.SQL.Add('UPDATE TBLSERVICOSVENDAS SET '
+    + 'IDPOSVENDA = ''' + IntToStr(IDDetalhePosVenda) + ''' WHERE IDVENDEDOR =''' + IntToStr(IDDetalheVendedor.ID) + '''and IDPOSVENDA is null');//IDSERVS=''' + IntToStr(IDServs) + '''');
+    ibServsVenda.ExecSQL;
+    Commit(ibServsVenda);
+    
+    {ibPosVenda.Close;
+    ibPosVenda.SQL.Clear;
+    ibPosVenda.SQL.Add('UPDATE TBLPOSVENDA SET '
+    + 'IDDETALHEPV=''' + IntToStr(IDDetalhePosVenda) + '''WHERE IDVENDEDOR  =''' + IntToStr(IDDetalheVendedor.ID) + '''');
+    ibPosVenda.ExecSQL;
+    Commit(ibPosVenda);}
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.GravarDetalheOrcamento;
+
+var
+StringDetalheVendedorOrc : String;
+IDDetalheVendedorOrc : TClasseCombo;
+IDDetalheCliOrc,IDDetalheOrcamento : Integer;// ,IDOrcamento
+begin
+
+  with dmModule do begin
+
+  {  if lbl_edtNOrc.Text > '0' Then begin
+
+    IDDetalheOrcamento := StrToInt(lbl_edtNOrc.Text);
+
+    end else begin
+
+    IDDetalheOrcamento := 0;
+
+    end;
+
+    Commit(ibDetalheOrcamento);
+    ibDetalheOrcamento.Close;
+    ibDetalheOrcamento.SQL.Clear;
+    ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE IDDETALHEORCAMENTO=''' + IntToStr(IDDetalheOrcamento) + '''');
+    ibDetalheOrcamento.Open;  }
+
+ //   if ibDetalheOrcamento.RecordCount > 0 Then begin
+
+      if cboFunc.ItemIndex = -1 Then begin
+
+        StringDetalheVendedorOrc := ' ''0'',';
+
+      end else begin
+
+        IDDetalheVendedorOrc := TClasseCombo(cboFunc.Items.Objects[cboFunc.ItemIndex]);
+        StringDetalheVendedorOrc := ' ''' + IntToStr(IDDetalheVendedorOrc.ID) + ''','
+
+      end;
+
+      if lbl_edtCodCli.Text <> '' Then begin
+
+        IDDetalheCliOrc := StrToInt(lbl_edtCodCli.Text);
+
+      end else begin
+
+        IDDetalheCliOrc := 0;
+
+      end;
+
+
+      ibDetalheOrcamento.Close;
+      ibDetalheOrcamento.SQL.Clear;
+      ibDetalheOrcamento.SQL.Add('INSERT INTO TBLDETALHEORCAMENTO '
+      + '(IDCLI,TELEFONECLI,DATA) values '
+      + '(''' + IntToStr(IDDetalheCliOrc) + ''','
+      + ' ''' + lbl_edtFoneOrc.Text + ''','
+      + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+      ibDetalheOrcamento.ExecSQL;
+      Commit(ibDetalheOrcamento);
+
+
+     { IDOrcamentoDetalhe := ibDetalheOrcamento.FieldByName('IDDETALHEORCAMENTO').AsInteger;
+
+      Commit(ibOrcamentoPed);
+      ibOrcamentoPed.Close;
+      ibOrcamentoPed.SQL.Clear;
+      ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDVENDEDOR=''' + IntToStr(IDDetalheVendedorOrc.ID) + ''' ORDER BY IDORCAMENTO DESC');
+      ibOrcamentoPed.Open; }
+
+     // IDOrcamento := ibOrcamentoPed.FieldByName('IDORCAMENTO').AsInteger;
+
+     { Commit(ibOrcamentoPed);
+      ibOrcamentoPed.Close;
+      ibOrcamentoPed.SQL.Clear;
+      ibOrcamentoPed.SQL.Add('UPDATE TBLORCAMENTOPEDIDO SET '
+      + 'IDDETALHEORC = ''' + IntToStr(IDOrcamentoDetalhe) + ''' WHERE IDVENDEDOR =''' + IntToStr(IDDetalheVendedorOrc.ID) + '''and IDDETALHEORC is null');
+      ibOrcamentoPed.ExecSQL;
+      Commit(ibOrcamentoPed); }
+
+   //  end else begin
+
+   //   Application.MessageBox('Não existe Orçamento com este número','Aviso',+MB_OK+MB_DEFBUTTON1+MB_ICONWARNING);
+
+  //  end;//if ibdetalhe orcamento > 0
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.LimpaProdutos;
+
+begin
+
+lbl_edtCodCartao.Text := '';
+lbl_edtCodBarras.Text := '';
+cboProd.ClearSelection;
+lbl_edtQtde.Text := '1';
+lbl_edtDesconto.Text := '';
+//lbl_edtQtdeItens.Text := '';
+lbl_edtVlrUnit.Text := '';
+lbl_edtVlrTotal.Text := '';
+lbl_edtCodProd.Clear;
+lbl_QtdeEstoque.Caption := '';
+lbl_edtPorcentagemDesc.Clear;
+
+end;
+
+procedure TfrmPosVenda.LimpaClientes;
+
+begin
+
+lbl_edtTelCom.Text := '';
+lbl_edtCelular.Text := '';
+
+lbl_edtCnpj_cpf.Text := '';
+lbl_edtIE_rg.Text := '';
+lbl_edtEndereco.Text := '';
+lbl_edtNumero.Text := '';
+lbl_edtComplemento.Text := '';
+lbl_edtBairro.Text := '';
+lbl_edtCep.Text := '';
+//lbl_edtCodCli.Text := '';
+
+end;
+
+procedure TfrmPosVenda.ExecSELECT;
+
+var
+IDClassVendedor : TClasseCombo;
+//IDCliente : Integer;
+begin
+
+  with dmModule do begin
+
+    if cboFunc.ItemIndex <> -1 Then begin
+
+      IDClassVendedor := TClasseCombo(cboFunc.Items.Objects[cboFunc.ItemIndex]);
+     // IDCliente := StrToInt(lbl_edtCodCli.Text);
+
+      Commit(ibServsVenda);
+      ibServsVenda.Close;
+      ibServsVenda.SQL.Clear;
+      ibServsVenda.SQL.Add('SELECT TBLSERVICOSVENDAS.NOMEPROD,TBLSERVICOSVENDAS.IDPROD,TBLSERVICOSVENDAS.VLRTOTAL,'
+      + 'TBLSERVICOSVENDAS.VLRUNIT,TBLSERVICOSVENDAS.QTDE,TBLSERVICOSVENDAS.DESCONTO,TBLSERVICOSVENDAS.VALORB,TBLSERVICOSVENDAS.IDSERVS,'
+      + 'TBLSERVICOSVENDAS.VALORC,TBLSERVICOSVENDAS.IDSERVSVENDA FROM TBLSERVICOSVENDAS WHERE TBLSERVICOSVENDAS.IDSERVSVENDA=''' + lbl_edtIDPosVenda.Text + '''and POSVENDA=''Pendente''and(IDPOSVENDA IS NULL)');
+     // + 'TBLCADASTRO.NOME As Cliente FROM TBLSERVICOSVENDAS '
+    //  + 'INNER JOIN TBLCADASTRO ON TBLSERVICOSVENDAS.IDCLIENTE=TBLCADASTRO.IDCAD WHERE TBLSERVICOSVENDAS.IDVENDEDOR=''' + IntToStr(IDClassVendedor.ID) + '''and IDCLIENTE=''' + IntToStr(IDCliente) + '''and POSVENDA=''Pendente''');  and DATA=''' + FormatDateTime('dd/mm/yyyy',Now) + ''''
+      ibServsVenda.Open;
+
+      //lbl_edtTotalGeral.Text := FloatToStr(ibServsVenda.FieldByName('Total').AsFloat);
+      
+      (ibServsVenda.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibServsVenda.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibServsVenda.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibServsVenda.FieldByName('DESCONTO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibServsVenda.FieldByName('VALORB') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+      (ibServsVenda.FieldByName('VALORC') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+     // while not ibServsVenda.Eof do begin
+
+
+
+      //  ibServsVenda.Next;
+
+     // end;//while
+
+    end;//if cbo func
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.ExecSELECTOrcamento;
+
+var
+IDClassVendedorOrc : TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    if cboFunc.ItemIndex <> -1 Then begin
+
+    IDClassVendedorOrc := TClasseCombo(cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+    Commit(ibOrcamentoPed);
+    ibOrcamentoPed.Close;
+    ibOrcamentoPed.SQL.Clear;                                       ///
+    ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDVENDEDOR=''' + IntToStr(IDClassVendedorOrc.ID) + ''' and IDDETALHEORC=''' + lbl_edtNOrc.Text + '''');
+    ibOrcamentoPed.Open;
+
+    (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+    end else begin
+
+    Commit(ibOrcamentoPed);
+    ibOrcamentoPed.Close;
+    ibOrcamentoPed.SQL.Clear;                                    
+    ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + lbl_edtNOrc.Text + '''');
+    ibOrcamentoPed.Open;
+
+    (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+    end;//if cbofunc
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.ExecSELECTFuncionario;
+
+var
+IDFuncionario      : TClasseCombo;
+begin
+
+  with dmModule do begin
+
+    ibUser.Close;
+    ibUser.SQL.Clear;
+    ibUser.SQL.Add('SELECT * FROM TBLUSER WHERE(TIPOUSUARIO=''Vendedor'')OR(TIPOUSUARIO=''Funcionario'')');
+    ibUser.Open;
+
+    cboFunc.Clear;
+
+    while not ibUser.Eof do begin
+
+      IDFuncionario      := TClasseCombo.Create;
+      IDFuncionario.ID   := ibUser.FieldByName('IDUSER').AsInteger;
+      cboFunc.Items.AddObject(ibUser.FieldByName('NOME').AsString,IDFuncionario);
+      ibUser.Next;
+
+    end;//WHILE
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.ExecSELECTProdutos;
+
+begin
+
+  with dmModule do begin
+
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS ORDER BY NOME');
+    ibProdutos.Open;
+
+    cboProd.Clear;
+
+    while not ibProdutos.Eof do begin
+
+      IDClassProd := TClasseCombo.Create;
+      IDClassProd.ID := ibProdutos.FieldByName('IDPROD').AsInteger;
+      cboProd.Items.AddObject(ibProdutos.FieldByName('NOME').AsString,IDClassProd);
+      ibProdutos.Next;
+
+    end;//while
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.FormShow(Sender: TObject);
+
+var
+I : Integer;
+begin
+
+  with dmModule do begin
+
+  PathSistema := ExtractFilePath(ParamStr(0));
+ if FileExists(PathSistema + 'Data\RunTime\Imagens_Sistema\NovoFundoCX.gif') Then
+    imgFundoCx.Picture.LoadFromFile(PathSistema + 'Data\RunTime\Imagens_Sistema\NovoFundoCX.gif');
+
+
+    LimpaProdutos;
+    LimpaClientes;
+    lbl_edtCodCli.Text := '';
+    lbl_Imprimir.Caption := '';
+    lbl_edtNomerazao.Clear;
+    lbl_edtIDPosVenda.Clear;
+    ExecSELECTProdutos;
+    ExecSELECTFuncionario;
+    ibServsVenda.Close;
+    ckVenda.Checked := True;
+   // cboFunc.Enabled := False;
+
+
+      with dbgPosVenda do begin
+
+        if MontaColunas Then begin
+
+           DataSource := dtsServsVenda;
+
+          //determina as colunas a serem montadas
+          Columns.Insert(0);
+          Columns.Insert(1);
+          Columns.Insert(2);
+          Columns.Insert(3);
+          Columns.Insert(4);
+          Columns.Insert(5);
+          Columns.Insert(6);
+
+          //Parametros da Coluna que exibe o Código da entrada no estoque
+          Columns.Items[0].Title.Caption := 'Produto';
+          Columns.Items[0].FieldName     := 'NOMEPROD';
+          Columns.Items[0].Width         := 280;
+          Columns.Items[0].Alignment     := taLeftJustify;
+
+          //Parametros da Coluna que exibe o Nome do produto que esta entrando no estoque.
+          Columns.Items[1].Title.Caption := 'Vlr.Unitário';
+          Columns.Items[1].FieldName     := 'VLRUNIT';
+          Columns.Items[1].Width         := 80;
+          Columns.Items[1].Alignment     := taLeftJustify;
+
+
+          //Parametros da Coluna que exibe o vlr unitario do produto.
+          Columns.Items[2].Title.Caption := 'Qtde';
+          Columns.Items[2].FieldName     := 'QTDE';
+          Columns.Items[2].Width         := 80;
+          Columns.Items[2].Alignment     := taLeftJustify;
+
+          //Parametros da Coluna que exibe o vlr unitario do produto.
+          Columns.Items[3].Title.Caption := 'Desconto';
+          Columns.Items[3].FieldName     := 'DESCONTO';
+          Columns.Items[3].Width         := 80;
+          Columns.Items[3].Alignment     := taLeftJustify;
+
+          //parametros que exibe a qtde. de entrada no estoque
+          Columns.Items[4].Title.Caption := 'Total';
+          Columns.Items[4].FieldName     := 'VLRTOTAL';
+          Columns.Items[4].Width         := 80;
+          Columns.Items[4].Alignment     := taLeftJustify;
+
+          //parametros que exibe a qtde. de entrada no estoque
+          Columns.Items[5].Title.Caption := 'Total(B)';
+          Columns.Items[5].FieldName     := 'VALORB';
+          Columns.Items[5].Width         := 80;
+          Columns.Items[5].Alignment     := taLeftJustify;
+
+          //parametros que exibe a qtde. de entrada no estoque
+          Columns.Items[6].Title.Caption := 'Total(C)';
+          Columns.Items[6].FieldName     := 'VALORC';
+          Columns.Items[6].Width         := 80;
+          Columns.Items[6].Alignment     := taLeftJustify;
+
+
+          MontaColunas := False;
+
+        end;{if}
+
+      end;//with dbgposvenda
+
+////////////////////////////////////////////////////////////////////////////////
+
+      with dbgOrcamento do begin
+
+        if MontaColunasOrcamento Then begin
+
+           DataSource := dtsOrcamentoPed;
+
+          //determina as colunas a serem montadas
+          Columns.Insert(0);
+          Columns.Insert(1);
+          Columns.Insert(2);
+          Columns.Insert(3);
+
+          //Parametros da Coluna que exibe o Código da entrada no estoque
+          Columns.Items[0].Title.Caption := 'Produto';
+          Columns.Items[0].FieldName     := 'NOMEPROD';
+          Columns.Items[0].Width         := 280;
+          Columns.Items[0].Alignment     := taLeftJustify;
+
+          //Parametros da Coluna que exibe o Nome do produto que esta entrando no estoque.
+          Columns.Items[1].Title.Caption := 'Vlr.Unitário';
+          Columns.Items[1].FieldName     := 'VLRUNIT';
+          Columns.Items[1].Width         := 80;
+          Columns.Items[1].Alignment     := taLeftJustify;
+
+          //Parametros da Coluna que exibe o vlr unitario do produto.
+          Columns.Items[2].Title.Caption := 'Qtde';
+          Columns.Items[2].FieldName     := 'QTDE';
+          Columns.Items[2].Width         := 80;
+          Columns.Items[2].Alignment     := taLeftJustify;
+
+          //parametros que exibe a qtde. de entrada no estoque
+          Columns.Items[3].Title.Caption := 'Total';
+          Columns.Items[3].FieldName     := 'VLRTOTAL';
+          Columns.Items[3].Width         := 80;
+          Columns.Items[3].Alignment     := taLeftJustify;
+
+          MontaColunasOrcamento := False;
+
+        end;{if}
+
+      end;//with dbgorcamento
+
+////////////////////////////////////////////////////////////////////////////////
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.lbl_edtCodBarrasKeyPress(Sender: TObject;
+  var Key: Char);
+
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtQtde.SetFocus;
+    
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.ibeaIncluirClick(Sender: TObject);
+
+var
+NomeProduto, TotalCusto : String;
+QtdeVendida, Custo, rTotalVenda, rTotalVendab, rTotalVendac  : Real;
+SituacaoVenda : String;
+
+//variaveis para gravar i id do vendedor
+IDClassVendedor : TClasseCombo;
+StringVendedor, strTotalVenda, strTotalVendab, strTotalVendac : String;
+
+//variaveis de controle do estoque
+QtdeEstoqueVenda,MinimoTabela,QtdeEstoque,QtdeVenda,VlrProduto,ValorCustoE : Real;
+QtdeTotalEstoqueVenda,QtdeMinimaEstoque,InfoEstoqueMinimo,EstoqueFinal : String;
+TotalProdEstoque,TotalCustoVenda,VlrDesconto,NomePosVenda : String;
+Valor1,Valor2,Valor3, QtdeItens, Itens1, Itens2 : Real;
+ConfirmaPedido, IDPV,i : Integer;
+IDGravaCliente, CodigoPosVenda : Integer;
+IDProdutoEstoque, IDDetalheOrcamento, IDDetalhePosVenda : Integer;
+
+begin
+
+  with dmModule do begin
+
+  if cboFunc.Text = '' Then begin
+
+    Application.MessageBox('Para lançar um pedido é necessário selecionar um vendedor','Pedido sem vendedor',+MB_OK+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+  end;
+
+  if ckVenda.Checked = True Then begin
+
+
+    if (cboFunc.Text <> '')and(lbl_edtIDPosVenda.Text <> '') Then begin
+
+          ConfirmaGravacao := Application.MessageBox('Confirma Lançamentos','Notificação: Inclusão de Produtos',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+        if ConfirmaGravacao = 6 Then begin
+
+
+        If cboProd.ItemIndex = -1 Then begin
+
+          StringProd := ' '' 0 '',';
+          TotalCusto := '0';
+
+        end else begin
+
+          ClassVendaProduto   := TClasseCombo( cboProd.Items.Objects[cboProd.ItemIndex] );
+          StringProd          := ' ''' + InttoStr( ClassVendaProduto.ID ) + ''',';
+
+
+          ibProdutos.Close;
+          ibProdutos.SQL.Clear;
+          ibProdutos.SQL.Add('SELECT CADPRODUTOS.*,'
+          + 'LOCALESTOCAGEM.NOME As Estoque FROM CADPRODUTOS '
+          + 'INNER JOIN LOCALESTOCAGEM ON CADPRODUTOS.IDLOCAL=LOCALESTOCAGEM.IDESTOQUE '
+          + 'WHERE IDPROD=''' + InttoStr( ClassVendaProduto.ID ) + '''');
+          ibProdutos.Open;
+
+          LocalEstoque := ibProdutos.FieldByName('Estoque').AsString;
+          NomeProduto  := ibProdutos.FieldByName('NOME').AsString;
+
+
+          Custo := StrtoFloat(StringReplace(FloattoStr(ibProdutos.FieldByName('VALORCUSTO').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+          QtdeVendida := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Custo := QtdeVendida * Custo;
+
+          TotalCusto := StringReplace(FloattoStr(Custo),ThousandSeparator,'',[rfReplaceAll]);
+          TotalCusto := StringReplace(TotalCusto,DecimalSeparator,'.',[rfReplaceAll]);
+
+
+        end;
+
+        if cboFunc.ItemIndex = -1 Then begin
+
+          StringVendedor := ' ''0'',';
+
+        end else begin
+
+          IDClassVendedor   := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex] );
+          StringVendedor          := ' ''' + InttoStr( IDClassVendedor.ID ) + ''',';
+
+        end;
+
+  ////////////////////////////////////////////////////////////////////////////////
+    //ROTINA PARA CONTROLE DE ESTOQUE
+
+          if lbl_edtCodProd.Text <> '' Then begin
+
+            IDProdutoEstoque := StrToInt(lbl_edtCodProd.Text);
+
+          end else begin
+
+            IDProdutoEstoque := 0;
+
+          end;
+
+          ibEntrProdEstoque.Close;
+          ibEntrProdEstoque.SQL.Clear;
+          ibEntrProdEstoque.SQL.Add('SELECT TBLENTRADAESTOQUEPROD.QUANTIDADE,'
+          + 'TBLENTRADAESTOQUEPROD.VLRTOTAL,TBLENTRADAESTOQUEPROD.IDPROD,'
+          + 'TBLENTRADAESTOQUEPROD.IDPROD,TBLENTRADAESTOQUEPROD.ESTOQUEMIN,'
+          + 'CADPRODUTOS.VALORVENDAA,CADPRODUTOS.VALORCUSTO,CADPRODUTOS.TIPOPROD FROM TBLENTRADAESTOQUEPROD '
+          + 'INNER JOIN CADPRODUTOS ON TBLENTRADAESTOQUEPROD.IDPROD=CADPRODUTOS.IDPROD '
+          + 'WHERE TBLENTRADAESTOQUEPROD.IDPROD=''' + IntToStr(IDProdutoEstoque) + '''');
+          ibEntrProdEstoque.Open;
+                                                    
+  ////////////////////////////////////////////////////////////////////////////////
+
+    //ESTRUTURA PARA AVISO DO ESTOQUE MÍNIMO
+
+         if ibEntrProdEstoque.RecordCount > 0 Then begin
+
+           QtdeEstoqueVenda := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+           QtdeTotalEstoqueVenda := StringReplace(FloattoStr(QtdeEstoqueVenda),ThousandSeparator,'',[rfReplaceAll]);
+           QtdeTotalEstoqueVenda := StringReplace(QtdeTotalEstoqueVenda,DecimalSeparator,'.',[rfReplaceAll]);
+
+           //  TotaldoEstoque := StrToInt(FormatFloat(CasasDecimais('Produtos'),QtdeTotalEstoqueVenda));
+
+           MinimoTabela := StrToFloat(StringReplace(FloatToStr(ibEntrProdEstoque.FieldByName('ESTOQUEMIN').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+           QtdeMinimaEstoque := StringReplace(FloatToStr(MinimoTabela),ThousandSeparator,'',[rfReplaceAll]);
+           QtdeMinimaEstoque := StringReplace(QtdeMinimaEstoque,DecimalSeparator,'.',[rfReplaceAll]);
+
+
+          { ibConfig.Close;
+           ibConfig.SQL.Clear;
+           ibConfig.SQL.Add('SELECT * FROM TBLCONFIGURACOES');
+           ibConfig.Open;
+
+           InfoEstoqueMinimo := ibConfig.FieldByName('ESTOQUEMINIMO').AsString;
+
+         //  TotaldoMinimo := StrToInt(QtdeMinimaEstoque);
+
+           if InfoEstoqueMinimo = 'Sim' Then begin
+
+             if (QtdeMinimaEstoque >= QtdeTotalEstoqueVenda) Then begin
+
+               Application.MessageBox('Atenção o Estoque está em sua Quantidade Mínima!!!','Notificação: Estoque inferior ao mínimo.',+MB_OK+MB_ICONWARNING);
+
+             end;//if
+
+           end;//if  }
+
+         end;{if recordcount}
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+          //ROTINA ABAIXO PARA SOMAR TOTAL DO ESTQUE E QUANTIDADE DO ESTOQUE
+         if lbl_edtCodProd.Text <> '' Then begin
+
+           //traz na variavel a qtde conf. prod da select identificado por id.
+
+
+           QtdeEstoque := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+           // QtdeEstoque := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),DecimalSeparator,',',[rfReplaceAll]));
+
+           QtdeVenda   := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+           QtdeEstoque := QtdeEstoque - QtdeVenda;
+
+           EstoqueFinal := StringReplace(FloattoStr(QtdeEstoque),ThousandSeparator,'',[rfReplaceAll]);
+           EstoqueFinal := StringReplace(EstoqueFinal,DecimalSeparator,'.',[rfReplaceAll]);
+
+           //AQUI VAI O CALCULO DO TOTAL CONFORME VENDE O PRODUTO
+           VlrProduto  := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('VALORVENDAA').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+           VlrProduto  := QtdeEstoque * VlrProduto;
+
+           TotalProdEstoque := StringReplace(FloattoStr(VlrProduto),ThousandSeparator,'',[rfReplaceAll]);
+           TotalProdEstoque := StringReplace(TotalProdEstoque,DecimalSeparator,'.',[rfReplaceAll]);
+
+           ValorCustoE := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('VALORCUSTO').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+           ValorCustoE := QtdeEstoque * ValorCustoE;
+
+           TotalCustoVenda := StringReplace(FloattoStr(ValorCustoE),ThousandSeparator,'',[rfReplaceAll]);
+           TotalCustoVenda := StringReplace(TotalCustoVenda,DecimalSeparator,'.',[rfReplaceAll]);
+
+           ibEntrProdEstoque.Close;
+           ibEntrProdEstoque.SQL.Clear;
+           ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+           +'TOTALCUSTO=''' + TotalCustoVenda + ''','
+           +'QUANTIDADE=''' + (EstoqueFinal) + ''','
+           +'VLRTOTAL=''' + (TotalProdEstoque) +  ''' WHERE IDPROD=''' + lbl_edtCodProd.Text + '''');
+           ibEntrProdEstoque.ExecSQL;
+           Commit(ibEntrProdEstoque);
+
+         end;//if label IDPRODCX
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+          ValorUnit := StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]);
+          ValorUnit := StringReplace(ValorUnit,DecimalSeparator,'.',[rfReplaceAll]);
+          if ValorUnit  = '' Then
+             ValorUnit := '0';
+
+          ValorTotal := StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]);
+          ValorTotal := StringReplace(ValorTotal,DecimalSeparator,'.',[rfReplaceAll]);
+          if ValorTotal  = '' Then
+             ValorTotal := '0';
+
+
+          Qtde := StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]);
+          Qtde := StringReplace(Qtde,DecimalSeparator,'.',[rfReplaceAll]);
+          if Qtde  = '' Then
+             Qtde := '0';
+
+          VlrDesconto := StringReplace(lbl_edtDesconto.Text,ThousandSeparator,'',[rfReplaceAll]);
+          VlrDesconto := StringReplace(VlrDesconto,DecimalSeparator,'.',[rfReplaceAll]);
+          if VlrDesconto  = '' Then
+             VlrDesconto := '0';
+
+
+          if lbl_edtCodCli.Text <> '' Then begin
+
+            IDGravaCliente := StrToInt(lbl_edtCodCli.Text);
+
+          end else begin
+
+            IDGravaCliente := 0;
+
+          end;
+
+       //   if InserePosVenda Then begin
+
+
+      //    end;
+
+          IDDetalhePosVenda := StrToInt(lbl_edtIDPosVenda.Text);
+
+          {ibPosVenda.Close;
+          ibPosVenda.SQL.Clear;
+          ibPosVenda.SQL.Add('INSERT INTO TBLPOSVENDA'
+          + '(CODCARTAO,IDPROD,IDVENDEDOR,NOMEPROD,VLRUNITARIO,QTDE,VLRTOTAL,'
+          + 'NOMECLIENTE,IDCLI,NOMEVENDEDOR,VLRDESCONTO,IDDETALHEPV,DATA) values '
+          + '(''' + lbl_edtCodCartao.Text +  ''','
+          +StringProd
+          +StringVendedor
+          + ' ''' + cboProd.Text + ''','
+          + ' ''' + ValorUnit + ''','
+          + ' ''' + Qtde + ''','
+          + ' ''' + ValorTotal + ''','
+          + ' ''' + lbl_edtNomerazao.Text + ''','
+          + ' ''' + IntToStr(IDGravaCliente) + ''','
+          + ' ''' + cboFunc.Text + ''','
+          + ' ''' + VlrDesconto + ''','
+          + ' ''' + IntToStr(IDDetalhePosVenda) + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+          ibPosVenda.ExecSQL;
+          Commit(ibPosVenda); }
+
+          NomePosVenda := 'Pendente';
+
+         { ibMPV.Close;
+          ibMPV.SQL.Clear;
+          ibMPV.SQL.Add('INSERT INTO TBLMPV'
+          + '(NOMEPROD,IDPROD,IDFUNC,VLRUNITARIO,QTDE,VLRTOTAL,'
+          + 'NOMECLI,IDCLI,NOMEFUNC,VLRDESCONTO,NOMEPOSVENDA,IDPV,DATA) values '
+          + '(''' + cboProd.Text +  ''','
+          +StringProd
+          +StringVendedor
+          + ' ''' + ValorUnit + ''','
+          + ' ''' + Qtde + ''','
+          + ' ''' + ValorTotal + ''','
+          + ' ''' + lbl_edtNomerazao.Text + ''','
+          + ' ''' + IntToStr(IDGravaCliente) + ''','
+          + ' ''' + cboFunc.Text + ''','
+          + ' ''' + VlrDesconto + ''',' 
+          + ' ''' + NomePosVenda + ''','
+          + ' ''' + IntToStr(IDDetalhePosVenda) + ''','
+          + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+          ibMPV.ExecSQL;
+          Commit(ibMPV); }
+  ////////////////////////////////////////////////////////////////////////////////
+
+          SituacaoVenda := 'Pendente';
+
+          if (lbl_edtNumPedido.Text <> '')and(lbl_edtIDPosVenda.Text = '') Then begin
+
+          CodigoPosVenda := StrToInt(lbl_edtNumPedido.Text);
+
+          end else begin
+
+          CodigoPosVenda := 0;
+
+          end;
+
+          if (lbl_edtIDPosVenda.Text <> '')and(lbl_edtNumPedido.Text = '') Then begin
+
+          CodigoPosVenda := StrToInt(lbl_edtIDPosVenda.Text);
+
+          end else begin
+
+          CodigoPosVenda := 0;
+
+          end;
+////////////////////////////////////////////////////////////////////////////////
+
+//    if InsereVenda Then begin
+
+     {  ibServsVendasCli.Close;
+       ibServsVendasCli.SQL.Clear;
+       ibServsVendasCli.SQL.Add('INSERT INTO TBLSERVICOSVENDASCLI '
+       + '(IDFUNC,DATA) values '
+       + '(''' + StringVendedor + ''','
+       + ' ''' + FormatDateTime('mm-dd-yyyy',now) + ''')');
+       ibServsVendasCli.ExecSQL;
+       Commit(ibServsVendasCli);
+
+       //select para trazer o ultimo id
+       ibServsVendasCli.Close;
+       ibServsVendasCli.SQL.Clear;
+       ibServsVendasCli.SQL.Add('SELECT * FROM TBLSERVICOSVENDASCLI WHERE ORDER BY IDSERVSVENDA DESC');//=''' + IntToStr(IDVendaCaixa) + '''');
+       ibServsVendasCli.Open;
+
+           if ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger = 1 Then begin
+
+            IDVendasServs := 1;
+
+          end else begin
+
+            IDVendasServs := ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger;
+
+          end;  }
+
+        //    InsereVenda := False;
+
+   // end;//if inserevenda
+
+////////////////////////////////////////////////////////////////////////////////
+
+          if lbl_QtdeEstoque.Caption = 'Preço de Venda(B)'Then begin
+
+            ibServsVenda.Close;
+            ibServsVenda.SQL.Clear;
+            ibServsVenda.SQL.Add('INSERT INTO TBLSERVICOSVENDAS '
+            + ' (DATA,HORA,IDPROD,IDVENDEDOR,ESTOQUE,VALORB,VLRUNIT,TOTALCUSTO,'
+            + 'NOMEPROD,CODPOSVENDA,POSVENDA,IDSERVSVENDA,IDCLIENTE,NOMECLI,DESCONTO,QTDE) values '
+            + ' (''' + FormatDateTime('mm-dd-yyyy',now) + ''','
+            + ' ''' + FormatDateTime('hh:mm:ss',now) + ''','
+            + StringProd
+            + StringVendedor
+            + ' ''' + LocalEstoque + ''','
+            + ' ''' + ValorTotal + ''','
+            + ' ''' + ValorUnit + ''','
+            + ' ''' + TotalCusto + ''','
+            + ' ''' + NomeProduto + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + SituacaoVenda + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + IntToStr(IDGravaCliente) + ''','
+            + ' ''' + lbl_edtNomerazao.Text + ''','
+            + ' ''' + VlrDesconto + ''','
+            + ' ''' + Qtde + ''')');
+            ibServsVenda.ExecSQL;
+            Commit(ibServsVenda);
+
+            rTotalVendab := StrtoFloat(StringReplace(FloattoStr(ibServsVenda.FieldByName('VALORB').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+            strTotalVendab := StringReplace(FloattoStr(rTotalVendab),ThousandSeparator,'',[rfReplaceAll]);
+            strTotalVendab := StringReplace(strTotalVendab,DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;//if vendab
+
+          if lbl_QtdeEstoque.Caption = 'Preço de Venda(C)'Then begin
+
+            ibServsVenda.Close;
+            ibServsVenda.SQL.Clear;
+            ibServsVenda.SQL.Add('INSERT INTO TBLSERVICOSVENDAS '
+            + ' (DATA,HORA,IDPROD,IDVENDEDOR,ESTOQUE,VALORC,VLRUNIT,TOTALCUSTO,'
+            + 'NOMEPROD,CODPOSVENDA,POSVENDA,IDSERVSVENDA,IDCLIENTE,NOMECLI,DESCONTO,QTDE) values '
+            + ' (''' + FormatDateTime('mm-dd-yyyy',now) + ''','
+            + ' ''' + FormatDateTime('hh:mm:ss',now) + ''','
+            + StringProd
+            + StringVendedor
+            + ' ''' + LocalEstoque + ''','
+            + ' ''' + ValorTotal + ''','
+            + ' ''' + ValorUnit + ''','
+            + ' ''' + TotalCusto + ''','
+            + ' ''' + NomeProduto + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + SituacaoVenda + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + IntToStr(IDGravaCliente) + ''','
+            + ' ''' + lbl_edtNomerazao.Text + ''','
+            + ' ''' + VlrDesconto + ''','
+            + ' ''' + Qtde + ''')');
+            ibServsVenda.ExecSQL;
+            Commit(ibServsVenda);
+
+            rTotalVendac := StrtoFloat(StringReplace(FloattoStr(ibServsVenda.FieldByName('VALORC').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+            strTotalVendac := StringReplace(FloattoStr(rTotalVendac),ThousandSeparator,'',[rfReplaceAll]);
+            strTotalVendac := StringReplace(strTotalVendac,DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;//if vendac
+
+          if (lbl_QtdeEstoque.Caption <> 'Preço de Venda(B)')and(lbl_QtdeEstoque.Caption <> 'Preço de Venda(C)') Then begin
+
+            ibServsVenda.Close;
+            ibServsVenda.SQL.Clear;
+            ibServsVenda.SQL.Add('INSERT INTO TBLSERVICOSVENDAS '
+            + ' (DATA,HORA,IDPROD,IDVENDEDOR,ESTOQUE,VLRTOTAL,VLRUNIT,TOTALCUSTO,'
+            + 'NOMEPROD,CODPOSVENDA,POSVENDA,IDSERVSVENDA,IDCLIENTE,NOMECLI,DESCONTO,QTDE) values '
+            + ' (''' + FormatDateTime('mm-dd-yyyy',now) + ''','
+            + ' ''' + FormatDateTime('hh:mm:ss',now) + ''','
+            + StringProd
+            + StringVendedor
+            + ' ''' + LocalEstoque + ''','
+            + ' ''' + ValorTotal + ''','
+            + ' ''' + ValorUnit + ''','
+            + ' ''' + TotalCusto + ''','
+            + ' ''' + NomeProduto + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + SituacaoVenda + ''','
+            + ' ''' + IntToStr(CodigoPosVenda) + ''','
+            + ' ''' + IntToStr(IDGravaCliente) + ''','
+            + ' ''' + lbl_edtNomerazao.Text + ''','
+            + ' ''' + VlrDesconto + ''','
+            + ' ''' + Qtde + ''')');
+            ibServsVenda.ExecSQL;
+            Commit(ibServsVenda);
+
+          //  rTotalVenda := StrtoFloat(StringReplace(FloattoStr(ibServsVenda.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+           // strTotalVenda := StringReplace(FloattoStr(rTotalVenda),ThousandSeparator,'',[rfReplaceAll]);
+         //   strTotalVenda := StringReplace(strTotalVenda,DecimalSeparator,'.',[rfReplaceAll]);
+
+          end;
+
+          // + ' ''' + IntToStr(IDVendasServs) + ''',' IDSERVSVENDA,
+  ////////////////////////////////////////////////////////////////////////////////
+
+       // lbl_edtTotalGeral.Text := FormatFloat(',0.00',(rTotalVenda + rTotalVendab + rTotalVendac));
+
+        end;//if confirmagravacao
+
+/////////////////////////////////////////////////////////////////////////////////
+
+        if lbl_edtVlrTotal.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtTotalGeral.Text = '' Then begin
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := (Valor2 + Valor1);
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+            end;
+
+            end else begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtTotalGeral.Text = '' Then begin
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := (Valor2 + Valor1);
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+            end;
+
+          end;//if
+
+        end;//if
+////////////////////////////////////////////////////////////////////////////////
+
+        if lbl_edtQtde.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtQtde.Text)>0) and (lbl_edtQtde.Text <> '') Then begin
+
+            Itens1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtQtdeItens.Text = '' Then begin
+
+            lbl_edtQtdeItens.Text := FormatFloat(',0.00',(Itens1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Itens2 := StrToFloat(StringReplace(lbl_edtQtdeItens.Text,ThousandSeparator,'',[rfReplaceAll]));
+            QtdeItens := (Itens2 + Itens1);
+
+            lbl_edtQtdeItens.Text := FormatFloat(',0.00',(QtdeItens));
+
+            end;
+
+            end else begin
+
+            Itens1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtQtdeItens.Text = '' Then begin
+
+            lbl_edtQtdeItens.Text := FormatFloat(',0.00',(Itens1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Itens2 := StrToFloat(StringReplace(lbl_edtQtdeItens.Text,ThousandSeparator,'',[rfReplaceAll]));
+            QtdeItens := (Itens2 + Itens1);
+
+            lbl_edtQtdeItens.Text := FormatFloat(',0.00',(QtdeItens));
+
+            end;
+
+          end;//if
+
+        end;//if
+////////////////////////////////////////////////////////////////////////////////
+    ///  dbgPosVenda.SelectedIndex := 7;
+      {  for i := 0 to dbgPosVenda.Columns.Count-1 do begin
+
+          SendMessage(dbgPosVenda.Handle,WM_VSCROLL,SB_LINEDOWN,NEXTBAND);
+
+        end;//for }
+   /// dbgPosVenda.SelectedIndex := NEXTBAND + 1;
+    ExecSELECT;
+    LimpaProdutos;
+
+      end;//if confirma pedido
+
+    end;//ckvenda true
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if ckOrcamento.Checked then begin
+
+      if cboFunc.ItemIndex = -1 Then begin
+
+        StringVendedor := ' ''0'',';
+
+      end else begin
+
+        IDClassVendedor   := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex] );
+        StringVendedor          := ' ''' + InttoStr( IDClassVendedor.ID ) + ''',';
+
+      end;
+
+      ValorUnit := StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]);
+      ValorUnit := StringReplace(ValorUnit,DecimalSeparator,'.',[rfReplaceAll]);
+      if ValorUnit  = '' Then
+         ValorUnit := '0';
+
+      ValorTotal := StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]);
+      ValorTotal := StringReplace(ValorTotal,DecimalSeparator,'.',[rfReplaceAll]);
+      if ValorTotal  = '' Then
+         ValorTotal := '0';
+
+
+      Qtde := StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]);
+      Qtde := StringReplace(Qtde,DecimalSeparator,'.',[rfReplaceAll]);
+      if Qtde  = '' Then
+         Qtde := '0';
+
+      IDDetalheOrcamento := StrToInt(lbl_edtNOrc.Text);
+
+      ibOrcamentoPed.Close;
+      ibOrcamentoPed.SQL.Clear;
+      ibOrcamentoPed.SQL.Add('INSERT INTO TBLORCAMENTOPEDIDO'
+      + '(NOMECLIENTE,NOMEVENDEDOR,IDVENDEDOR,VLRUNIT,QTDE,VLRTOTAL,NOMEPROD,'
+      + 'IDDETALHEORC,TELEFONECLI,DATA) values '
+      + '(''' + lbl_edtNomerazao.Text + ''','
+      + ' ''' + cboFunc.Text + ''','
+      +StringVendedor
+      + ' ''' + ValorUnit + ''','
+      + ' ''' + Qtde + ''','
+      + ' ''' + ValorTotal + ''','
+      + ' ''' + cboProd.Text + ''','
+      + ' ''' + IntToStr(IDDetalheOrcamento) + ''','
+      + ' ''' + lbl_edtFoneOrc.Text + ''','
+      + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+      ibOrcamentoPed.ExecSQL;
+      Commit(ibOrcamentoPed);
+
+  /////////////////////////////////////////////////////////////////////////////////
+        if lbl_edtVlrTotal.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtTotalGeral.Text = '' Then begin
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := (Valor2 + Valor1);
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+            end;
+
+            end else begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+            if lbl_edtTotalGeral.Text = '' Then begin
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+            end else begin
+
+            //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor3 := (Valor2 + Valor1);
+
+            lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+            end;
+
+          end;{if}
+
+        end;{if}
+////////////////////////////////////////////////////////////////////////////////
+
+      ExecSELECTOrcamento;
+      LimpaProdutos;
+ 
+    end;//if ckorcamento
+
+////////////////////////////////////////////////////////////////////////////////
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+
+var
+//variaveis para impressora termica
+F : TextFile;
+Impressora,i,IDDetalheOrc,ConfirmaImpressao, ConfirmaCliente : integer;
+ConfirmaImpressaoPV, IDServsPV, IDDetalhePosVendaPV : Integer;
+IDVendedor,ClassVendedor : TClasseCombo;
+QtdeVenda,Unitario,Total,Vendedor,TotalOrcamento,DataOrc,VlrDesconto : String;
+QtdedeItens : Real;
+TotalQtdeItens, QtdeTotalItens, VendaFiscal,strVendedor : String;
+IDDetalhePosVenda,EfetuarReimpressao,EfetuarReimpressaoOrc,IDDetalhePosVendaIni : Integer;
+QtdedeSaltos       :String;
+DesenhodeDivisao,strPosVenda   :String;
+ImprimirViaRede,CaminhodeRede,ComandoGuilhotina : String;
+strValorTotalVenda : String;
+intIDVenda,intPagtoVenda,intIDCliente,intImprimirCupomSimples,intContadorItem : Integer;
+DataConvertida, Hora,strContadorItem : String;
+DesenhoDivisao,FraseRodape,Frase,strPosVendaIni, strVendedorIni   :String;
+ClassVendedorIni   : TClasseCombo;
+intCupomPVenda : Integer;
+
+begin
+
+  with dmModule do begin
+  
+    case Key of
+
+       VK_F1 :begin
+
+            if(lbl_edtIDPosVenda.Text = '')and(lbl_edtTotalGeral.Text = '')Then begin
+             
+              lbl_Imprimir.Caption := '';
+              cboFunc.Enabled := True;
+              cboFunc.DroppedDown := True;
+              SendMessage(cboFunc.Handle,CB_SHOWDROPDOWN,1,0);
+              cboFunc.SetFocus;
+
+
+              strPosVendaIni := 'Pendente';
+
+              ibServsVendasCli.Close;
+              ibServsVendasCli.SQL.Clear;
+              ibServsVendasCli.SQL.Add('INSERT INTO TBLSERVICOSVENDASCLI '
+              + '(POSVENDA,DATA) values '
+              + '( ''' + strPosVendaIni + ''','
+            //  + ' ''' + cboFunc.Text + ''','
+            //  +strVendedor NOMEFUNC,IDFUNC,
+              + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+              ibServsVendasCli.ExecSQL;
+              Commit(ibServsVendasCli);
+              ibServsVendasCli.Close;
+              ibServsVendasCli.SQL.Clear;
+              ibServsVendasCli.SQL.Add('SELECT IDSERVSVENDA FROM TBLSERVICOSVENDASCLI ORDER BY IDSERVSVENDA DESC');
+              ibServsVendasCli.Open;
+
+              frmPosVenda.lbl_edtIDPosVenda.Text := IntToStr(ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger);
+
+              IDDetalhePosVendaIni := (ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger);
+
+            end else begin
+
+              Application.MessageBox('Atenção é necessário terminar o lançamento para emitir outro','Lançamento em aberto',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+            end;  
+
+           // end;//if labl idposvenda
+
+       // end;//if ckvenda
+
+       end;//begin
+
+       VK_F2 :begin
+
+         frmBuscaClientes.ShowModal;
+
+       end;//begin
+
+       VK_F3 :begin
+
+         LimpaClientes;
+         lbl_edtCodCli.Text := '';
+         lbl_edtNomerazao.Clear;
+         
+       end;//begin
+
+        VK_F4 :begin
+
+         { try
+             if frmBuscaProdutos = Nil then
+                frmBuscaProdutos := TfrmBuscaProdutos.Create(self);
+          except
+              ShowMessage('Erro na criação do formulário !!');
+              exit;
+          end; }
+
+          frmBuscaProdutos.ShowModal;
+        //  FreeAndNil(frmBuscaProdutos);
+
+       end;//begin
+
+       VK_F5 :begin
+
+         LimpaProdutos;
+
+       end;//begin
+
+       VK_F6 :begin
+
+         if ckVenda.Checked Then begin
+
+       //    GravarPosVenda;
+
+            if cboFunc.Text<>'' Then begin
+
+              if cboFunc.ItemIndex = -1 Then begin
+
+                strVendedorIni := 'IDFUNC=''0'',';
+
+              end else begin
+
+                ClassVendedorIni   := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex] );
+                strVendedorIni     := 'IDFUNC=''' + InttoStr( ClassVendedorIni.ID ) + ''',';
+
+              end;
+
+            end;
+
+            ibServsVendasCli.Close;
+            ibServsVendasCli.SQL.Clear;
+            ibServsVendasCli.SQL.Add('UPDATE TBLSERVICOSVENDASCLI SET '
+            + strVendedorIni
+            + 'NOMEFUNC = ''' + cboFunc.Text + ''' WHERE TBLSERVICOSVENDASCLI.IDSERVSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+            ibServsVendasCli.ExecSQL;
+////////////////////////////////////////////////////////////////////////////////
+
+         if (lbl_edtQtdeItens.Text > '0')and(lbl_edtTotalGeral.Text > '0,00') Then begin
+
+
+           if lbl_edtCodCli.Text = '' Then begin
+
+             ibeaCadCliClick(Sender);
+         {  ConfirmaCliente := Application.MessageBox('Confirma o cadastro do cliente, clique em sim para cancelar e não para cadastrar','Cadastro de cliente',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+           if ConfirmaCliente = 6 Then begin
+
+           end else begin
+           
+             ibeaCadCliClick(Sender); }
+
+           end;
+
+          //ROTINA PARA IMPRIMIR POS VENDA
+
+          if (ckOrcamento.Checked = False) Then begin
+
+              if cboFunc.ItemIndex <> -1 Then begin
+
+              IDVendedor := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+              end;
+
+              strValorTotalVenda := StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]);
+              strValorTotalVenda := StringReplace(strValorTotalVenda,DecimalSeparator,'.',[rfReplaceAll]);
+              if strValorTotalVenda = '' Then
+                strValorTotalVenda := '0';
+
+              intIDVenda := StrToInt(lbl_edtIDPosVenda.Text);
+              intPagtoVenda := 0;
+
+              if lbl_edtCodCli.Text <> '' Then begin
+
+                intIDCliente := StrToInt(lbl_edtCodCli.Text);
+
+              end else begin
+
+                intIDCliente := 0;
+
+              end;    
+
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('INSERT INTO TBLDETALHEPOSVENDA'
+              + '(IDVENDEDOR,NOMEVENDEDOR,TOTALVENDA,NOMECLIENTE,IDCLIENTE,IDVENDA,PAGTO,DATA) values '
+              + ' (''' + IntToStr(IDVendedor.ID) + ''','
+              + ' ''' + cboFunc.Text + ''','
+              + ' ''' + strValorTotalVenda + ''','
+              + ' ''' + lbl_edtNomerazao.Text + ''','
+              + ' ''' + IntToStr(intIDCliente) + ''','
+              + ' ''' + IntToStr(intIDVenda) + ''','
+              + ' ''' + IntToStr(intPagtoVenda) + ''','
+              + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda);
+
+              lbl_edtCodCli.Text := '';
+
+////////////////////////////////////////////////////////////////////////////////
+                Commit(ibConfig);
+                ibConfig.Close;
+                ibConfig.SQL.Clear;
+                ibConfig.SQL.Add('SELECT DESENHODIVISAO,QTDESALTOS,FRASERODAPE,FRASE,CUPOMPVENDA FROM TBLCONFIGURACOES');
+                ibConfig.Open;
+
+                DesenhoDivisao := ibConfig.FieldByName('DESENHODIVISAO').AsString;
+                QtdedeSaltos   := IntToStr(ibConfig.FieldByName('QTDESALTOS').AsInteger);
+                FraseRodape    := ibConfig.FieldByName('FRASERODAPE').AsString;
+                Frase          := ibConfig.FieldByName('FRASE').AsString;
+                intCupomPVenda := (ibConfig.FieldByName('CUPOMPVENDA').AsInteger);
+//****************************************************************************//
+
+            if intCupomPVenda = 1 then begin
+
+              intImprimirCupomSimples := Application.MessageBox('Imprimir Cupom Simples Conferencia?','Cupom para Simples Conferencia', +MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON1);
+
+              if intImprimirCupomSimples = 6 Then begin
+
+
+                DataConvertida := FormatDateTime('DD/MM/YYYY',Now);
+                Hora           := FormatDateTime('hh:mm:ss',Now);
+
+                Commit(ibTempVendaLoja);
+                ibTempVendaLoja.Close;
+                ibTempVendaLoja.SQL.Clear;
+                ibTempVendaLoja.SQL.Add('SELECT TBLSERVICOSVENDAS.IDSERVSVENDA,TBLSERVICOSVENDAS.QTDE,'
+                + 'TBLSERVICOSVENDAS.VLRUNIT,TBLSERVICOSVENDAS.VLRTOTAL,TBLSERVICOSVENDAS.IDPROD,'
+                + 'CADPRODUTOS.NOME,CADPRODUTOS.CODBARRAS FROM TBLSERVICOSVENDAS '
+                + 'INNER JOIN CADPRODUTOS ON TBLSERVICOSVENDAS.IDPROD=CADPRODUTOS.IDPROD WHERE TBLSERVICOSVENDAS.IDSERVSVENDA=''' + (frmPosVenda.lbl_edtIDPosVenda.Text) + '''');
+                ibTempVendaLoja.Open;
+
+               (ibTempVendaLoja.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Combustiveis');
+
+                 // CaminhodeRede := '';
+                //  CaminhodeRede := ('\\CRISTIANO-PC\GenericT');
+
+               //   AssignFile(F,'LPT1'); ///CaminhoRede
+                  AssignPrn(F);
+                  Rewrite(F);
+                  i := 0;
+                                                                            //.Text+ #27#97#49
+
+                  Commit(ibDadosEmpresa);
+                  ibDadosEmpresa.Close;
+                  ibDadosEmpresa.SQL.Clear;
+                  ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+                  ibDadosEmpresa.Open;
+                              // '<sp>1</sp>'+
+                    Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+
+
+
+                  ///  Int_Retorno := Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('NOME').AsString),0);
+
+                    if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+                    Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+'    ,'+(ibDadosEmpresa.FieldByName('NUMERO').AsString),0);
+                    end;
+
+                    if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+                    Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('BAIRRO').AsString),0);
+                    end;
+
+                    if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+                    Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Fone: '+ibDadosEmpresa.FieldByName('TELEFONE').AsString),0);
+                    end;
+
+                  Writeln(F,(DesenhoDivisao));
+
+                //  if frmVendasLoja.lbl_Func.Caption <> '' Then begin
+                  Writeln(F,('Funcionário: '+ cboFunc.Text + ''));
+
+                  if lbl_edtNomeRazao.Text <> '' Then begin
+
+                    Writeln(F,('Cliente: '+ lbl_edtNomeRazao.Text + ' Telefone: ' + lbl_edtTelCom.Text));
+
+                  end;
+
+                  Writeln(F,('Cupom: '+IntToStr(intIDVenda)));
+                  Writeln(F,('Data:'+DataConvertida+' '+'Hora:'+Hora));
+                  Writeln(F,('**Cupom nao Fiscal para simples conferencia**'));
+                  Writeln(F,(DesenhoDivisao));
+////////////////////////////////////////////////////////////////////////////////
+                  intContadorItem := 1;
+                  while not ibTempVendaLoja.Eof do begin
+
+                    if intContadorItem = 1 Then begin
+
+                      strContadorItem := '00'+ IntToStr(intContadorItem);
+
+                    end else begin
+
+                      strContadorItem := '00'+ IntToStr(intContadorItem);
+
+                    end;
+
+
+
+                    Writeln(F,(strContadorItem+' '+ibTempVendaLoja.FieldByName('NOME').AsString));
+                    Writeln(F,(FormatFloat('0',ibTempVendaLoja.FieldByName('QTDE').AsFloat))+' X '+(FormatFloat(CasasDecimais('Produtos'),ibTempVendaLoja.FieldByName('VLRUNIT').AsFloat))+' = '+(FormatFloat(CasasDecimais('Produtos'),ibTempVendaLoja.FieldByName('VLRTOTAL').AsFloat)));
+                    //+ibTempVendaLoja.FieldByName('NOME').AsString)+'...R$ '+(FormatFloat(CasasDecimais('Produtos'),ibTempVendaLoja.FieldByName('VLRTOTAL').AsFloat)));
+
+                      if QtdedeItens = 0 Then begin
+
+                        QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibTempVendaLoja.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                      end else begin
+
+                        TotalQtdeItens := StringReplace(FloatToStr(ibTempVendaLoja.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                        QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                      end;//if
+
+                      intContadorItem :=  intContadorItem+1;
+
+                  ibTempVendaLoja.Next;
+
+                  end;//while
+                    QtdeTotalItens := FormatFloat('0',QtdedeItens);
+
+                    Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                    Writeln(F,('Total da Venda R$'+strValorTotalVenda));
+  ////////////////////////////////////////////////////////////////////////////////
+
+           // Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sp>1</sp>'+(frmVendasLoja.listboxCupom.Items).Text+ ''),0);
+                    Writeln(F,(DesenhoDivisao));
+////////////////////////////////////////////////////////////////////////////////
+
+          {    if (cboTipoPagto.Text = 'PENDENTE') Then begin
+
+                Produto[0]:=frmVendasLoja.lbl_edtSubTotal.Caption;
+                Produto[1]:=cboTipoPagto.Text;
+                Produto[2]:=lbl_edtValor.Text;
+                Produto[3]:=lbl_edtTotalVenda.Text;
+                Produto[4]:=lbl_edtTroco.Text;
+                Produto[6]:=lbl_edtValor.Text;
+
+                //Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhoDivisao),0);
+                Writeln(F,('     **** VENDA PENDENTE ****'));
+                Writeln(F,('TOTAL DA VENDA..:(R$)' + ' ' + '=' + ' ' +  Produto[0]));
+                Writeln(F,('VLR.PAGO..:(R$)' + ' ' + '=' + ' ' +Produto[6]));
+
+                if lbl_edtValor.Text = '0,00'Then begin
+                Writeln(F,(Produto[1] + ' ' + '=' + ' ' + Produto[3]));
+                end;
+
+                if lbl_edtValor.Text > '0,00'Then begin
+                Writeln(F,(Produto[1] + ' ' + '=' + ' ' + Produto[4]));
+                end;
+
+                Writeln(F,(DesenhoDivisao));
+
+               ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sl>'+QtdedeSaltos+'</sl>'), 0);
+              end;
+
+              if (cboTipoPagto.Text <> 'PENDENTE') Then begin
+
+                if (lbl_edtDesconto.Text = '')or (lbl_edtDesconto.Text = '0,00')and(lbl_edtAcrescimo.Text = '0,00')then begin
+
+                  Produto[0]:=frmVendasLoja.lbl_edtSubTotal.Caption;
+                  Produto[1]:=cboTipoPagto.Text;
+                  Produto[2]:=lbl_edtValor.Text;
+                  Produto[3]:=lbl_edtTotalVenda.Text;
+                  Produto[4]:=lbl_edtTroco.Text;
+                  Produto[6]:=lbl_edtValor.Text;
+
+                //  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+                  Writeln(F,('TOTAL..:(R$)' + ' ' + '=' + ' ' +  Produto[3]));
+                  Writeln(F,('VLR.PAGO: '+Produto[1] + ' ' + '=' + ' ' + Produto[2]));
+                 // Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('VLR.PAGO..:(R$)' + ' ' + '=' + ' ' +Produto[6]),0);
+                  Writeln(F,('TROCO' + ' ' + '=' + ' ' +Produto[4]));
+                  Writeln(F,(DesenhoDivisao));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sl>'+QtdedeSaltos+'</sl>'), 0);
+                end;
+              end;
+
+              if (lbl_edtDesconto.Text > '0,00')and(lbl_edtAcrescimo.Text = '0,00')and(cboTipoPagto.Text <> 'PENDENTE') Then begin
+
+                Produto[0]:=frmVendasLoja.lbl_edtSubTotal.Caption;
+                Produto[1]:=cboTipoPagto.Text;
+                Produto[2]:=lbl_edtValor.Text;
+                Produto[3]:=lbl_edtTotalVenda.Text;
+                Produto[4]:=lbl_edtTroco.Text;
+
+                Produto[6]:=lbl_edtValor.Text;
+
+                //Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhoDivisao),0);
+                Writeln(F,('TOTAL..:(R$)' + ' ' + '=' + ' ' +  Produto[0]));
+                Writeln(F,('DESCONTO' + ' ' + '=' + ' ' +  Produto[5]));
+                Writeln(F,('VLR.A PAGAR COM DESCONTO' + ' ' + '=' + ' ' +  Produto[3]));
+                Writeln(F,(Produto[1] + ' ' + '=' + ' ' + Produto[2]));
+                Writeln(F,('TROCO' + ' ' + '=' + ' ' +Produto[4]));
+                Writeln(F,(DesenhoDivisao));
+              ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sl>'+QtdedeSaltos+'</sl>'), 0);
+              end;//if campo desconto
+
+////////////////////////////////////////////////////////////////////////////////
+
+              if (lbl_edtAcrescimo.Text > '0,00')and(lbl_edtDesconto.Text = '0,00')and(cboTipoPagto.Text <> 'PENDENTE') Then begin
+
+                Produto[0]:=frmVendasLoja.lbl_edtSubTotal.Caption;
+                Produto[1]:=cboTipoPagto.Text;
+                Produto[2]:=lbl_edtValor.Text;
+                Produto[3]:=lbl_edtTotalVenda.Text;
+                Produto[4]:=lbl_edtTroco.Text;
+                Produto[5]:=lbl_edtAcrescimo.Text;
+
+                //Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhoDivisao),0);
+                Writeln(F,('TOTAL..:(R$)' + ' ' + '=' + ' ' +  Produto[0]));
+                Writeln(F,('ACRESCIMO' + ' ' + '=' + ' ' +  Produto[5]));
+                Writeln(F,('VLR.A PAGAR COM ACRESCIMO' + ' ' + '=' + ' ' +  Produto[3]));
+                Writeln(F,(Produto[1] + ' ' + '=' + ' ' + Produto[2]));
+                Writeln(F,('TROCO' + ' ' + '=' + ' ' +Produto[4]));
+                Writeln(F,(DesenhoDivisao));
+
+              end; }
+
+                if Frase <> '' Then begin
+                Writeln(F,(Frase));
+                end;
+
+                CloseFile(F);
+                
+                //Writeln(F,(''));
+               // Writeln(F,(''));
+               // Writeln(F,(''));
+              //  Writeln(F,(''));
+              //  Writeln(F,(''));
+              // Writeln(F,(''));
+              //  Writeln(F,(''));
+              //  Writeln(F,(''));
+              //  Writeln(F,(''));
+
+              end;
+
+            end;//intcupompvenda
+//****************************************************************************//
+
+
+////////////////////////////////////////////////////////////////////////////////
+            {  Commit(ibConfig);
+              ibConfig.Close;
+              ibConfig.SQL.Clear;
+              ibConfig.SQL.Add('SELECT * FROM TBLCONFIGURACOES');
+              ibConfig.Open;
+
+              QtdedeSaltos       := IntToStr(ibConfig.FieldByName('QTDESALTOS').AsInteger);
+              DesenhodeDivisao   := ibConfig.FieldByName('DESENHODIVISAO').AsString;
+              ImprimirViaRede    := ibConfig.FieldByName('IMPRIMIRVIAREDE').AsString;
+              CaminhodeRede      := ibConfig.FieldByName('CAMINHODEREDE').AsString;
+
+              if cboFunc.ItemIndex <> -1 Then begin
+
+              IDVendedor := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+              end;
+
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('UPDATE TBLDETALHEPOSVENDA SET '
+              + 'IDVENDEDOR = ''' + IntToStr(IDVendedor.ID) + ''','
+              + 'NOMEVENDEDOR = ''' + cboFunc.Text + ''','
+              + 'NOMECLIENTE = ''' + lbl_edtNomerazao.Text + ''' WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda); }
+
+
+          {  ConfirmaImpressaoPV := Application.MessageBox('Deseja Encerrar o Pedido?','Encerrar de Pedido',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+            if ConfirmaImpressaoPV = 6 Then begin
+
+              if cboFunc.ItemIndex <> -1 Then begin
+
+              IDVendedor := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+              end;
+
+              Commit(ibDadosEmpresa);
+              ibDadosEmpresa.Close;
+              ibDadosEmpresa.SQL.Clear;
+              ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+              ibDadosEmpresa.Open;
+
+              Commit(ibDetalhePosVenda);
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('SELECT * FROM TBLDETALHEPOSVENDA WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.Open;
+
+              IDDetalhePosVendaPV := StrToInt(lbl_edtIDPosVenda.Text);//ibDetalhePosVenda.FieldByName('IDDETALHEPOSVENDA').AsInteger;
+              VendaFiscal := 'Nao';
+
+
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('UPDATE TBLDETALHEPOSVENDA SET '
+              + 'IDVENDEDOR = ''' + IntToStr(IDVendedor.ID) + ''','
+              + 'NOMEVENDEDOR = ''' + cboFunc.Text + ''','
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''','
+              + 'NOMECLIENTE = ''' + lbl_edtNomerazao.Text + ''' WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda);
+
+
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('UPDATE TBLSERVICOSVENDAS SET '
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''' WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.ExecSQL;
+              Commit(ibServsVenda);
+
+              Commit(ibPosVenda);
+              ibPosVenda.Close;
+              ibPosVenda.SQL.Clear;
+              ibPosVenda.SQL.Add('SELECT * FROM TBLPOSVENDA WHERE IDPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibPosVenda.Open;
+
+              Vendedor := ibPosVenda.FieldByName('NOMEVENDEDOR').AsString;
+
+              DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('SELECT * FROM TBLSERVICOSVENDAS WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.Open;
+
+              if ImprimirViaRede = 'Sim' Then begin
+
+                if CaminhodeRede = '' Then begin
+
+                  AssignFile(F,'ComboBox1.value');
+                  Rewrite(F);
+                  i := 0;
+                 // Writeln(F,('              ** ORCAMENTO **'));
+                //  Writeln(F,('----------------------------------------'));
+                  Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+
+
+
+                ///  Int_Retorno := Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('NOME').AsString),0);
+
+                  if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+                  Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+'    ,'+(ibDadosEmpresa.FieldByName('NUMERO').AsString),0);
+                  end;
+
+                  if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+                  Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('BAIRRO').AsString),0);
+                  end;
+
+                  if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+                  Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Fone: '+ibDadosEmpresa.FieldByName('TELEFONE').AsString),0);
+                  end;
+
+                  Writeln(F,('----------------------------------------'));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                  Writeln(F,('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc),0);
+
+                  Writeln(F,('----------------------------------------'));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                  if lbl_edtNomeRazao.Text <> '' Then begin
+                   Writeln(F,('Cliente: '+lbl_edtNomeRazao.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Cliente: '+lbl_edtNomeRazao.Text),0);
+
+                    if lbl_edtEndereco.Text <> '' Then begin
+                    Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text),0);
+                    end;
+                    if lbl_edtTelCom.Text <> '' Then begin
+                    Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Telefone: '+lbl_edtTelCom.Text),0);
+                    end;
+                    Writeln(F,('----------------------------------------'));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+                  end;
+
+                  while not ibServsVenda.Eof do begin
+
+                    QtdeVenda   := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+                    Unitario    := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRUNIT').AsFloat);
+                    Total       := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+                    VlrDesconto := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('DESCONTO').AsFloat);
+                  ///  Writeln(F,(''));
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                    Writeln(F,(ibServsVenda.FieldByName('NOMEPROD').AsString));
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibServsVenda.FieldByName('NOMEPROD').AsString),0);
+
+                    if (ibServsVenda.FieldByName('DESCONTO').AsFloat > 0)Then begin
+
+                    Writeln(F,('Qtde.   Vlr. Desc. Total'  ));
+                    Writeln(F,(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+
+                    end else begin
+
+                    Writeln(F,(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+
+                    end;
+
+                    if QtdedeItens = 0 Then begin
+
+                      QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                    end else begin
+
+                      TotalQtdeItens := StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                      QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                    end;//if
+
+                  ibServsVenda.Next;
+
+                  end;//while
+
+                  QtdeTotalItens := FormatFloat(CasasDecimais('Produtos'),QtdedeItens);
+
+                 // Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                  TotalOrcamento := lbl_edtTotalGeral.Text;
+                    Writeln(F,('----------------------------------------'));
+
+
+
+
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+
+                    CloseFile(F);
+
+                 end;//if caminho de rede = ''
+////////////////////////////////////////////////////////////////////////////////
+
+                if CaminhodeRede <> '' Then begin
+
+                  AssignFile(F,'ComboBox1.value');
+                  Rewrite(F);
+                  i := 0;
+                 // Writeln(F,('              ** ORCAMENTO **'));
+                //  Writeln(F,('----------------------------------------'));
+                  Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+
+
+
+                ///  Int_Retorno := Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('NOME').AsString),0);
+
+                  if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+                  Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+'    ,'+(ibDadosEmpresa.FieldByName('NUMERO').AsString),0);
+                  end;
+
+                  if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+                  Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('BAIRRO').AsString),0);
+                  end;
+
+                  if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+                  Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Fone: '+ibDadosEmpresa.FieldByName('TELEFONE').AsString),0);
+                  end;
+
+                  Writeln(F,('----------------------------------------'));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                  Writeln(F,('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc),0);
+
+                  Writeln(F,('----------------------------------------'));
+                ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                  if lbl_edtNomeRazao.Text <> '' Then begin
+                   Writeln(F,('Cliente: '+lbl_edtNomeRazao.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Cliente: '+lbl_edtNomeRazao.Text),0);
+
+                    if lbl_edtEndereco.Text <> '' Then begin
+                    Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text),0);
+                    end;
+                    if lbl_edtTelCom.Text <> '' Then begin
+                    Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Telefone: '+lbl_edtTelCom.Text),0);
+                    end;
+                    Writeln(F,('----------------------------------------'));
+                 ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+                  end;
+
+                  while not ibServsVenda.Eof do begin
+
+                    QtdeVenda   := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+                    Unitario    := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRUNIT').AsFloat);
+                    Total       := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+                    VlrDesconto := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('DESCONTO').AsFloat);
+                  ///  Writeln(F,(''));
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                 ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                    Writeln(F,(ibServsVenda.FieldByName('NOMEPROD').AsString));
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibServsVenda.FieldByName('NOMEPROD').AsString),0);
+
+                    if (ibServsVenda.FieldByName('DESCONTO').AsFloat > 0)Then begin
+
+                    Writeln(F,('Qtde.   Vlr. Desc. Total'  ));
+                    Writeln(F,(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+
+                    end else begin
+
+                    Writeln(F,(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+
+                    end;
+
+                    if QtdedeItens = 0 Then begin
+
+                      QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                    end else begin
+
+                      TotalQtdeItens := StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                      QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                    end;//if
+
+                  ibServsVenda.Next;
+
+                  end;//while
+
+                  QtdeTotalItens := FormatFloat(CasasDecimais('Produtos'),QtdedeItens);
+
+                 // Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                  TotalOrcamento := lbl_edtTotalGeral.Text;
+                    Writeln(F,('----------------------------------------'));
+
+
+
+
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                    Writeln(F,(''));
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                   /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                  /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                  /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+
+                    CloseFile(F);
+
+                 end;//if caminho de rede <> ''
+
+
+                end;//if imprimir via rede = sim
+//****************************************************************************//
+            ///  AssignFile(F,'LPT1');
+           ///   Rewrite(F);
+           ///   i := 0;
+             // Writeln(F,('              ** ORCAMENTO **'));
+            //  Writeln(F,('----------------------------------------'));
+           ///  Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+
+              if ImprimirViaRede = 'Nao' Then begin
+
+                AssignFile(F,'LPT3');
+                ///AssignPrn(F);
+                Rewrite(F);
+                i := 0;
+               /// Writeln(F,('#12'));
+                Writeln(F,('                    '+ibDadosEmpresa.FieldByName('NOME').AsString));
+
+              /// Int_Retorno := Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('NOME').AsString),0);
+
+                if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+                  Writeln(F,('                    '+ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+'    ,'+(ibDadosEmpresa.FieldByName('NUMERO').AsString),0);
+                end;
+
+                if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+                  Writeln(F,('                    '+ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+              ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('BAIRRO').AsString),0);
+                end;
+
+                if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+                  Writeln(F,('                    '+'Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Fone: '+ibDadosEmpresa.FieldByName('TELEFONE').AsString),0);
+                end;
+
+                Writeln(F,('------------------------------------------------------------------------------------------'));
+               /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                Writeln(F,('                    '+'Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc));
+              ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc),0);
+
+                Writeln(F,('------------------------------------------------------------------------------------------'));
+               /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                if lbl_edtNomeRazao.Text <> '' Then begin
+                  Writeln(F,('                    '+'Cliente: '+lbl_edtNomeRazao.Text));
+                  /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Cliente: '+lbl_edtNomeRazao.Text),0);
+
+                  if lbl_edtEndereco.Text <> '' Then begin
+                  Writeln(F,('                    '+'Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text),0);
+                  end;
+                  if lbl_edtTelCom.Text <> '' Then begin
+                  Writeln(F,('                    '+'Telefone: '+lbl_edtTelCom.Text));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Telefone: '+lbl_edtTelCom.Text),0);
+                  end;
+                  Writeln(F,('------------------------------------------------------------------------------------------'));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+                end;
+
+                while not ibServsVenda.Eof do begin
+
+                  QtdeVenda   := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+                  Unitario    := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRUNIT').AsFloat);
+                  Total       := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+                  VlrDesconto := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('DESCONTO').AsFloat);
+                ///  Writeln(F,(''));
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                  Writeln(F,('                    ' + ibServsVenda.FieldByName('NOMEPROD').AsString));
+                 ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibServsVenda.FieldByName('NOMEPROD').AsString),0);
+
+                  if (ibServsVenda.FieldByName('DESCONTO').AsFloat > StrToFloat('0,00'))Then begin
+                 /// Writeln(F,('                    ' + 'Qtde.   Vlr. Desc. Total'  ));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Qtde.   Vlr. Desc. Total'),0);
+                  Writeln(F,('                    ' +QtdeVenda+' X '+Unitario+' (-) '+VlrDesconto+' = '+Total));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total),0);
+
+                  end else begin
+                  Writeln(F,('                    ' + QtdeVenda+' X '+Unitario+' = '+Total));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total),0);
+                  end;
+
+                  if QtdedeItens = 0 Then begin
+
+                    QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                  end else begin
+
+                    TotalQtdeItens := StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                    QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                  end;//if
+
+                ibServsVenda.Next;
+
+                end;//while
+
+                QtdeTotalItens := FormatFloat(CasasDecimais('Produtos'),QtdedeItens);
+
+               // Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                TotalOrcamento := lbl_edtTotalGeral.Text;
+                Writeln(F,('------------------------------------------------------------------------------------------'));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                Writeln(F,('                    ' + 'Qtde.Itens..:'+ QtdeTotalItens + '   TOTAL..:(R$)'+TotalOrcamento));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Qtde.Itens..:'+ QtdeTotalItens + '   TOTAL..:(R$)'+TotalOrcamento),0);
+
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sl>'+QtdedeSaltos+'</sl>'), 0);
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+
+                CloseFile(F);
+
+              //////////////////////////////////////////////////////////////////
+              EfetuarReimpressao := Application.MessageBox('Deseja Reimprimir?','Reimpressão',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+              if EfetuarReimpressao = 6 Then begin
+
+
+              end else begin
+              
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('SELECT * FROM TBLSERVICOSVENDAS WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.Open;
+
+                Writeln(F,('                    '+ibDadosEmpresa.FieldByName('NOME').AsString));
+
+                if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+                Writeln(F,('                    '+ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+'    ,'+(ibDadosEmpresa.FieldByName('NUMERO').AsString),0);
+                end;
+
+                if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+                Writeln(F,('                    '+ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibDadosEmpresa.FieldByName('BAIRRO').AsString),0);
+                end;
+
+                if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+                Writeln(F,('                    '+'Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Fone: '+ibDadosEmpresa.FieldByName('TELEFONE').AsString),0);
+                end;
+
+                Writeln(F,('------------------------------------------------------------------------------'));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                Writeln(F,('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc),0);
+
+                Writeln(F,('------------------------------------------------------------------------------'));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                if lbl_edtNomeRazao.Text <> '' Then begin
+                 Writeln(F,('                    '+'Cliente: '+lbl_edtNomeRazao.Text));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Cliente: '+lbl_edtNomeRazao.Text),0);
+
+                  if lbl_edtEndereco.Text <> '' Then begin
+                  Writeln(F,('                    '+'Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text),0);
+                  end;
+                  if lbl_edtTelCom.Text <> '' Then begin
+                  Writeln(F,('                    '+'Telefone: '+lbl_edtTelCom.Text));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Telefone: '+lbl_edtTelCom.Text),0);
+                  end;
+                  Writeln(F,('------------------------------------------------------------------------------'));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+                end;
+
+                while not ibServsVenda.Eof do begin
+
+                  QtdeVenda   := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+                  Unitario    := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRUNIT').AsFloat);
+                  Total       := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+                  VlrDesconto := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('DESCONTO').AsFloat);
+                  Writeln(F,(''));
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+               ///   Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(''),0);
+                 /// Writeln(F,(ibServsVenda.FieldByName('NOMEPROD').AsString));
+                  Writeln(F,('                    '+ibServsVenda.FieldByName('NOMEPROD').AsString));
+
+                  if (ibServsVenda.FieldByName('DESCONTO').AsFloat > 0)Then begin
+                  Writeln(F,('                    '+'Qtde.   Vlr. Desc. Total'  ));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Qtde.   Vlr. Desc. Total'),0);
+                  Writeln(F,('                    '+QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total),0);
+
+                  end else begin
+                  Writeln(F,('                    '+QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total));
+                  ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total),0);
+                  end;
+
+                  if QtdedeItens = 0 Then begin
+
+                    QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                  end else begin
+
+                    TotalQtdeItens := StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                    QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                  end;//if
+
+                ibServsVenda.Next;
+
+                end;//while
+
+                QtdeTotalItens := FormatFloat(CasasDecimais('Produtos'),QtdedeItens);
+
+               // Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                TotalOrcamento := lbl_edtTotalGeral.Text;
+                Writeln(F,('------------------------------------------------------------------------------'));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(DesenhodeDivisao),0);
+
+                Writeln(F,('                    '+'Qtde.Itens..:'+ QtdeTotalItens + '   TOTAL..:(R$)'+TotalOrcamento));
+                ///Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('Qtde.Itens..:'+ QtdeTotalItens + '   TOTAL..:(R$)'+TotalOrcamento),0);
+
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+                Writeln(F,(''));
+
+                CloseFile(F);
+                 /// Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar('<sl>'+QtdedeSaltos+'</sl>'), 0);
+
+                  //IPRIMINDO A VIGÉSIMA PRIMEIRA LINHA
+
+              end;//if
+
+              //////////////////////////////////////////////////////////////////
+                end;//if imprimir via rede = nao
+
+
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('DELETE FROM TBLSERVICOSVENDAS WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.ExecSQL;
+              Commit(ibServsVenda);
+
+
+            end else begin  }
+
+            if ConfirmaImpressaoPV = 6 Then begin
+
+              {ibMPV.Close;
+              ibMPV.SQL.Clear;
+              ibMPV.SQL.Add('DELETE FROM TBLMPV WHERE IDPV=''' + lbl_edtIDPosVenda.Text + '''');
+              ibMPV.ExecSQL;
+              Commit(ibMPV); }
+
+              IDDetalhePosVendaPV := StrToInt(lbl_edtIDPosVenda.Text);//ibDetalhePosVenda.FieldByName('IDDETALHEPOSVENDA').AsInteger;
+
+
+              if lbl_Imprimir.Caption = '' Then begin
+              VendaFiscal := 'Sim';
+              end;
+
+              if (lbl_Imprimir.Caption = 'Imprimir') Then begin
+              VendaFiscal := 'Nao';
+              end;
+
+             { ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('UPDATE TBLDETALHEPOSVENDA SET '
+              + 'IDVENDEDOR = ''' + IntToStr(IDVendedor.ID) + ''','
+              + 'NOMEVENDEDOR = ''' + cboFunc.Text + ''','
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''','
+              + 'NOMECLIENTE = ''' + lbl_edtNomerazao.Text + ''' WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda); }
+
+             { if cboFunc.ItemIndex <> -1 Then begin
+
+              IDVendedor := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+              end; }
+
+              Commit(ibTempVendaLoja);
+              ibTempVendaLoja.Close;
+              ibTempVendaLoja.SQL.Clear;
+              ibTempVendaLoja.SQL.Add('UPDATE TBLSERVICOSVENDAS SET '
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''' WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibTempVendaLoja.ExecSQL;
+              Commit(ibTempVendaLoja);
+
+              {ibServsVendasCli.Close;
+              ibServsVendasCli.SQL.Clear;
+              ibServsVendasCli.SQL.Add('UPDATE TBLSERVICOSVENDASCLI SET '
+              + 'NOMEFUNC = ''' + cboFunc.Text + ''','
+              + 'IDFUNC = ''' + IntToStr(IDVendedor.ID) + ''' WHERE IDSERVSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVendasCli.ExecSQL; }
+              
+
+            end else begin
+
+            end;//if confirma pv
+
+          end;//if ckorçamento checked false
+////////////////////////////////////////////////////////////////////////////////
+
+           LimpaProdutos;
+           LimpaClientes;
+           cboFunc.ClearSelection;
+           lbl_edtTotalGeral.Text := '';
+           lbl_edtQtdeItens.Text := '';
+           lbl_edtNumPedido.Text := '';
+           lbl_edtIDPosVenda.Text := '';
+           lbl_edtNomerazao.Text := '';
+           VlrDesconto := '0';
+           ibServsVenda.Close;
+
+         end;
+
+         if ckOrcamento.Checked Then begin
+
+           GravarDetalheOrcamento;
+////////////////////////////////////////////////////////////////////////////////
+   //ROTINA PARA IMPRIMIR ORÇAMENTO
+
+          ConfirmaImpressao := Application.MessageBox('Imprimir Orçamento?','Orçamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+          if ConfirmaImpressao = 6 then begin
+
+          Commit(ibDadosEmpresa);
+          ibDadosEmpresa.Close;
+          ibDadosEmpresa.SQL.Clear;
+          ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+          ibDadosEmpresa.Open;
+
+          ibDetalheOrcamento.Close;
+          ibDetalheOrcamento.SQL.Clear;
+          ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO ORDER BY IDDETALHEORCAMENTO DESC');
+          ibDetalheOrcamento.Open;
+
+          IDDetalheOrc := StrToInt(lbl_edtNOrc.Text);///ibDetalheOrcamento.FieldByName('IDDETALHEORCAMENTO').AsInteger;
+
+          Commit(ibOrcamentoPed);
+          ibOrcamentoPed.Close;
+          ibOrcamentoPed.SQL.Clear;
+          ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+          ibOrcamentoPed.Open;
+
+          Vendedor := ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString;
+
+          DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+            AssignFile(F,'LPT1');
+            Rewrite(F);
+            i := 0;
+            Writeln(F,('              ** ORCAMENTO **'));
+            Writeln(F,('----------------------------------------'));
+            Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+            Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+            if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+            Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+            end;
+            Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+            Writeln(F,('----------------------------------------'));
+            Writeln(F,('Vendedor:'+ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString)+' '+' '+'Data:'+' '+DataOrc);
+            Writeln(F,('----------------------------------------'));
+            if lbl_edtNomeRazao.Text <> '' Then begin
+            Writeln(F,('Cliente: '+lbl_edtNomeRazao.Text + '  Fone: '+lbl_edtFoneOrc.Text));
+            end;
+            if lbl_edtEndereco.Text <> '' Then begin
+            Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+            end;
+            if lbl_edtTelCom.Text <> '' Then begin
+            Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+            end;
+            Writeln(F,('----------------------------------------'));
+            while not ibOrcamentoPed.Eof do begin
+
+            Writeln(F,(ibOrcamentoPed.FieldByName('NOMEPROD').AsString));
+            QtdeVenda := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('QTDE').AsFloat);
+            Unitario  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRUNIT').AsFloat);
+            Total     := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+            Writeln(F,(QtdeVenda+' X '+Unitario+' = '+Total));
+
+            ibOrcamentoPed.Next;
+
+            end;//while
+            TotalOrcamento := lbl_edtTotalGeral.Text;
+            Writeln(F,('----------------------------------------'));
+            Writeln(F,('TOTAL..:(R$)'+TotalOrcamento));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            Writeln(F,(''));
+            CloseFile(F);
+
+          //////////////////////////////////////////////////////////////////////
+
+          EfetuarReimpressaoOrc := Application.MessageBox('Deseja Reimprimir o Orçamento?','Reimpressao de Orcamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+          if EfetuarReimpressaoOrc = 6 Then begin
+
+            Commit(ibDadosEmpresa);
+            ibDadosEmpresa.Close;
+            ibDadosEmpresa.SQL.Clear;
+            ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+            ibDadosEmpresa.Open;
+
+            ibDetalheOrcamento.Close;
+            ibDetalheOrcamento.SQL.Clear;
+            ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO ORDER BY IDDETALHEORCAMENTO DESC');
+            ibDetalheOrcamento.Open;
+
+            IDDetalheOrc := StrToInt(lbl_edtNOrc.Text);///ibDetalheOrcamento.FieldByName('IDDETALHEORCAMENTO').AsInteger;
+
+            Commit(ibOrcamentoPed);
+            ibOrcamentoPed.Close;
+            ibOrcamentoPed.SQL.Clear;
+            ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+            ibOrcamentoPed.Open;
+
+            Vendedor := ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString;
+
+            DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+              AssignFile(F,'LPT1');
+              Rewrite(F);
+              i := 0;
+              Writeln(F,('              ** ORCAMENTO **'));
+              Writeln(F,('----------------------------------------'));
+              Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+              Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+              if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+              Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+              end;
+              Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+              Writeln(F,('----------------------------------------'));
+              Writeln(F,('Vendedor:'+ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString)+' '+' '+'Data:'+' '+DataOrc);
+              Writeln(F,('----------------------------------------'));
+              if lbl_edtNomeRazao.Text <> '' Then begin
+              Writeln(F,('Cliente: '+lbl_edtNomeRazao.Text + '  Fone: '+lbl_edtFoneOrc.Text));
+              end;
+              if lbl_edtEndereco.Text <> '' Then begin
+              Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+              end;
+              if lbl_edtTelCom.Text <> '' Then begin
+              Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+              end;
+              Writeln(F,('----------------------------------------'));
+              while not ibOrcamentoPed.Eof do begin
+
+              Writeln(F,(ibOrcamentoPed.FieldByName('NOMEPROD').AsString));
+              QtdeVenda := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('QTDE').AsFloat);
+              Unitario  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRUNIT').AsFloat);
+              Total     := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+              Writeln(F,(QtdeVenda+' X '+Unitario+' = '+Total));
+
+              ibOrcamentoPed.Next;
+
+              end;//while
+              TotalOrcamento := lbl_edtTotalGeral.Text;
+              Writeln(F,('----------------------------------------'));
+              Writeln(F,('TOTAL..:(R$)'+TotalOrcamento));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              Writeln(F,(''));
+              CloseFile(F);
+
+          end;//if reimpressao
+
+          //////////////////////////////////////////////////////////////////////
+
+          end;//if confirma impressao
+
+        end;//if ckorcamento checked True
+////////////////////////////////////////////////////////////////////////////////
+
+           ckVenda.Checked := True;
+           ckOrcamento.Checked := False;
+           cboFunc.Enabled := False;
+           lbl_edtTotalGeral.Text := '';
+           lbl_edtQtdeItens.Text := '';
+           lbl_edtNumPedido.Text := '';
+           lbl_edtNOrc.Text := '';
+           lbl_edtFoneOrc.Clear;
+           ibOrcamentoPed.Close;
+           ibDetalheOrcamento.Close;
+           LimpaProdutos;
+           LimpaClientes;
+
+       //  end;//if
+         end;//qtde itens e totalgeral > 0
+         
+       end;//begin
+
+       VK_F7 :begin
+
+         dbgPosVenda.SetFocus;
+
+       end;//begin
+
+       VK_F8 :begin
+
+         ibeaExcluirClick(Sender);
+
+       end;//begin
+
+       VK_F9 :begin
+
+         ibeaCadCliClick(Sender);
+
+       end;//begin
+
+       VK_F10 :begin
+
+         dbgOrcamento.SetFocus;
+
+       end;//begin
+
+    end;//case
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.cboFuncKeyPress(Sender: TObject; var Key: Char);
+
+//var
+
+//IDDetalhePosVenda : Integer;
+//strVendedor : String;  // ,strPosVenda
+//ClassVendedor   : TClasseCombo;
+begin
+
+  with dmModule do begin
+
+      if cboFunc.Text = '' then begin
+
+        Application.MessageBox('Favor selecionar um operador?','Operador em branco',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+      end;
+
+   //   if cboFunc.Text<>'' Then begin
+
+      {  if cboFunc.ItemIndex = -1 Then begin
+
+          strVendedor := ' ''0'',';
+
+        end else begin
+
+          ClassVendedor   := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex] );
+          strVendedor          := ' ''' + InttoStr( ClassVendedor.ID ) + ''',';
+
+        end;  }
+
+        //if ckVenda.Checked Then begin
+
+
+          //  if lbl_edtIDPosVenda.Text = '' Then begin
+
+              {ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('INSERT INTO TBLDETALHEPOSVENDA '
+              + '(DATA,IDVENDEDOR,HORA) values '
+              + '(''' + FormatDateTime('mm-dd-yyyy',Now) + ''','
+              +strVendedor
+              + ' ''' + FormatDateTime('hh:mm:ss',Now) + ''')');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda);
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('SELECT IDDETALHEPOSVENDA FROM TBLDETALHEPOSVENDA ORDER BY IDDETALHEPOSVENDA DESC');
+              ibDetalhePosVenda.Open; }
+
+           {   strPosVenda := 'Pendente';
+
+              ibServsVendasCli.Close;
+              ibServsVendasCli.SQL.Clear;
+              ibServsVendasCli.SQL.Add('INSERT INTO TBLSERVICOSVENDASCLI '
+              + '(POSVENDA,NOMEFUNC,IDFUNC,DATA) values '
+              + '( ''' + strPosVenda + ''','
+              + ' ''' + cboFunc.Text + ''','
+              +strVendedor
+              + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+              ibServsVendasCli.ExecSQL;
+              Commit(ibServsVendasCli);
+              ibServsVendasCli.Close;
+              ibServsVendasCli.SQL.Clear;
+              ibServsVendasCli.SQL.Add('SELECT IDSERVSVENDA FROM TBLSERVICOSVENDASCLI ORDER BY IDSERVSVENDA DESC');
+              ibServsVendasCli.Open;
+
+              frmPosVenda.lbl_edtIDPosVenda.Text := IntToStr(ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger);
+
+              IDDetalhePosVenda := (ibServsVendasCli.FieldByName('IDSERVSVENDA').AsInteger); }
+
+          //  end;//idposvenda;
+
+        //  end;//if ckvenda
+
+     // end;//cbofunc
+
+    if key=#13 Then begin
+
+      lbl_edtCodBarras.SetFocus;
+
+    end;//if
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.cboProdClick(Sender: TObject);
+
+var
+
+i : Integer;
+IDDadosProd : TClasseCombo;
+StringDadosProd : String;
+
+begin
+
+  with dmModule do begin
+
+    if cboProd.ItemIndex <> - 1 Then begin
+
+      IDDadosProd := TClasseCombo(cboProd.Items.Objects[cboProd.ItemIndex]);
+      StringDadosProd := ' IDPROD=''' + IntToStr(IDDadosProd.ID) + '''';
+
+    end;{if}
+
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE CADPRODUTOS.IDPROD=''' + IntToStr(IDDadosProd.ID) + '''');
+    ibProdutos.Open;
+
+    (ibProdutos.FieldByName('VALORVENDAA') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibProdutos.FieldByName('VALORVENDAB') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+    (ibProdutos.FieldByName('VALORVENDAC') as TFloatField).DisplayFormat := CasasDecimais('Produtos');
+
+
+ //   lbl_edtRef.Text := ibProdutos.FieldByName('REF').asString;
+
+    for i:=0 to cboProd.Items.Count -1 do begin//COMECA O LOOPING DOS ITENS -1 ATRIBUINDO 0 A VARIAVEL PARA CONTAR 3 REGISTROS EXISTENTES NA TBL.
+      if TClasseCombo( cboProd.Items.Objects[i]).ID = ibProdutos.FieldByName('IDPROD').AsInteger then begin//SE A CLASSE DO COMBO E OS OBJETOS DESSA VARIAVEL FOR IGUAL AOS DADOS DA TABELA
+        cboProd.ItemIndex:= i;//COMECA O LOOPING DO REGISTRO
+        Break;
+      end else begin
+        cboProd.ClearSelection;//LIMPA A SELECAO.
+     end;{if}
+    end;{for}
+
+   { if lbl_TipoPreco.Caption = '' Then begin
+
+      TipoPreco := 'A'
+
+    end; }
+
+  //  if TipoPreco = 'A' Then begin
+
+      lbl_edtVlrUnit.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+    //  lbl_edtTotalProd.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+   //   lbl_Valor.Caption := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+     // lbl_TipoPreco.Caption := 'Preço de Venda(A)';
+      lbl_edtQtde.Text := '1';
+      lbl_edtCodBarras.Text := ibProdutos.FieldByName('CODBARRAS').AsString;
+      lbl_edtCodProd.Text   := IntToStr(ibProdutos.FieldByName('IDPROD').AsInteger);
+    //  lbl_NomeProd.Caption  := ibProdutos.FieldByName('NOME').AsString;
+
+   { end;
+
+    if TipoPreco = 'B' Then begin
+
+      lbl_edtVlrProd.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAB').AsFloat);
+      lbl_edtTotalProd.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAB').AsFloat);
+      lbl_Valor.Caption := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAB').AsFloat);
+      lbl_edtQtde.Text := '1';
+      lbl_CodBarras.Caption := ibProdutos.FieldByName('CODBARRAS').AsString;
+      lbl_NomeProd.Caption  := ibProdutos.FieldByName('NOME').AsString;
+
+    end;
+
+    if TipoPreco = 'C' Then begin
+
+      lbl_edtVlrProd.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAC').AsFloat);
+      lbl_edtTotalProd.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAC').AsFloat);
+      lbl_Valor.Caption := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAC').AsFloat);
+      lbl_edtQtde.Text := '1';
+      lbl_CodBarras.Caption := ibProdutos.FieldByName('CODBARRAS').AsString;
+      lbl_NomeProd.Caption  := ibProdutos.FieldByName('NOME').AsString;
+
+    end; }
+
+    lbl_edtQtde.SetFocus;
+
+  end;{with}
+
+
+end;
+
+procedure TfrmPosVenda.lbl_edtQtdeKeyPress(Sender: TObject; var Key: Char);
+
+ //  var
+//    Valor1 :Real;
+//    Valor2 :Real;
+
+begin
+
+  if key=#13 Then begin
+
+   { if (cboProd.Text <> '') Then begin
+
+      if lbl_edtQtde.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+        if (Pos(',',lbl_edtQtde.Text)>0) and (lbl_edtQtde.Text <> '') Then begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor2 * Valor1));
+
+        end else begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]));
+          lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor2 * Valor1)); }
+
+      //  end;{if}
+
+     // end;{if}
+
+   // end;{if cbo produto}
+
+    lbl_edtPorcentagemDesc.SetFocus;
+
+  end;//if key #13
+
+end;
+
+procedure TfrmPosVenda.ibeaCadCliClick(Sender: TObject);
+
+var
+Cep,IDClass,IDCadNovo,IDClassTelCom,IDClassTelCel : Integer;
+ConfirmaCadastro : Integer;
+
+begin
+
+  with dmModule do begin
+
+  //ConfirmaCadastro := Application.MessageBox('Confirma o registro?','Cadastro de Cliente',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if lbl_edtNomerazao.Text <> '' Then begin
+
+      //if ConfirmaCadastro = 6 Then begin
+
+        if lbl_edtCep.Text = '' Then begin  //atribui  vlr 0 a variavel cep
+
+          Cep := 0;
+
+        end else begin // caso esteja em branco atribui o vlr do campo na variavel cep
+
+          Cep := strtoint( StringReplace(lbl_edtCep.Text,'-','',[rfReplaceAll]) );
+
+        end;
+
+        IDClass := 3;
+
+        ibCadastro.Close;
+        ibCadastro.SQL.Clear;
+        ibCadastro.SQL.Add('INSERT INTO TBLCADASTRO '
+        + ' (IDCLASS,NOME,NUMERO,COMPL,DATA,TELEFONE,CELULAR,ENDERECO,BAIRRO,CEP) values '
+        + ' (''' + IntToStr(IDClass) + ''',''' + lbl_edtNomerazao.Text + ''','
+        + ' ''' + lbl_edtNumero.Text + ''',''' + lbl_edtComplemento.Text + ''','
+       // + ' ''' + lbl_edtPontoreferencia.Text + ''',''' + lbl_edtObs.Text + ''','    CIDADE,ESTADO,
+        + ' ''' + FormatDateTime('mm-dd-yyyy',Now) + ''','
+        + ' ''' + lbl_edtTelCom.Text + ''','
+        + ' ''' + lbl_edtCelular.Text + ''','
+        + ' ''' + lbl_edtEndereco.Text + ''','
+        + ' ''' + lbl_edtBairro.Text + ''','
+        + ' ''' + IntToStr(Cep) + ''')');
+        ibCadastro.ExecSQL;
+        Commit(ibCadastro);
+
+        ibCadastro.Close;
+        ibCadastro.SQL.Clear;
+        ibCadastro.SQL.Add('SELECT IDCAD FROM TBLCADASTRO ORDER BY TBLCADASTRO.IDCAD DESC');
+        ibCadastro.Open;
+
+
+        IDCadNovo := ibCadastro.FieldByName('IDCAD').AsInteger;//atribui o id do nome a variavel.
+
+        lbl_edtCodCli.Text := IntToStr(IDCadNovo);
+        
+        if lbl_edtEndereco.Text <> '' Then begin
+
+          ibLogradouro.Close;
+          ibLogradouro.SQL.Clear;
+          ibLogradouro.SQL.Add('INSERT INTO TBLLOGRADOURO '
+          + ' (IDCAD,ENDERECO,BAIRRO) values '
+          + ' (''' + IntToStr(IDCadNovo) + ''',''' + lbl_edtEndereco.Text + ''','
+          + ' ''' + lbl_edtBairro.Text + ''')');
+          ibLogradouro.ExecSQL;
+          Commit(ibLogradouro);
+
+        end;
+
+        //end;//if
+      //end;//if confirma cadastro
+
+    end;//if label nomecliente
+    LimpaClientes;
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.lbl_edtTelComExit(Sender: TObject);
+
+//var
+//IDClass : Integer;
+
+begin
+
+tedit(sender).color := clwindow;
+
+  with dmModule do begin
+
+    if (lbl_edtTelCom.Text <> '')and(lbl_edtNomerazao.Text = '') Then begin
+
+      lbl_edtTelCom.Text := StringReplace(lbl_edtTelCom.Text,'-','',[rfReplaceAll]);
+      lbl_edtTelCom.Text := FormatFloat('0000-0000',StrToFloat(lbl_edtTelCom.Text));
+
+   // end;
+
+    {ibClassificacao.Close;
+    ibClassificacao.SQL.Clear;
+    ibClassificacao.SQL.Add('SELECT IDCLASS FROM TBLCLASSIFICACAO WHERE DESCRICAO=''Clientes''');
+    ibClassificacao.Open; }
+   // IDClass := ibClassificacao.FieldByName('IDCLASS').AsInteger; // ATRIBUI A IDENTIFICAÇÃO DO FORNECEDOR NA VARIAVEL.
+
+    Commit(ibCadastro);
+    ibCadastro.Close;                                                                                    //  and TBLCADASTRO.NOME LIKE '+''''+'%'+lbl_edtNome.text+'%'+'''
+    ibCadastro.SQL.Clear;
+    ibCadastro.SQL.Add('SELECT * FROM TBLCADASTRO WHERE TELEFONE=''' + lbl_edtTelCom.Text + '''');
+    ibCadastro.Open;
+
+    if ibCadastro.RecordCount > 0 Then begin
+
+      lbl_edtCodCli.Text    := IntToStr(ibCadastro.FieldByName('IDCAD').AsInteger); 
+      lbl_edtNomerazao.Text := ibCadastro.FieldByName('NOME').AsString;
+      lbl_edtCelular.Text   := ibCadastro.FieldByName('CELULAR').AsString;
+      lbl_edtEndereco.Text  := ibCadastro.FieldByName('ENDERECO').AsString;
+      lbl_edtBairro .Text   := ibCadastro.FieldByName('BAIRRO').AsString;
+      lbl_edtNumero .Text   := ibCadastro.FieldByName('NUMERO').AsString;
+
+    end;//IF
+
+    end;//if label telefone <> ''
+
+  end;{With}
+
+end;
+
+procedure TfrmPosVenda.lbl_edtCelularExit(Sender: TObject);
+
+//var
+//IDClass : Integer;
+
+begin
+
+tedit(sender).color := clwindow;
+
+  with dmModule do begin
+
+    if (lbl_edtCelular.Text <> '')and(lbl_edtNomerazao.Text = '') Then begin
+
+      lbl_edtCelular.Text := StringReplace(lbl_edtCelular.Text,'-','',[rfReplaceAll]);
+      lbl_edtCelular.Text := FormatFloat('0000-0000',StrToFloat(lbl_edtCelular.Text));
+
+    //end;
+
+    {ibClassificacao.Close;
+    ibClassificacao.SQL.Clear;
+    ibClassificacao.SQL.Add('SELECT IDCLASS FROM TBLCLASSIFICACAO WHERE DESCRICAO=''Clientes''');
+    ibClassificacao.Open;}
+   // IDClass := ibClassificacao.FieldByName('IDCLASS').AsInteger; // ATRIBUI A IDENTIFICAÇÃO DO FORNECEDOR NA VARIAVEL.
+
+    Commit(ibCadastro);
+    ibCadastro.Close;                                                                                    //  and TBLCADASTRO.NOME LIKE '+''''+'%'+lbl_edtNome.text+'%'+'''
+    ibCadastro.SQL.Clear;
+    ibCadastro.SQL.Add('SELECT * FROM TBLCADASTRO WHERE CELULAR=''' + lbl_edtCelular.Text + '''');
+    ibCadastro.Open;
+
+    if ibCadastro.RecordCount > 0 Then begin
+
+      lbl_edtCodCli.Text    := IntToStr(ibCadastro.FieldByName('IDCAD').AsInteger); 
+      lbl_edtNomerazao.Text := ibCadastro.FieldByName('NOME').AsString;
+      lbl_edtTelCom .Text   := ibCadastro.FieldByName('TELEFONE').AsString;
+      lbl_edtEndereco.Text  := ibCadastro.FieldByName('ENDERECO').AsString;
+      lbl_edtBairro .Text   := ibCadastro.FieldByName('BAIRRO').AsString;
+      lbl_edtNumero .Text   := ibCadastro.FieldByName('NUMERO').AsString;
+
+    end;//IF
+
+    end;//if label celular <> ''
+
+  end;{With}
+end;
+
+procedure TfrmPosVenda.ibeaConsultaCliClick(Sender: TObject);
+begin
+frmBuscaClientes.ShowModal;
+end;
+
+procedure TfrmPosVenda.lbl_edtTelComKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtCelular.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtCelularKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtNomerazao.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtVlrTotalKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  with dmModule do begin
+
+    if key=#13 Then begin
+
+      ibeaIncluirClick(Sender);
+      lbl_edtCodBarras.SetFocus;
+
+    end;//if
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.FormCreate(Sender: TObject);
+
+var
+ i : Integer;
+ 
+begin
+
+MontaColunas := True;
+MontaColunasOrcamento := True;
+
+////////////////////////////////////////////////////////////////////////////////
+
+        ComboBox1.Items.Clear;
+
+        For I:= 1 to Printer.Printers.Count do
+
+        Begin
+
+                if Pos('LPT', printer.Printers.Strings[I-1]) > 0Then
+
+                ComboBox1.Items.Add('LPT1')
+
+                Else if Pos('\', printer.Printers.Strings[I-1]) > 0 Then
+
+                ComboBox1.Items.Add(Copy(printer.Printers.Strings[I-1],
+
+                Pos('\', printer.Printers.Strings[I-1]),
+
+                length(printer.Printers.Strings[I-1]) -
+
+                Pos('\', printer.Printers.Strings[I-1]) + 1));
+
+        End;
+
+
+// e quando apertar o botao imprimir, o evento pega qual a impressora
+// que vocÊ escolheu atravéz do ComboBox e Imprimi.
+
+
+// e quando apertar o botao imprimir, o evento pega qual a impressora
+// que vocÊ escolheu atravéz do ComboBox e Imprimi.
+
+////////////////////////////////////////////////////////////////////////////////
+
+end;
+
+procedure TfrmPosVenda.lbl_edtNomerazaoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtCnpj_cpf.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtIE_rgKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtEndereco.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtCnpj_cpfKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtIE_rg.SetFocus;
+
+  end;//ifend;
+
+end;
+  
+procedure TfrmPosVenda.lbl_edtEnderecoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtNumero.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtNumeroKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtComplemento.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtComplementoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtBairro.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.lbl_edtBairroKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtCep.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.dbgPosVendaCellClick(Column: TColumn);
+
+var
+
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+      IDProdutoPedido := ibServsVenda.FieldByName('IDPROD').AsInteger;
+      IDServs         := ibServsVenda.FieldByName('IDSERVS').AsInteger;
+
+      if ibServsVenda.RecordCount > 0 Then begin
+
+        lbl_edtVlrTotal.Text  := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+        lbl_edtQtde.Text      := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+        lbl_edtCodProd.Text   := IntToStr(ibServsVenda.FieldByName('IDPROD').AsInteger);
+
+      end;{if}
+
+      for i:=0 to cboProd.Items.Count -1 do begin
+        if TClasseCombo( cboProd.Items.Objects[i]).ID = ibServsVenda.FieldByName('IDPROD').AsInteger then begin
+          cboProd.ItemIndex:= i;
+          Break;
+        end else begin
+          cboProd.ClearSelection;
+        end;
+      end;
+
+
+  end;{with}
+
+
+end;
+
+procedure TfrmPosVenda.ibeaExcluirClick(Sender: TObject);
+
+var
+ConfirmaCancelamento : Integer;
+Valor1,Valor2,Valor3 : Real;
+ValorVendaCx,ValorCancelado, TotalCancelado : Real;
+QtdeEstoque, VlrProduto, ValorCustoE : Real;
+QtdeVenda, QtdeItens, Itens1, Itens2 : Real;
+EstoqueFinal, TotalProdEstoque, TotalCusto : String;
+begin
+
+  with dmModule do begin
+
+  if (lbl_edtCodProd.Text <>'')and(lbl_edtQtde.Text <> '')and(lbl_edtVlrTotal.Text <> '')Then begin
+
+  ConfirmaCancelamento := Application.MessageBox('Confirma o cancelamento','exclusão de registro',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaCancelamento = 6 Then begin
+
+      ibServsVenda.Close;
+      ibServsVenda.SQL.Clear;
+      ibServsVenda.SQL.Add('DELETE FROM TBLSERVICOSVENDAS WHERE IDSERVS=''' + InttoStr(IDServs) + '''');
+      ibServsVenda.Open;
+      Commit(ibServsVenda);
+      
+      ibPosVenda.Close;
+      ibPosVenda.SQL.Clear;
+      ibPosVenda.SQL.Add('DELETE FROM TBLPOSVENDA WHERE(IDPROD=''' + lbl_edtCodProd.Text + ''')and(IDDETALHEPV=''' + lbl_edtIDPosVenda.Text + ''')');
+      ibPosVenda.Open;
+      Commit(ibPosVenda);
+////////////////////////////////////////////////////////////////////////////////
+
+      if lbl_edtVlrTotal.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+        if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtTotalGeral.Text = '' Then begin
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+          end;
+
+          if lbl_edtTotalGeral.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Valor2 > Valor1 then begin
+
+          Valor3 := (Valor2 - Valor1);
+
+          end else if Valor1 > Valor2 then begin
+
+          Valor3 := (Valor1 - Valor2);
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+         // end;
+
+          end else begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtTotalGeral.Text = '' Then begin
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+          end;
+
+          if lbl_edtTotalGeral.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Valor2 > Valor1 then begin
+
+          Valor3 := (Valor2 - Valor1);
+
+          end else if Valor1 > Valor2 then begin
+
+          Valor3 := (Valor1 - Valor2);
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+          end;
+
+      // end;{if}
+
+    //  end;{if}
+
+////////////////////////////////////////////////////////////////////////////////
+
+      if lbl_edtQtde.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+        if (Pos(',',lbl_edtQtde.Text)>0) and (lbl_edtQtde.Text <> '') Then begin
+
+          Itens1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtQtdeItens.Text = '' Then begin
+
+          lbl_edtQtdeItens.Text := FormatFloat(',0.00',(Itens1));
+
+          end;
+
+          if lbl_edtQtdeItens.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Itens2 := StrToFloat(StringReplace(lbl_edtQtdeItens.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Itens2 > Itens1 then begin
+
+          QtdeItens := (Itens2 - Itens1);
+
+          end else if Itens1 > Itens2 then begin
+
+          QtdeItens := (Itens1 - Itens2);
+
+          end;
+
+          lbl_edtQtdeItens.Text := FormatFloat(',0.00',(QtdeItens));
+
+         // end;
+
+          end else begin
+
+          Itens1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtQtdeItens.Text = '' Then begin
+
+          lbl_edtQtdeItens.Text := FormatFloat(',0.00',(Itens1));
+
+          end;
+
+          if lbl_edtQtdeItens.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Itens2 := StrToFloat(StringReplace(lbl_edtQtdeItens.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Itens2 > Itens1 then begin
+
+          QtdeItens := (Itens2 - Itens1);
+
+          end else if Itens1 > Itens2 then begin
+
+          QtdeItens := (Itens1 - Itens2);
+
+          end;
+
+          lbl_edtQtdeItens.Text := FormatFloat(',0.00',(QtdeItens));
+
+          end;
+
+          lbl_edtQtdeItens.Text := FormatFloat(',0.00',(QtdeItens));
+
+          end;
+
+      // end;{if}
+
+    //  end;{if}
+
+////////////////////////////////////////////////////////////////////////////////
+
+  //ROTINA PARA CONTROLE DE ESTOQUE
+
+      ibEntrProdEstoque.Close;
+      ibEntrProdEstoque.SQL.Clear;
+      ibEntrProdEstoque.SQL.Add('SELECT TBLENTRADAESTOQUEPROD.QUANTIDADE,'
+      + 'TBLENTRADAESTOQUEPROD.VLRTOTAL,TBLENTRADAESTOQUEPROD.IDPROD,'
+      + 'CADPRODUTOS.VALORVENDAA,CADPRODUTOS.VALORCUSTO,CADPRODUTOS.TIPOPROD FROM TBLENTRADAESTOQUEPROD '
+      + 'INNER JOIN CADPRODUTOS ON TBLENTRADAESTOQUEPROD.IDPROD=CADPRODUTOS.IDPROD '
+      + 'WHERE TBLENTRADAESTOQUEPROD.IDPROD=''' + IntToStr(IDProdutoPedido) + '''');
+      ibEntrProdEstoque.Open;
+
+      //ROTINA ABAIXO PARA SOMAR TOTAL DO ESTQUE E QUANTIDADE DO ESTOQUE
+
+      //traz na variavel a qtde conf. prod da select identificado por id.
+      QtdeEstoque := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+     // QtdeEstoque := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat),DecimalSeparator,',',[rfReplaceAll]));
+
+      QtdeVenda   := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+      QtdeEstoque := QtdeEstoque + QtdeVenda;
+
+      EstoqueFinal := StringReplace(FloattoStr(QtdeEstoque),ThousandSeparator,'',[rfReplaceAll]);
+      EstoqueFinal := StringReplace(EstoqueFinal,DecimalSeparator,'.',[rfReplaceAll]);
+
+      //AQUI VAI O CALCULO DO TOTAL CONFORME VENDE O PRODUTO
+      VlrProduto  := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('VALORVENDAA').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+      VlrProduto  := QtdeEstoque * VlrProduto;
+
+      TotalProdEstoque := StringReplace(FloattoStr(VlrProduto),ThousandSeparator,'',[rfReplaceAll]);
+      TotalProdEstoque := StringReplace(TotalProdEstoque,DecimalSeparator,'.',[rfReplaceAll]);
+
+
+      ValorCustoE := StrtoFloat(StringReplace(FloattoStr(ibEntrProdEstoque.FieldByName('VALORCUSTO').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+      ValorCustoE := QtdeEstoque * ValorCustoE;
+
+      TotalCusto := StringReplace(FloattoStr(ValorCustoE),ThousandSeparator,'',[rfReplaceAll]);
+      TotalCusto := StringReplace(TotalCusto,DecimalSeparator,'.',[rfReplaceAll]);
+
+       //se houver registro ele atribui na alteracao o vlr da variavel
+       if ibEntrProdEstoque.RecordCount > 0 Then begin
+
+         ibEntrProdEstoque.Close;
+         ibEntrProdEstoque.SQL.Clear;
+         ibEntrProdEstoque.SQL.Add('UPDATE TBLENTRADAESTOQUEPROD SET '
+         +'QUANTIDADE=''' + (EstoqueFinal) + ''','
+         +'TOTALCUSTO=''' + TotalCusto + ''','
+         +'VLRTOTAL=''' + (TotalProdEstoque) +  ''' WHERE IDPROD=''' + IntToStr(IDProdutoPedido) + '''');
+         ibEntrProdEstoque.ExecSQL;
+         Commit(ibEntrProdEstoque);
+
+       end;{if}
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+      ExecSELECT;
+      LimpaProdutos;
+
+    end;//if
+  end;//if vlrtotal<> ''
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.dbgPosVendaKeyPress(Sender: TObject; var Key: Char);
+
+var
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+    if key=#13 Then begin
+
+      IDProdutoPedido := ibServsVenda.FieldByName('IDPROD').AsInteger;
+      IDServs         := ibServsVenda.FieldByName('IDSERVS').AsInteger;
+
+      if ibServsVenda.RecordCount > 0 Then begin
+
+        lbl_edtVlrTotal.Text  := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+        lbl_edtQtde.Text      := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+        lbl_edtCodProd.Text   := IntToStr(ibServsVenda.FieldByName('IDPROD').AsInteger);
+
+      end;{if}
+
+      for i:=0 to cboProd.Items.Count -1 do begin
+        if TClasseCombo( cboProd.Items.Objects[i]).ID = ibServsVenda.FieldByName('IDPROD').AsInteger then begin
+          cboProd.ItemIndex:= i;
+          Break;
+        end else begin
+          cboProd.ClearSelection;
+        end;
+      end;
+
+    end;//if
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.ckVendaCheck(Sender: TObject);
+begin
+
+if ckVenda.Checked Then begin
+
+ckOrcamento.Checked := False;
+
+end;
+
+end;
+
+procedure TfrmPosVenda.ckOrcamentoCheck(Sender: TObject);
+begin
+
+if ckOrcamento.Checked Then begin
+
+ckVenda.Checked := False;
+
+end;
+
+end;
+
+procedure TfrmPosVenda.Venda2Click(Sender: TObject);
+begin
+ckVenda.Checked := True;
+ckOrcamento.Checked := False;
+end;
+
+procedure TfrmPosVenda.Orcamento1Click(Sender: TObject);
+
+
+var
+IDDetalheOrc,ConfirmaOrcamento : Integer;
+begin
+
+ckOrcamento.Checked := True;
+ckVenda.Checked := False;
+
+  with dmModule do begin
+
+    ConfirmaOrcamento := Application.MessageBox('Este Procedimento gera número de Orçamento deseja continuar?','Orçamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaOrcamento = 6 Then begin
+ 
+      ibDetalheOrcamento.Close;
+      ibDetalheOrcamento.SQL.Clear;
+      ibDetalheOrcamento.SQL.Add('INSERT INTO TBLDETALHEORCAMENTO '
+      + '(DATA) values '
+      + '( ''' + FormatDateTime('mm-dd-yyyy',Now) + ''')');
+      ibDetalheOrcamento.ExecSQL;
+
+      ibDetalheOrcamento.Close;
+      ibDetalheOrcamento.SQL.Clear;
+      ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO ORDER BY IDDETALHEORCAMENTO DESC');
+      ibDetalheOrcamento.Open;
+
+      IDDetalheOrc := ibDetalheOrcamento.FieldByName('IDDETALHEORCAMENTO').AsInteger;
+
+      lbl_edtNOrc.Text := IntToStr(IDDetalheOrc);
+
+    end;//if confirma orcamento  
+
+    lbl_edtFoneOrc.SetFocus;
+    ExecSELECTOrcamento;
+    
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.Sair1Click(Sender: TObject);
+begin
+frmPosVenda.Close;
+frmPosVenda.Refresh;
+end;
+
+procedure TfrmPosVenda.dbgOrcamentoKeyPress(Sender: TObject;
+  var Key: Char);
+
+var
+i : Integer;
+IDClassVendedorOrc : TClasseCombo;
+Valor1,Valor2,Valor3 : Real;
+begin
+
+  with dmModule do begin
+
+    if key=#13 Then begin
+
+      IDCancelaOrcamento := ibOrcamentoPed.FieldByName('IDORCAMENTO').AsInteger;
+
+      if cboFunc.ItemIndex <> -1 Then begin
+
+      IDClassVendedorOrc := TClasseCombo(cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+      end;
+
+      if ibOrcamentoPed.RecordCount > 0 Then begin
+
+        Commit(ibOrcamentoPed);
+        ibOrcamentoPed.Close;
+        ibOrcamentoPed.SQL.Clear;
+        ibOrcamentoPed.SQL.Add('DELETE FROM TBLORCAMENTOPEDIDO WHERE IDORCAMENTO=''' + IntToStr(IDCancelaOrcamento) + '''');
+        ibOrcamentoPed.Open;
+
+
+        Commit(ibOrcamentoPed);
+        ibOrcamentoPed.Close;
+        ibOrcamentoPed.SQL.Clear;
+        ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDVENDEDOR=''' + IntToStr(IDClassVendedorOrc.ID) + '''and IDDETALHEORC=''' + lbl_edtNOrc.Text + '''');
+        ibOrcamentoPed.Open;
+
+        (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+      end;{if}
+
+    end;//if
+if lbl_edtVlrTotal.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+        if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtTotalGeral.Text = '' Then begin
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+          end;
+
+          if lbl_edtTotalGeral.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Valor2 > Valor1 then begin
+
+          Valor3 := (Valor2 - Valor1);
+
+          end else if Valor1 > Valor2 then begin
+
+          Valor3 := (Valor1 - Valor2);
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+         // end;
+
+          end else begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          if lbl_edtTotalGeral.Text = '' Then begin
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor1));
+
+          end;
+
+          if lbl_edtTotalGeral.Text <> '' Then begin
+
+          //Valor1 := StrToFloat(StringReplace(lbl_edtTotalPed.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtTotalGeral.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          end;
+
+
+          if Valor2 > Valor1 then begin
+
+          Valor3 := (Valor2 - Valor1);
+
+          end else if Valor1 > Valor2 then begin
+
+          Valor3 := (Valor1 - Valor2);
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+          end;
+
+          lbl_edtTotalGeral.Text := FormatFloat(',0.00',(Valor3));
+
+          end;
+
+      // end;{if}
+
+    //  end;{if}
+
+////////////////////////////////////////////////////////////////////////////////
+
+  end;//with
+
+
+end;
+
+procedure TfrmPosVenda.dbgOrcamentoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  with dmModule do begin
+
+      if ibOrcamentoPed.RecordCount > 0 Then begin
+
+        lbl_edtVlrTotal.Text  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+
+      end;{if}
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.dbgOrcamentoKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  with dmModule do begin
+
+      if ibOrcamentoPed.RecordCount > 0 Then begin
+
+        lbl_edtVlrTotal.Text  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+
+      end;{if}
+
+  end;//with
+  
+end;
+
+procedure TfrmPosVenda.Devolucao1Click(Sender: TObject);
+begin
+//frmTrocaMercadoria.ShowModal;
+end;
+
+procedure TfrmPosVenda.CodigodeBarras1Click(Sender: TObject);
+begin
+lbl_edtCodBarras.SetFocus;
+end;
+
+procedure TfrmPosVenda.lbl_edtCodBarrasExit(Sender: TObject);
+
+var
+i, intIDProd : Integer;
+
+begin
+
+tedit(sender).color := clwindow;
+
+  with dmModule do begin
+
+    if lbl_edtCodBarras.Text <> '' Then begin
+
+      ibProdutos.Close;
+      ibProdutos.SQL.Clear;
+      ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE CADPRODUTOS.CODBARRAS=''' + lbl_edtCodBarras.Text + ''' OR CADPRODUTOS.REF=''' + lbl_edtCodBarras.Text + '''');
+      ibProdutos.Open;
+
+      intIDProd := ibProdutos.FieldByName('IDPROD').AsInteger;
+
+      lbl_edtVlrUnit.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+      lbl_edtCodProd.Text := IntToStr(intIDProd);
+      
+      for i:=0 to cboProd.Items.Count -1 do begin//COMECA O LOOPING DOS ITENS -1 ATRIBUINDO 0 A VARIAVEL PARA CONTAR 3 REGISTROS EXISTENTES NA TBL.
+        if TClasseCombo( cboProd.Items.Objects[i]).ID = ibProdutos.FieldByName('IDPROD').AsInteger then begin//SE A CLASSE DO COMBO E OS OBJETOS DESSA VARIAVEL FOR IGUAL AOS DADOS DA TABELA
+          cboProd.ItemIndex:= i;//COMECA O LOOPING DO REGISTRO
+          Break;
+        end else begin
+          cboProd.ClearSelection;//LIMPA A SELECAO.
+        end;{if}
+     end;{for}
+
+  //////ROTINA PARA TRAZER A QTDE DE ESTOQUE
+
+      Commit(ibConfig);
+      ibConfig.Close;
+      ibConfig.SQL.Clear;
+      ibConfig.SQL.Add('SELECT * FROM TBLCONFIGURACOES');
+      ibConfig.Open;
+
+    //  if ibConfig.FieldByName('ESTOQUEITEMCX').AsString = 'Sim' Then begin
+
+      {  ibEntrProdEstoque.Close;
+        ibEntrProdEstoque.SQL.Clear;
+        ibEntrProdEstoque.SQL.Add('SELECT CADPRODUTOS.*,LOCALESTOCAGEM.NOME As Estoque,'
+        + 'TBLENTRADAESTOQUEPROD.QUANTIDADE As TotalEstoque FROM CADPRODUTOS '
+        + 'INNER JOIN LOCALESTOCAGEM ON CADPRODUTOS.IDLOCAL=LOCALESTOCAGEM.IDESTOQUE '
+        + 'LEFT OUTER JOIN TBLENTRADAESTOQUEPROD ON CADPRODUTOS.IDPROD=TBLENTRADAESTOQUEPROD.IDPROD WHERE CADPRODUTOS.CODBARRAS=''' + lbl_edtCodBarras.Text + '''');
+        ibEntrProdEstoque.Open;  }
+
+       { ibEntrProdEstoque.Close;
+        ibEntrProdEstoque.SQL.Clear;
+        ibEntrProdEstoque.SQL.Add('SELECT IDPROD,QUANTIDADE FROM TBLENTRADAESTOQUEPROD WHERE IDPROD=''' + IntToStr(intIDProd) + '''');
+        ibEntrProdEstoque.Open;
+
+        lbl_QtdeEstoque.Caption := 'Qtde. Estoque: '+FormatFloat(CasasDecimais('Produtos'),ibEntrProdEstoque.FieldByName('QUANTIDADE').AsFloat);//(FormatFloat('0',StrToFloat(ibEntrProdEstoque.FieldByName('QUANTIDADE').AsString)));
+
+     // end;
+
+      lbl_edtQtde.Text := '1'; } 
+
+   end;//if label cod barras <> ''
+
+ end;//with
+
+end;
+
+procedure TfrmPosVenda.lbl_edtCodBarrasChange(Sender: TObject);
+
+//var
+//i : Integer;
+
+begin
+
+{  with dmModule do begin
+
+    ibProdutos.Close;
+    ibProdutos.SQL.Clear;
+    ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE CADPRODUTOS.CODBARRAS=''' + lbl_edtCodBarras.Text + '''');
+    ibProdutos.Open;
+
+    lbl_edtVlrUnit.Text := FormatFloat(CasasDecimais('Produtos'),ibProdutos.FieldByName('VALORVENDAA').AsFloat);
+
+ //   lbl_edtCodProd.Text := ibProdutos.FieldByName('IDPROD').AsString;
+  //  lbl_edtEstoque.Text := ibProdutos.FieldByName('Estoque').AsString;
+
+    for i:=0 to cboProd.Items.Count -1 do begin//COMECA O LOOPING DOS ITENS -1 ATRIBUINDO 0 A VARIAVEL PARA CONTAR 3 REGISTROS EXISTENTES NA TBL.
+      if TClasseCombo( cboProd.Items.Objects[i]).ID = ibProdutos.FieldByName('IDPROD').AsInteger then begin//SE A CLASSE DO COMBO E OS OBJETOS DESSA VARIAVEL FOR IGUAL AOS DADOS DA TABELA
+        cboProd.ItemIndex:= i;//COMECA O LOOPING DO REGISTRO
+        Break;
+      end else begin
+        cboProd.ClearSelection;//LIMPA A SELECAO. }
+   ////   end;{if}
+ ////   end;{for}
+
+   { lbl_edtQtde.Text := '1';
+
+     lbl_edtQtdeExit(Sender);
+
+    if (lbl_edtQtde.Text > '0')  and (lbl_edtVlrTotal.Text > '0,00')  Then begin
+
+     lbl_edtVlrTotal.SetFocus; ?}
+
+ ////   end;{if}
+
+ //// end;//with
+
+end;
+
+procedure TfrmPosVenda.lbl_edtQtdeExit(Sender: TObject);
+
+   var
+    Valor1 :Real;
+    Valor2 :Real;
+
+begin
+
+tedit(sender).color := clwindow;
+ // if key=#13 Then begin
+
+    if (cboProd.Text <> '') Then begin
+
+      if lbl_edtQtde.Text <> '' Then begin// se for em branco executa rotina abaixo.
+
+        if (Pos(',',lbl_edtQtde.Text)>0) and (lbl_edtQtde.Text <> '') Then begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]));
+
+          lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor2 * Valor1));
+
+        end else begin
+
+          Valor1 := StrToFloat(StringReplace(lbl_edtQtde.Text,ThousandSeparator,'',[rfReplaceAll]));
+          Valor2 := StrToFloat(StringReplace(lbl_edtVlrUnit.Text,ThousandSeparator,'',[rfReplaceAll]));
+          lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor2 * Valor1));
+
+        end;{if}
+
+      end;{if}
+
+    end;{if cbo produto}
+
+ //   lbl_edtVlrTotal.SetFocus;
+
+ // end;//if key #13
+
+
+end;
+
+procedure TfrmPosVenda.ImprimeOrcamento1Click(Sender: TObject);
+
+var
+ConfirmaImpressao, IDDetalheOrc, i, ConfirmaCliente : Integer;
+F : TextFile;
+QtdeVenda,Unitario,Total,Vendedor,TotalOrcamento,DataOrc : String;
+
+begin
+
+  with dmModule do begin
+
+    if lbl_edtNOrc.Text > '0' Then begin
+
+    IDDetalheOrc := StrToInt(lbl_edtNOrc.Text);
+
+           ConfirmaCliente := Application.MessageBox('Confirma o cadastro do cliente, clique em sim para cancelar e não para cadastrar','Cadastro de cliente',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+           if ConfirmaCliente = 6 Then begin
+
+           end else begin
+           
+             ibeaCadCliClick(Sender);
+
+           end;
+
+      ConfirmaImpressao := Application.MessageBox('Imprimir Orçamento?','Orçamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+      if ConfirmaImpressao = 6 then begin
+
+        Commit(ibDadosEmpresa);
+        ibDadosEmpresa.Close;
+        ibDadosEmpresa.SQL.Clear;
+        ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+        ibDadosEmpresa.Open;
+
+        Commit(ibDetalheOrcamento);
+        ibDetalheOrcamento.Close;
+        ibDetalheOrcamento.SQL.Clear;
+        ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE IDDETALHEORCAMENTO=''' + IntToStr(IDDetalheOrc) + '''');
+        ibDetalheOrcamento.Open;
+
+        Commit(ibOrcamentoPed);
+        ibOrcamentoPed.Close;
+        ibOrcamentoPed.SQL.Clear;
+        ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+        ibOrcamentoPed.Open;
+
+        (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+        //AssignFile(F,'LPT1');
+        AssignPrn(F);
+        Rewrite(F);
+        i := 0;
+        Writeln(F,('              ** Orcamento **'));
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+        Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+        if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+        end;
+        Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+       { if ibDadosEmpresa.FieldByName('CNPJCPF').AsString <> '' Then begin
+        Writeln(F,('CNPJ:'+ibDadosEmpresa.FieldByName('CNPJCPF').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('IE').AsString <> '' Then begin
+        Writeln(F,('IE:'+ibDadosEmpresa.FieldByName('IE').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('INFORMACOES').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('INFORMACOES').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('SITE').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('SITE').AsString));
+        end;}
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,('Vendedor:'+ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString)+' '+' '+'Data:'+' '+DataOrc + '  Numero: '+lbl_edtNOrc.Text);
+        Writeln(F,('-------------------------------------------'));
+        if ibOrcamentoPed.FieldByName('NOMECLIENTE').AsString <> '' Then begin
+        Writeln(F,('Cliente: '+(ibOrcamentoPed.FieldByName('NOMECLIENTE').AsString) + '  Fone: '+(ibOrcamentoPed.FieldByName('TELEFONECLI').AsString)));
+        end;
+        if lbl_edtEndereco.Text <> '' Then begin
+        Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+        end;
+        if lbl_edtTelCom.Text <> '' Then begin
+        Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+        end;
+        Writeln(F,('--------------------------------------------------'));
+        while not ibOrcamentoPed.Eof do begin
+
+        Writeln(F,(ibOrcamentoPed.FieldByName('NOMEPROD').AsString));
+        QtdeVenda := FormatFloat('0',ibOrcamentoPed.FieldByName('QTDE').AsFloat);
+        Unitario  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRUNIT').AsFloat);
+        Total     := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+        Writeln(F,(QtdeVenda+' X '+Unitario+' = '+Total));
+
+        ibOrcamentoPed.Next;
+
+        end;//while
+        TotalOrcamento := lbl_edtTotalGeral.Text;
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,('TOTAL..:(R$)'+TotalOrcamento));
+        CloseFile(F);
+
+
+      end;//if confirma impressao
+
+    end;//if numero orc > 0
+////////////////////////////////////////////////////////////////////////////////
+
+    if lbl_edtFoneOrc.Text > '0' Then begin
+
+      ConfirmaImpressao := Application.MessageBox('Reimprimir Orçamento?','Orçamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+      if ConfirmaImpressao = 6 then begin
+
+        Commit(ibDadosEmpresa);
+        ibDadosEmpresa.Close;
+        ibDadosEmpresa.SQL.Clear;
+        ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+        ibDadosEmpresa.Open;
+
+        Commit(ibDetalheOrcamento);
+        ibDetalheOrcamento.Close;
+        ibDetalheOrcamento.SQL.Clear;
+        ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE IDDETALHEORCAMENTO=''' + IntToStr(IDDetalheOrc) + '''');
+        ibDetalheOrcamento.Open;
+
+        Commit(ibOrcamentoPed);
+        ibOrcamentoPed.Close;
+        ibOrcamentoPed.SQL.Clear;
+        ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+        ibOrcamentoPed.Open;
+
+        (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+        (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+        //AssignFile(F,'LPT1');
+        AssignPrn(F);
+        Rewrite(F);
+        i := 0;
+        Writeln(F,('              ** Orcamento **'));
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,(ibDadosEmpresa.FieldByName('NOME').AsString));
+        Writeln(F,(ibDadosEmpresa.FieldByName('ENDERECO').AsString)+','+(ibDadosEmpresa.FieldByName('NUMERO').AsString));
+        if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('BAIRRO').AsString));
+        end;
+        Writeln(F,('Fone:'+ibDadosEmpresa.FieldByName('TELEFONE').AsString));
+       { if ibDadosEmpresa.FieldByName('CNPJCPF').AsString <> '' Then begin
+        Writeln(F,('CNPJ:'+ibDadosEmpresa.FieldByName('CNPJCPF').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('IE').AsString <> '' Then begin
+        Writeln(F,('IE:'+ibDadosEmpresa.FieldByName('IE').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('INFORMACOES').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('INFORMACOES').AsString));
+        end;
+        if ibDadosEmpresa.FieldByName('SITE').AsString <> '' Then begin
+        Writeln(F,(ibDadosEmpresa.FieldByName('SITE').AsString));
+        end;}
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,('Vendedor:'+ibOrcamentoPed.FieldByName('NOMEVENDEDOR').AsString)+' '+' '+'Data:'+' '+DataOrc+ ' Numero: '+lbl_edtNOrc.Text);
+        Writeln(F,('--------------------------------------------------'));
+        if ibOrcamentoPed.FieldByName('NOMECLIENTE').AsString <> '' Then begin
+        Writeln(F,('Cliente: '+(ibOrcamentoPed.FieldByName('NOMECLIENTE').AsString) + '  Fone: '+(ibOrcamentoPed.FieldByName('TELEFONECLI').AsString)));
+        end;
+        if lbl_edtEndereco.Text <> '' Then begin
+        Writeln(F,('Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text));
+        end;
+        if lbl_edtTelCom.Text <> '' Then begin
+        Writeln(F,('Telefone: '+lbl_edtTelCom.Text));
+        end;
+        Writeln(F,('--------------------------------------------------'));
+        while not ibOrcamentoPed.Eof do begin
+
+        Writeln(F,(ibOrcamentoPed.FieldByName('NOMEPROD').AsString));
+        QtdeVenda := FormatFloat('0',ibOrcamentoPed.FieldByName('QTDE').AsFloat);
+        Unitario  := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRUNIT').AsFloat);
+        Total     := FormatFloat(CasasDecimais('Produtos'),ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat);
+        Writeln(F,(QtdeVenda+' X '+Unitario+' = '+Total));
+
+        ibOrcamentoPed.Next;
+
+        end;//while
+        TotalOrcamento := lbl_edtTotalGeral.Text;
+        Writeln(F,('--------------------------------------------------'));
+        Writeln(F,('TOTAL..:(R$)'+TotalOrcamento));
+        CloseFile(F);
+
+
+      end;//if confirma impressao
+
+    end;//if fone orc > 0
+
+  lbl_edtNOrc.Text := '';
+  lbl_edtFoneOrc.Clear;
+  lbl_edtTotalGeral.Text := '0,00';
+  ibOrcamentoPed.Close;
+  LimpaClientes;
+  lbl_edtNomerazao.Clear;
+  
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.lbl_edtNOrcExit(Sender: TObject);
+
+var
+
+IDDetalheOrc : Integer;
+ValorProd : Real;
+TotalProdutos : String;
+
+begin
+
+tedit(sender).color := clwindow;
+
+  if ValorProd > 0 Then begin
+
+    ValorProd := 0;
+
+  end;
+
+  if TotalProdutos > '0' Then begin
+
+    TotalProdutos := '0';
+
+  end;
+
+  with dmModule do begin
+
+    if lbl_edtNOrc.Text > '0' Then begin
+
+    IDDetalheOrc := StrToInt(lbl_edtNOrc.Text);
+
+    Commit(ibDetalheOrcamento);
+    ibDetalheOrcamento.Close;
+    ibDetalheOrcamento.SQL.Clear;
+    ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE IDDETALHEORCAMENTO=''' + IntToStr(IDDetalheOrc) + '''');
+    ibDetalheOrcamento.Open;
+
+    Commit(ibOrcamentoPed);
+    ibOrcamentoPed.Close;
+    ibOrcamentoPed.SQL.Clear;
+    ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+    ibOrcamentoPed.Open;
+    (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+    (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+      while not ibOrcamentoPed.Eof do begin//enquanto nao for fim de registro
+
+        if (ValorProd = 0) Then begin//se variavel for igual a zero
+
+          ValorProd := StrtoFloat(StringReplace(FloattoStr(ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+        end else begin
+
+          TotalProdutos := StringReplace(FloattoStr(ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+          ValorProd := ValorProd + StrtoFloat(StringReplace(TotalProdutos,ThousandSeparator,'',[rfReplaceAll]));          
+
+        end;//if
+
+       ibOrcamentoPed.Next;
+
+      end;{while}
+
+       lbl_edtTotalGeral.Text := FormatFloat(CasasDecimais('Produtos'),ValorProd);
+
+    end;//if
+       
+  end;//with
+  
+end;
+
+procedure TfrmPosVenda.lbl_edtNOrcKeyPress(Sender: TObject; var Key: Char);
+begin
+
+  if key=#13 Then begin
+
+    lbl_edtNomerazao.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.LimpaOrcamento1Click(Sender: TObject);
+begin
+
+  with dmModule do begin
+
+    lbl_edtNOrc.Text := '';
+    lbl_edtTotalGeral.Text := '';
+    lbl_edtFoneOrc.Clear;
+    ibOrcamentoPed.Close;
+    ibDetalheOrcamento.Close;
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.DeletarOrcamento1Click(Sender: TObject);
+
+var
+
+IDDetalheOrc, ConfirmaExclusaoOrc : Integer;
+
+begin
+
+  with dmModule do begin
+
+    if lbl_edtNOrc.Text > '0' Then begin
+
+      IDDetalheOrc := StrToInt(lbl_edtNOrc.Text);
+
+      ConfirmaExclusaoOrc := Application.MessageBox('Deseja Excluir o Orçamento?','Exclusão de Orçamento',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+      if ConfirmaExclusaoOrc = 6 Then begin
+
+        ibDetalheOrcamento.Close;
+        ibDetalheOrcamento.SQL.Clear;
+        ibDetalheOrcamento.SQL.Add('DELETE FROM TBLDETALHEORCAMENTO WHERE IDDETALHEORCAMENTO=''' + IntToStr(IDDetalheOrc) + '''');
+        ibDetalheOrcamento.ExecSQL;
+        Commit(ibDetalheOrcamento);
+
+        ibOrcamentoPed.Close;
+        ibOrcamentoPed.SQL.Clear;
+        ibOrcamentoPed.SQL.Add('DELETE FROM TBLORCAMENTOPEDIDO WHERE IDDETALHEORC=''' + IntToStr(IDDetalheOrc) + '''');
+        ibOrcamentoPed.ExecSQL;
+        Commit(ibOrcamentoPed);
+
+      end;//if confirma exclusao = sim
+
+      lbl_edtNOrc.Text := '';
+      lbl_edtTotalGeral.Text := '0,00';
+      ibOrcamentoPed.Close;
+
+    end;//if norc > 0
+
+  end;//with
+
+end;
+
+procedure TfrmPosVenda.BuscarOrcamento1Click(Sender: TObject);
+begin
+
+  lbl_edtNOrc.SetFocus;
+  
+end;
+
+procedure TfrmPosVenda.lbl_edtFoneOrcExit(Sender: TObject);
+
+var
+
+ValorProd : Real;
+TotalProdutos : String;
+
+begin
+
+tedit(sender).color := clwindow;
+
+  if ValorProd > 0 Then begin
+
+    ValorProd := 0;
+
+  end;
+
+  if TotalProdutos > '0' Then begin
+
+    TotalProdutos := '0';
+
+  end;
+
+ { with dmModule do begin
+
+    if (lbl_edtFoneOrc.Text <> '') Then begin
+
+      lbl_edtFoneOrc.Text := StringReplace(lbl_edtFoneOrc.Text,'-','',[rfReplaceAll]);
+      lbl_edtFoneOrc.Text := FormatFloat('0000-0000',StrToFloat(lbl_edtFoneOrc.Text));
+
+      Commit(ibDetalheOrcamento);
+      ibDetalheOrcamento.Close;
+      ibDetalheOrcamento.SQL.Clear;
+      ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE TELEFONECLI=''' + lbl_edtFoneOrc.Text + '''');
+      ibDetalheOrcamento.Open;
+
+      if ibDetalheOrcamento.RecordCount > 0 Then begin
+
+      Application.MessageBox('Atenção já existe orçamento com este número de telefone??','Orçamento existente',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+      Commit(ibDetalheOrcamento);
+      ibDetalheOrcamento.Close;
+      ibDetalheOrcamento.SQL.Clear;
+      ibDetalheOrcamento.SQL.Add('SELECT * FROM TBLDETALHEORCAMENTO WHERE TELEFONECLI=''' + lbl_edtFoneOrc.Text + '''');
+      ibDetalheOrcamento.Open;
+
+      Commit(ibOrcamentoPed);
+      ibOrcamentoPed.Close;
+      ibOrcamentoPed.SQL.Clear;
+      ibOrcamentoPed.SQL.Add('SELECT * FROM TBLORCAMENTOPEDIDO WHERE TELEFONECLI=''' + lbl_edtFoneOrc.Text + '''');
+      ibOrcamentoPed.Open;
+      (ibOrcamentoPed.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibOrcamentoPed.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+      (ibOrcamentoPed.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+      while not ibOrcamentoPed.Eof do begin//enquanto nao for fim de registro
+
+        if (ValorProd = 0) Then begin//se variavel for igual a zero
+
+          ValorProd := StrtoFloat(StringReplace(FloattoStr(ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+
+        end else begin
+
+          TotalProdutos := StringReplace(FloattoStr(ibOrcamentoPed.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+          ValorProd := ValorProd + StrtoFloat(StringReplace(TotalProdutos,ThousandSeparator,'',[rfReplaceAll]));          
+
+        end;//if
+
+       ibOrcamentoPed.Next;
+
+      end;//while
+
+       lbl_edtTotalGeral.Text := FormatFloat(CasasDecimais('Produtos'),ValorProd);
+
+    end else begin
+
+    lbl_edtNomerazao.SetFocus;
+
+    end;
+
+    end;//if
+       
+  end;//with   }
+
+  with dmModule do begin
+
+    if (lbl_edtFoneOrc.Text <> '')and(lbl_edtNomerazao.Text = '') Then begin
+
+      lbl_edtFoneOrc.Text := StringReplace(lbl_edtFoneOrc.Text,'-','',[rfReplaceAll]);
+      lbl_edtFoneOrc.Text := FormatFloat('0000-0000',StrToFloat(lbl_edtFoneOrc.Text));
+
+   // end;
+
+    {ibClassificacao.Close;
+    ibClassificacao.SQL.Clear;
+    ibClassificacao.SQL.Add('SELECT IDCLASS FROM TBLCLASSIFICACAO WHERE DESCRICAO=''Clientes''');
+    ibClassificacao.Open; }
+   // IDClass := ibClassificacao.FieldByName('IDCLASS').AsInteger; // ATRIBUI A IDENTIFICAÇÃO DO FORNECEDOR NA VARIAVEL.
+
+    Commit(ibCadastro);
+    ibCadastro.Close;                                                                                    //  and TBLCADASTRO.NOME LIKE '+''''+'%'+lbl_edtNome.text+'%'+'''
+    ibCadastro.SQL.Clear;
+    ibCadastro.SQL.Add('SELECT * FROM TBLCADASTRO WHERE TELEFONE=''' + lbl_edtFoneOrc.Text + '''');
+    ibCadastro.Open;
+
+    if ibCadastro.RecordCount > 0 Then begin
+
+      lbl_edtCodCli.Text    := IntToStr(ibCadastro.FieldByName('IDCAD').AsInteger); 
+      lbl_edtNomerazao.Text := ibCadastro.FieldByName('NOME').AsString;
+      lbl_edtCelular.Text   := ibCadastro.FieldByName('CELULAR').AsString;
+      lbl_edtEndereco.Text  := ibCadastro.FieldByName('ENDERECO').AsString;
+      lbl_edtBairro .Text   := ibCadastro.FieldByName('BAIRRO').AsString;
+      lbl_edtNumero .Text   := ibCadastro.FieldByName('NUMERO').AsString;
+
+    end;//IF
+
+    end;//if label telefone <> ''
+
+  end;{With}
+
+end;
+
+procedure TfrmPosVenda.BuscarOramentoportelefone1Click(Sender: TObject);
+begin
+lbl_edtFoneOrc.SetFocus;
+end;
+
+procedure TfrmPosVenda.lbl_edtFoneOrcKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key =#13 Then begin
+
+    lbl_edtNomerazao.SetFocus;
+
+  end;
+  
+end;
+
+procedure TfrmPosVenda.lbl_edtDescontoExit(Sender: TObject);
+
+var
+
+Valor1,Valor2 : Real;
+
+
+begin
+
+tedit(sender).color := clwindow;
+
+  with dmModule do begin
+
+     if lbl_edtDesconto.Text <> '' Then begin
+
+       if lbl_edtVlrTotal.Text <> '' Then begin //se for diferente de branco executa rotina abaixo.
+
+          if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtDesconto.Text,ThousandSeparator,'',[rfReplaceAll]));
+            lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor1 - Valor2));
+
+
+          end else begin
+
+            Valor1 := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+            Valor2 := StrToFloat(StringReplace(lbl_edtDesconto.Text,ThousandSeparator,'',[rfReplaceAll]));
+            lbl_edtVlrTotal.Text := FormatFloat(',0.00',(Valor1 - Valor2));
+
+
+          end;{if}
+
+        end;{if}
+
+       lbl_edtDesconto.Text := FormatFloat(CasasDecimais('Produtos'),StrToFloat(lbl_edtDesconto.Text)); //FormatFloat(casa',0.00',StrToFloat(lbl_edtValor.Text));
+
+     end;//if label desc
+
+  end;{with}
+
+end;
+
+procedure TfrmPosVenda.lbl_edtDescontoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key =#13 Then begin
+
+    lbl_edtVlrTotal.SetFocus;
+
+  end;//if
+
+end;
+
+procedure TfrmPosVenda.btImprimirClick(Sender: TObject);
+
+var
+  ModoTexto: TPrnDOS;
+  NomeEmpresa,Endereco,Numero,Bairro,Telefone,DataOrc,VendaFiscal,QtdeTotalItens : String;
+  IDDetalhePosVendaPV, Linha, LinhaFinal, LinhaProduto,LinhaTotal : Integer;
+  QtdedeItens : Real;
+  QtdeVenda,Unitario,Total,TotalOrcamento,VlrDesconto, TotalQtdeItens : String;
+  IDVendedor : TClasseCombo;
+  
+begin
+
+   with dmModule do begin
+
+  //Calcula o valor total
+ { Total        := (SpinEdit1.Value * StrToFloat(EdPreun.Text)) -
+                   StrToFloat(EdDesconto.Text);
+  EdTotal.Text := FormatFloat('###,##0.00',Total);
+  EdTotal.Refresh; }
+
+  lbl_Imprimir.Caption := 'Imprimir';
+
+  If PrintDialog1.Execute then begin
+     //Verifica se a impressora possue a fonte Draft 10cpi
+  ///   if Not ThereDraft10cpi then
+   ///     Exit;
+
+     //Dados para teste
+   {  Quant     := SpinEdit1.Value;
+     PrecoUnit := StrToFloat(EdPreun.Text);
+     Desconto  := StrToFloat(EdDesconto.Text);    }
+
+     //Exemplo em modo comprimido
+     with ModoTexto do begin
+
+       Print; //Impressora selecionada em PrintDialog
+       NewPage;
+     {  CmpSay( 1, 1,'PRODUTO/DESCRICAO                            QUANT.      VLR.UNIT.       DESCONTO          TOTAL');
+       //            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 9999999.99  9999999999.99  9999999999.99  9999999999.99
+       //            1...5...10...15...20...25...30...35...40...45...50...55...60...65...70...75...80...85...90...95.
+          CmpSay(2,1,Edproduto.Text);
+       CmpValSay(2,42,Quant,9,2);
+       CmpValSay(2,54,PrecoUnit,12,2);
+       CmpValSay(2,69,Desconto,12,2);
+       CmpValSay(2,84,Total,12,2);
+       //Agora imprime no modo normal
+       CharSay(4,1,'BY: Paulo Cesar de Carvalho');
+       CharSay(5,1,'E-mail: pececarvalho@yahoo.com.br'); }
+
+              Commit(ibDadosEmpresa);
+              ibDadosEmpresa.Close;
+              ibDadosEmpresa.SQL.Clear;
+              ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+              ibDadosEmpresa.Open;
+
+              if cboFunc.ItemIndex <> -1 Then begin
+
+              IDVendedor := TClasseCombo( cboFunc.Items.Objects[cboFunc.ItemIndex]);
+
+              end;
+
+              Commit(ibDetalhePosVenda);
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('SELECT * FROM TBLDETALHEPOSVENDA WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.Open;
+
+              IDDetalhePosVendaPV := StrToInt(lbl_edtIDPosVenda.Text);//ibDetalhePosVenda.FieldByName('IDDETALHEPOSVENDA').AsInteger;
+              VendaFiscal := 'Nao';
+
+
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('UPDATE TBLDETALHEPOSVENDA SET '
+              + 'IDVENDEDOR = ''' + IntToStr(IDVendedor.ID) + ''','
+              + 'NOMEVENDEDOR = ''' + cboFunc.Text + ''','
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''','
+              + 'NOMECLIENTE = ''' + lbl_edtNomerazao.Text + ''' WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda);
+
+
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('UPDATE TBLSERVICOSVENDAS SET '
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''' WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.ExecSQL;
+              Commit(ibServsVenda);
+
+              Commit(ibPosVenda);
+              ibPosVenda.Close;
+              ibPosVenda.SQL.Clear;
+              ibPosVenda.SQL.Add('SELECT * FROM TBLPOSVENDA WHERE IDPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibPosVenda.Open;
+
+              DataOrc  := FormatDateTime('dd/mm/yyyy',Now);
+
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('SELECT * FROM TBLSERVICOSVENDAS WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.Open;
+
+       NomeEmpresa := ibDadosEmpresa.FieldByName('NOME').AsString;
+       Endereco    := ibDadosEmpresa.FieldByName('ENDERECO').AsString;
+       Numero      := ibDadosEmpresa.FieldByName('NUMERO').AsString;
+       Bairro      := ibDadosEmpresa.FieldByName('BAIRRO').AsString;
+       Telefone    := ibDadosEmpresa.FieldByName('TELEFONE').AsString;
+
+
+       CmpSay(2,1,NomeEmpresa);
+
+       if ibDadosEmpresa.FieldByName('ENDERECO').AsString <> '' Then begin
+         CmpSay(3,1,Endereco + ' ' + Numero);
+       end;
+
+       if ibDadosEmpresa.FieldByName('BAIRRO').AsString <> '' Then begin
+         CmpSay(4,1,Bairro);
+       end;
+
+       if ibDadosEmpresa.FieldByName('TELEFONE').AsString <> '' Then begin
+         CmpSay(5,1,'Telefone:' + ' ' + Telefone);
+       end;
+
+       CmpSay(6,1,'----------------------------------------');
+
+       CmpSay(7,1,'Vendedor:'+cboFunc.Text+' '+' '+'Data:'+' '+DataOrc);
+
+       CmpSay(8,1,'----------------------------------------');
+
+       if lbl_edtNomeRazao.Text <> '' Then begin
+         CmpSay(9,1,'Cliente: '+lbl_edtNomeRazao.Text);
+       end;
+       if lbl_edtEndereco.Text <> '' Then begin
+         CmpSay(10,1,'Endereco: '+lbl_edtEndereco.Text+ '  Nº.:'+lbl_edtNumero.Text);
+       end;
+       if lbl_edtTelCom.Text <> '' Then begin
+         CmpSay(11,1,'Telefone: '+lbl_edtTelCom.Text);
+       end;
+
+       CmpSay(12,1,'----------------------------------------');
+
+       LinhaProduto := 13;
+       Linha := 14;
+
+                  while not ibServsVenda.Eof do begin
+
+                    QtdeVenda   := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('QTDE').AsFloat);
+                    Unitario    := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRUNIT').AsFloat);
+                    Total       := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('VLRTOTAL').AsFloat);
+                    VlrDesconto := FormatFloat(CasasDecimais('Produtos'),ibServsVenda.FieldByName('DESCONTO').AsFloat);
+
+                    CmpSay(LinhaProduto,1,ibServsVenda.FieldByName('NOMEPROD').AsString);
+                  ///  Int_Retorno:= Daruma_DUAL_ImprimirTexto(pchar(ibServsVenda.FieldByName('NOMEPROD').AsString),0);
+
+                    if (ibServsVenda.FieldByName('DESCONTO').AsFloat > 0)Then begin
+
+                    CmpSay(Linha,1,'Qtde.   Vlr. Desc. Total');
+                    CmpSay(Linha,1,QtdeVenda+' X '+Unitario+' '+VlrDesconto+' = '+Total);
+
+                    end else begin
+
+                    CmpSay(Linha,1,QtdeVenda+' X '+Unitario+' = '+Total);
+
+                    end;
+
+                    if QtdedeItens = 0 Then begin
+
+                      QtdedeItens := StrToFloat(StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfreplaceAll]));
+
+                    end else begin
+
+                      TotalQtdeItens := StringReplace(FloatToStr(ibServsVenda.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]);
+
+                      QtdedeItens := QtdedeItens + StrtoFloat(StringReplace(TotalQtdeItens,ThousandSeparator,'',[rfReplaceAll]));
+
+                    end;//if
+
+                    Linha := Linha + 2 ;
+                    LinhaProduto := LinhaProduto + 2;
+
+                  ibServsVenda.Next;
+
+                  end;//while
+
+                  QtdeTotalItens := FormatFloat(CasasDecimais('Produtos'),QtdedeItens);
+
+                 // Writeln(F,('Qtde.Itens..:'+ QtdeTotalItens));
+                  TotalOrcamento := lbl_edtTotalGeral.Text;
+
+                    LinhaFinal := Linha - 1;
+
+                    CmpSay(LinhaFinal,1,'----------------------------------------');
+
+                    LinhaTotal := LinhaFinal + 1 ;
+
+                    CmpSay(LinhaTotal,1,'Qtde.Itens: '+lbl_edtQtdeItens.Text+'   '+  'Total: '+lbl_edtTotalGeral.Text);
+
+                ///  end;
+
+       EndPage;  { Eject }
+       EndPrint;
+     end;
+  end;
+
+              ibMPV.Close;
+              ibMPV.SQL.Clear;
+              ibMPV.SQL.Add('DELETE FROM TBLMPV WHERE IDPV=''' + lbl_edtIDPosVenda.Text + '''');
+              ibMPV.ExecSQL;
+              Commit(ibMPV);
+
+              IDDetalhePosVendaPV := StrToInt(lbl_edtIDPosVenda.Text);//ibDetalhePosVenda.FieldByName('IDDETALHEPOSVENDA').AsInteger;
+              VendaFiscal := 'Nao';
+
+
+              ibDetalhePosVenda.Close;
+              ibDetalhePosVenda.SQL.Clear;
+              ibDetalhePosVenda.SQL.Add('UPDATE TBLDETALHEPOSVENDA SET '
+              + 'IDVENDEDOR = ''' + IntToStr(IDVendedor.ID) + ''','
+              + 'NOMEVENDEDOR = ''' + cboFunc.Text + ''','
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''','
+              + 'NOMECLIENTE = ''' + lbl_edtNomerazao.Text + ''' WHERE IDDETALHEPOSVENDA=''' + lbl_edtIDPosVenda.Text + '''');
+              ibDetalhePosVenda.ExecSQL;
+              Commit(ibDetalhePosVenda);
+
+              Commit(ibServsVenda);
+              ibServsVenda.Close;
+              ibServsVenda.SQL.Clear;
+              ibServsVenda.SQL.Add('UPDATE TBLSERVICOSVENDAS SET '
+              + 'VENDAFISCAL = ''' + VendaFiscal + ''' WHERE CODPOSVENDA=''' + IntToStr(IDDetalhePosVendaPV) + '''');
+              ibServsVenda.ExecSQL;
+              Commit(ibServsVenda);
+
+        {   LimpaProdutos;
+           LimpaClientes;
+           cboFunc.ClearSelection;
+           lbl_edtTotalGeral.Text := '';
+           lbl_edtQtdeItens.Text := '';
+           lbl_edtNumPedido.Text := '';
+           lbl_edtIDPosVenda.Text := '';
+           lbl_edtNomerazao.Text := '';
+           VlrDesconto := '0';
+           ibServsVenda.Close;  }
+
+
+  end;//with
+  
+end;
+
+procedure TfrmPosVenda.lbl_edtPorcentagemDescKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+
+  if key = #13Then begin
+
+    lbl_edtDesconto.SetFocus;
+
+  end;
+
+end;
+
+procedure TfrmPosVenda.lbl_edtPorcentagemDescExit(Sender: TObject);
+
+var
+
+Valor1,Valor2 : Real;
+TotalVendaPorcentagem,DescontoPorcentagem,ValorMultiplicado,TotalPorcentagem : Real;
+TotalVendaValor,DescontoValor,TotalValor : Real;
+
+begin
+
+tedit(sender).color := clwindow;
+
+    if lbl_edtPorcentagemDesc.Text > '0,00' Then begin
+
+      if lbl_edtVlrTotal.Text <> '' Then begin //se for diferente de branco executa rotina abaixo.
+
+         if (Pos(',',lbl_edtVlrTotal.Text)>0) and (lbl_edtVlrTotal.Text <> '') Then begin
+
+           TotalVendaPorcentagem := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+           DescontoPorcentagem   := StrToFloat(StringReplace(lbl_edtPorcentagemDesc.Text,ThousandSeparator,'',[rfReplaceAll]));
+           ValorMultiplicado := TotalVendaPorcentagem * DescontoPorcentagem;
+           TotalPorcentagem  := ValorMultiplicado / 100;
+           ///lbl_edtValor.Text := (frmVendasLoja.lbl_edtSubTotal.Caption);
+        //   lbl_edtVlrTotal.Text := FormatFloat(',0.00',(TotalVendaPorcentagem - TotalPorcentagem));
+         //  lbl_edtValor.Text := FormatFloat(',0.00',(TotalVendaPorcentagem - TotalPorcentagem));
+           lbl_edtDesconto.Text := FormatFloat(',0.00',(TotalPorcentagem));
+
+         end else begin
+
+          // lbl_edtValor.Text := '0,00';
+
+           TotalVendaPorcentagem := StrToFloat(StringReplace(lbl_edtVlrTotal.Text,ThousandSeparator,'',[rfReplaceAll]));
+           DescontoPorcentagem   := StrToFloat(StringReplace(lbl_edtPorcentagemDesc.Text,ThousandSeparator,'',[rfReplaceAll]));
+           ValorMultiplicado := TotalVendaPorcentagem * DescontoPorcentagem;
+           TotalPorcentagem  := ValorMultiplicado / 100;
+           ///lbl_edtValor.Text := (frmVendasLoja.lbl_edtSubTotal.Caption);
+        //   lbl_edtVlrTotal.Text := FormatFloat(',0.00',(TotalVendaPorcentagem - TotalPorcentagem));
+         //  lbl_edtValor.Text := FormatFloat(',0.00',(TotalVendaPorcentagem - TotalPorcentagem));
+           lbl_edtDesconto.Text := FormatFloat(',0.00',(TotalPorcentagem));
+                      
+         end;{if}
+
+       end;{if}
+
+       lbl_edtPorcentagemDesc.Text := FormatFloat(CasasDecimais('Produtos'),StrToFloat(lbl_edtPorcentagemDesc.Text));
+
+    end;//if label valor
+
+
+end;
+
+procedure TfrmPosVenda.cboFuncEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.cboFuncExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtIDPosVendaEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtNumPedidoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtNOrcEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtFoneOrcEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtTelComEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtCelularEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtNomerazaoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtCnpj_cpfEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtIE_rgEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtEnderecoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtNumeroEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtComplementoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtBairroEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtCepEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtCodCartaoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtCodBarrasEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.cboProdEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtQtdeEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtPorcentagemDescEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtDescontoEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtVlrUnitEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtVlrTotalEnter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.ComboBox1Enter(Sender: TObject);
+begin
+tedit(sender).color := $00A0FAF8;
+end;
+
+procedure TfrmPosVenda.lbl_edtIDPosVendaExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtNumPedidoExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtNomerazaoExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtCnpj_cpfExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtIE_rgExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtEnderecoExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtNumeroExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtComplementoExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtBairroExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtCepExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtCodCartaoExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.cboProdExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtVlrUnitExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.lbl_edtVlrTotalExit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+procedure TfrmPosVenda.ComboBox1Exit(Sender: TObject);
+begin
+tedit(sender).color := clwindow;
+end;
+
+end.
+

@@ -1,0 +1,77 @@
+unit untClasse.VendasCX;
+
+interface
+
+uses SysUtils;
+
+type
+
+////////////////////////////////////////////////////////////////////////////////
+
+  TVendasCaixa = class
+
+    private
+    FVlrPago1: Real;
+    FVlrPago2: Real;
+    FVlrTotalVenda: Real;
+   // FVlrTroco: Real;
+    procedure setVlrPago1(const Value: Real);
+    function  getVlrPago1 : Real;
+    procedure setVlrPago2(const Value: Real);
+    function  getVlrPago2 : Real;
+    procedure setVlrTotalVenda(const Value: Real);
+    function  getVlrTotalVenda : Real;
+   // procedure setVlrTroco(const Value: Real);
+    public
+    {public declarations}
+
+    published
+    property VlrPago1 : Real read getVlrPago1 write setVlrPago1;
+    property VlrPago2 : Real read getVlrPago2 write setVlrPago2;
+    property VlrTotalVenda : Real read FVlrTotalVenda write setVlrTotalVenda;
+  //  property VlrTroco : Real read getVlrTroco write setVlrTroco;
+
+  end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+implementation
+
+{ TVendasCaixa }
+
+function TVendasCaixa.getVlrPago1: Real;
+begin
+Result := FVlrPago1;
+end;
+
+function TVendasCaixa.getVlrPago2: Real;
+begin
+Result := FVlrPago2;
+end;
+
+function TVendasCaixa.getVlrTotalVenda: Real;
+begin
+Result := FVlrTotalVenda;
+end;
+
+procedure TVendasCaixa.setVlrPago1(const Value: Real);
+begin
+  FVlrPago1 := Value;
+end;
+
+procedure TVendasCaixa.setVlrPago2(const Value: Real);
+begin
+  FVlrPago2 := Value;
+end;
+
+procedure TVendasCaixa.setVlrTotalVenda(const Value: Real);
+begin
+  FVlrTotalVenda := Value;
+end;
+
+{procedure TVendasCaixa.setVlrTroco(const Value: Real);
+begin
+  FVlrTroco := Value;
+end;  }
+
+end.

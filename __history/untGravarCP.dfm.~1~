@@ -1,0 +1,229 @@
+object frmGravarCP: TfrmGravarCP
+  Left = 192
+  Top = 114
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'frmGravarCP'
+  ClientHeight = 267
+  ClientWidth = 565
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_CondPagto: TLabel
+    Left = 162
+    Top = 26
+    Width = 71
+    Height = 13
+    Caption = 'Cond.Pagto.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Vcto: TLabel
+    Left = 340
+    Top = 24
+    Width = 31
+    Height = 13
+    Caption = 'Vcto.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F1: TLabel
+    Left = 24
+    Top = 168
+    Width = 170
+    Height = 13
+    Caption = 'F1 - Grava no Contas a Pagar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Bco: TLabel
+    Left = 24
+    Top = 70
+    Width = 37
+    Height = 13
+    Caption = 'Banco'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_TipoDoc: TLabel
+    Left = 204
+    Top = 70
+    Width = 112
+    Height = 13
+    Caption = 'Tipo de Documento'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object btnIncluir: TSpeedButton
+    Left = 328
+    Top = 133
+    Width = 81
+    Height = 25
+    Caption = '&Incluir'
+    OnClick = btnIncluirClick
+  end
+  object lbl_edtNNota: TLabeledEdit
+    Left = 19
+    Top = 40
+    Width = 121
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 64
+    EditLabel.Height = 13
+    EditLabel.Caption = 'N'#186' da Nota'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 0
+  end
+  object cboCondPagto: TComboBox
+    Left = 154
+    Top = 40
+    Width = 167
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 1
+  end
+  object dtpVcto: TDateTimePicker
+    Left = 333
+    Top = 39
+    Width = 84
+    Height = 21
+    Date = 39310.017364189800000000
+    Time = 39310.017364189800000000
+    TabOrder = 2
+  end
+  object lbl_edtVlrTotal: TLabeledEdit
+    Left = 427
+    Top = 40
+    Width = 121
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 79
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Total da Nota'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 3
+  end
+  object lbl_edtNomeFornecedor: TLabeledEdit
+    Left = 19
+    Top = 135
+    Width = 302
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 65
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Fornecedor'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 4
+  end
+  object lbl_edtIDFornecedor: TLabeledEdit
+    Left = 96
+    Top = 112
+    Width = 44
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 14
+    EditLabel.Height = 13
+    EditLabel.Caption = 'ID'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 5
+    Visible = False
+  end
+  object cboBco: TComboBox
+    Left = 21
+    Top = 86
+    Width = 167
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 6
+  end
+  object cboTipoDoc: TComboBox
+    Left = 201
+    Top = 86
+    Width = 167
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 7
+  end
+end

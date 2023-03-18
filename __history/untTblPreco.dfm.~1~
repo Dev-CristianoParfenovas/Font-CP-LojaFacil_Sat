@@ -1,0 +1,407 @@
+object frmTblPreco: TfrmTblPreco
+  Left = 92
+  Top = 151
+  Width = 474
+  Height = 379
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Tabela de Pre'#231'os'
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_AtualizaVenda: TLabel
+    Left = 147
+    Top = 5
+    Width = 141
+    Height = 13
+    Caption = 'Atualiza Pre'#231'o de Venda'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold, fsUnderline]
+    ParentFont = False
+  end
+  object Shape1: TShape
+    Left = 0
+    Top = 168
+    Width = 466
+    Height = 1
+  end
+  object lbl_AtualizaCusto: TLabel
+    Left = 147
+    Top = 178
+    Width = 137
+    Height = 13
+    Caption = 'Atualiza Pre'#231'o de Custo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold, fsUnderline]
+    ParentFont = False
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 40
+    Width = 78
+    Height = 13
+    Caption = 'Fornecedores'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object ibeaAtualizar: TBmsXPButton
+    Left = 160
+    Top = 125
+    Width = 80
+    Height = 21
+    Hint = 'Atualiza todos os pre'#231'os do Fornecedor indicado'
+    Caption = '&Atualizar Pre'#231'o'
+    ShowHint = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    ParentShowHint = False
+    TabOrder = 0
+    OnClick = ibeaAtualizarClick
+  end
+  object ProgressBar1: TProgressBar
+    Left = 0
+    Top = 307
+    Width = 465
+    Height = 17
+    TabOrder = 1
+    Visible = False
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 326
+    Width = 466
+    Height = 19
+    Color = clWhite
+    Panels = <
+      item
+        Style = psOwnerDraw
+        Width = 150
+      end>
+    OnDrawPanel = StatusBar1DrawPanel
+  end
+  object ibeaCorrecao: TBmsXPButton
+    Left = 256
+    Top = 125
+    Width = 80
+    Height = 21
+    Hint = 'Estorna todos os pre'#231'os do Fornecedor indicado'
+    Caption = '&Corrigir Pre'#231'o'
+    ShowHint = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    ParentShowHint = False
+    TabOrder = 3
+    OnClick = ibeaCorrecaoClick
+  end
+  object ibeaSair: TBmsXPButton
+    Left = 376
+    Top = 5
+    Width = 80
+    Height = 21
+    Hint = 'Fecha o formul'#225'rio'
+    Caption = '&Sair'
+    ShowHint = True
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentShowHint = False
+    TabOrder = 4
+    OnClick = ibeaSairClick
+  end
+  object ckEstoqueZero: TBmsXPCheckBox
+    Left = 204
+    Top = 257
+    Width = 141
+    Height = 13
+    WordWrap = False
+    ShowAccelChar = True
+    Layout = tlTop
+    AutoSize = False
+    Alignment = taLeftJustify
+    Shadow.Color = clWindow
+    Shadow.Style = ssTopLeft
+    Shadow.OffSet = 0
+    Caption = 'Com Valor de Custo Zero'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 5
+    onCheck = ckEstoqueZeroCheck
+  end
+  object ckGeral: TBmsXPCheckBox
+    Left = 204
+    Top = 232
+    Width = 53
+    Height = 13
+    WordWrap = False
+    ShowAccelChar = True
+    Layout = tlTop
+    AutoSize = False
+    Alignment = taLeftJustify
+    Shadow.Color = clWindow
+    Shadow.Style = ssTopLeft
+    Shadow.OffSet = 0
+    Caption = 'Geral'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 6
+    onCheck = ckGeralCheck
+  end
+  object BmsXPButton1: TBmsXPButton
+    Left = 200
+    Top = 280
+    Width = 80
+    Height = 21
+    Hint = 'Atualiza todos os pre'#231'os do Fornecedor indicado'
+    Caption = '&Atualizar Pre'#231'o'
+    ShowHint = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    ParentShowHint = False
+    TabOrder = 7
+    OnClick = BmsXPButton1Click
+  end
+  object BmsXPButton2: TBmsXPButton
+    Left = 288
+    Top = 280
+    Width = 80
+    Height = 21
+    Hint = 'Estorna todos os pre'#231'os do Fornecedor indicado'
+    Caption = '&Corrigir Pre'#231'o'
+    ShowHint = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    ParentShowHint = False
+    TabOrder = 8
+    OnClick = ibeaCorrecaoClick
+  end
+  object cboFornecedores: TComboBox
+    Left = 8
+    Top = 56
+    Width = 145
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    ItemHeight = 13
+    TabOrder = 9
+    OnChange = cboFornecedoresChange
+  end
+  object GroupBox1: TGroupBox
+    Left = 160
+    Top = 51
+    Width = 185
+    Height = 57
+    Caption = 'Atualizar Pre'#231'o de Venda em:'
+    TabOrder = 10
+    object ckPorcentagem: TBmsXPCheckBox
+      Left = 7
+      Top = 24
+      Width = 89
+      Height = 13
+      WordWrap = False
+      ShowAccelChar = True
+      Layout = tlTop
+      AutoSize = False
+      Alignment = taLeftJustify
+      Shadow.Color = clWindow
+      Shadow.Style = ssTopLeft
+      Shadow.OffSet = 0
+      Caption = 'Porcentagem'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      onCheck = ckPorcentagemCheck
+    end
+    object ckValor: TBmsXPCheckBox
+      Left = 104
+      Top = 24
+      Width = 49
+      Height = 13
+      WordWrap = False
+      ShowAccelChar = True
+      Layout = tlTop
+      AutoSize = False
+      Alignment = taLeftJustify
+      Shadow.Color = clWindow
+      Shadow.Style = ssTopLeft
+      Shadow.OffSet = 0
+      Caption = 'Valor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      onCheck = ckValorCheck
+    end
+  end
+  object lbl_edtFabricante: TLabeledEdit
+    Left = 8
+    Top = 120
+    Width = 148
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 61
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Fabricante'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 11
+    OnChange = lbl_edtFabricanteChange
+  end
+  object lbl_edtPorcentagem: TLabeledEdit
+    Left = 376
+    Top = 56
+    Width = 77
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 73
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Valor ou  (%)'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 12
+  end
+  object lbl_edtValorCusto: TLabeledEdit
+    Left = 376
+    Top = 278
+    Width = 77
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 73
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Valor ou  (%)'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 13
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 227
+    Width = 185
+    Height = 57
+    Caption = 'Atualizar Pre'#231'o de Custo em:'
+    TabOrder = 14
+    object ckPorcentagemCusto: TBmsXPCheckBox
+      Left = 7
+      Top = 24
+      Width = 89
+      Height = 13
+      WordWrap = False
+      ShowAccelChar = True
+      Layout = tlTop
+      AutoSize = False
+      Alignment = taLeftJustify
+      Shadow.Color = clWindow
+      Shadow.Style = ssTopLeft
+      Shadow.OffSet = 0
+      Caption = 'Porcentagem'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      onCheck = ckPorcentagemCustoCheck
+    end
+    object ckValorCusto: TBmsXPCheckBox
+      Left = 104
+      Top = 24
+      Width = 49
+      Height = 13
+      WordWrap = False
+      ShowAccelChar = True
+      Layout = tlTop
+      AutoSize = False
+      Alignment = taLeftJustify
+      Shadow.Color = clWindow
+      Shadow.Style = ssTopLeft
+      Shadow.OffSet = 0
+      Caption = 'Valor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      onCheck = ckValorCustoCheck
+    end
+  end
+end

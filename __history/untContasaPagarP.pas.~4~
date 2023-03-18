@@ -1,0 +1,731 @@
+unit untContasaPagarP;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ComCtrls, StdCtrls, IBQuery, Data.DB,
+  classComboBox;
+
+type
+  TfrmContasaPagarP = class(TForm)
+    lbl_DTIni: TLabel;
+    lbl_DTF: TLabel;
+    lbl_Serv: TLabel;
+    lbl_F: TLabel;
+    cboServicos: TComboBox;
+    cboFornecedores: TComboBox;
+    dtpDataCaixaIni: TDateTimePicker;
+    dtpDataCaixaF: TDateTimePicker;
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ibeaSairClick(Sender: TObject);
+    procedure ExecSELECTServicos;
+    procedure ExecSELECTFornecedores;
+    procedure ibeaVisualizarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ckCustoDiarioCheck(Sender: TObject);
+    procedure ckAbertoCheck(Sender: TObject);
+    procedure ckBaixadoCheck(Sender: TObject);
+    procedure cboServicosClick(Sender: TObject);
+    procedure cboFornecedoresClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmContasaPagarP: TfrmContasaPagarP;
+
+implementation
+
+uses untdmModule, untRelContasaPagar, untRelCPBaixado,
+  untRelCustoDiario, funcPosto;
+
+{$R *.dfm}
+
+procedure TfrmContasaPagarP.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmContasaPagarP.ibeaSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmContasaPagarP.ExecSELECTServicos;
+
+var
+IDClassServP : TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    Commit(ibServicosPagar);
+    ibServicosPagar.Close;
+    ibServicosPagar.SQL.Clear;
+    ibServicosPagar.SQL.Add('SELECT * FROM TBLSERVICOSAPAGAR WHERE SERVICOS=''Sim''');
+    ibServicosPagar.Open;
+
+    cboServicos.Clear; //LIMPA O COMBOBOX
+
+    while not ibServicosPagar.Eof do begin
+
+      IDClassServP     := TClasseCombo.Create;
+      IDClassServP.ID  := ibServicosPagar.FieldByName('IDSERVICO').AsInteger;
+      cboServicos.Items.AddObject(ibServicosPagar.FieldByName('DESCRICAO').AsString,IDClassServP);
+      ibServicosPagar.Next;
+
+    end;{WHILE}
+
+  end;{with}
+
+end;
+
+procedure TfrmContasaPagarP.ExecSELECTFornecedores;
+
+var
+ClassForn : TClasseCombo;
+IDClassForn : Integer;
+
+begin
+
+  with dmModule do begin
+
+    ibClassificacao.Close;
+    ibClassificacao.SQL.Clear;
+    ibClassificacao.SQL.Add('SELECT IDCLASS FROM TBLCLASSIFICACAO WHERE DESCRICAO=''Fornecedores''');
+    ibClassificacao.Open;
+    IDClassForn := ibClassificacao.FieldByName('IDCLASS').AsInteger; // ATRIBUI A IDENTIFICAÇÃO DO FORNECEDOR NA VARIAVEL.
+
+    ibCadastro.Close;
+    ibCadastro.SQL.Clear;
+    ibCadastro.SQL.Add('SELECT * FROM TBLCADASTRO WHERE IDCLASS=''' + IntToStr(IDClassForn) + '''ORDER BY NOME');//('SELECT * FROM TBLCADASTRO WHERE IDCLASS=''' + InttoStr(IDClass) + ''' ORDER BY NOME');
+    ibCadastro.Open;
+
+    cboFornecedores.Clear; //LIMPA O COMBOBOX
+
+    while not ibCadastro.Eof do begin
+
+      ClassForn    := TClasseCombo.Create;
+      ClassForn.ID  := ibCadastro.FieldByName('IDCAD').AsInteger;
+      cboFornecedores.Items.AddObject(ibCadastro.FieldByName('NOME').AsString,ClassForn);
+      ibCadastro.Next;
+
+    end;{WHILE}
+
+  end;{WITH}
+
+end;
+
+procedure TfrmContasaPagarP.ibeaVisualizarClick(Sender: TObject);
+
+var
+IDClassServ,IDClassF :TClasseCombo;
+
+begin
+
+  with dmModule do begin
+
+    if (ckCustoDiario.Checked)and(cboServicos.Text = '')and(cboFornecedores.Text = '') Then begin
+
+      Commit(ibCPagar);
+      ibCPagar.Close;
+      ibCPagar.SQL.Clear;
+      ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+      + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+      + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+      + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+      + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and TBLCONTASAPAGAR.CUSTODIARIO=''Sim'' ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+      ibCPagar.Open;
+
+      ibCPagar.Close;
+      ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+      ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+      ibCPagar.Open;
+
+      Application.CreateForm(TfrmRelCustoDiario, frmRelCustoDiario);
+
+    TRY
+
+      with frmRelCustoDiario do begin
+
+        frmRelCustoDiario.qrpCustoDiario.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbObs.DataSet     := ibCPagar;
+        qrdbObs.DataField   := ibCPagar.FieldByName('OBS').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+        qrpCustoDiario.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelCustoDiario.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+    //////////////////////////////////////////////////////////////
+
+    end;// if ckcusto diario
+
+    if (ckAberto.Checked)and(cboServicos.Text = '')and(cboFornecedores.Text = '') Then begin
+
+      Commit(ibCPagar);
+      ibCPagar.Close;
+      ibCPagar.SQL.Clear;
+      ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+      + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+      + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+      + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+      + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.CUSTODIARIO is null)and(TBLCONTASAPAGAR.BAIXADO='''')ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+      ibCPagar.Open;
+
+      ibCPagar.Close;
+      ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+      ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+      ibCPagar.Open;
+
+   // end;//if ckaberto
+
+      Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+
+    TRY
+
+      with frmRelContasPagar do begin
+
+        frmRelContasPagar.qrpContasPagar.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+       // qrdbVlrAm.DataSet       := ibCPagar;
+       // qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+       // (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpContasPagar.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelContasPagar.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+    //////////////////////////////////////////////////////////////
+    end; //ckcustoidiario e ck aberto
+
+      if (ckBaixado.Checked)and(cboServicos.Text = '')and(cboFornecedores.Text = '') Then begin
+
+      Commit(ibCPagar);
+      ibCPagar.Close;
+      ibCPagar.SQL.Clear;
+      ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+      + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+      + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+      + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+      + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.BAIXADO=''Sim'')ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+      ibCPagar.Open;
+
+      ibCPagar.Close;
+      ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+      ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+      ibCPagar.Open;
+
+   // end;//if ckaberto
+
+      Application.CreateForm(TfrmRelCPBaixado, frmRelCPBaixado);
+
+    TRY
+
+      with frmRelCPBaixado do begin
+
+        frmRelCPBaixado.qrpCPBaixado.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+       // qrdbVlrAm.DataSet       := ibCPagar;
+     //   qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+      //  (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+        qrdbDataBx.DataSet       := ibCPagar;
+        qrdbDataBx.DataField     := ibCPagar.FieldByName('DATADABAIXA').FieldName;
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpCPBaixado.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelCPBaixado.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+    //////////////////////////////////////////////////////////////
+      end; //ckcustoidiario e ck aberto
+////////////////////////////////////////////////////////////////////////////////
+
+    if cboServicos.ItemIndex <> -1 Then begin
+
+      IDClassServ := TClasseCombo( cboServicos.Items.Objects[cboServicos.ItemIndex]);
+
+      if (ckAberto.Checked)and(cboServicos.Text <> '')Then begin
+
+        Commit(ibCPagar);
+        ibCPagar.Close;
+        ibCPagar.SQL.Clear;
+        ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+        + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+        + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+        + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+        + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.CUSTODIARIO is null)and(TBLCONTASAPAGAR.BAIXADO='''')and TBLCONTASAPAGAR.IDSERVICOS=''' + IntToStr(IDClassServ.ID) + '''ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+        ibCPagar.Open;
+
+        ibCPagar.Close;
+        ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+        ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+        ibCPagar.Open;
+
+      Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+
+    TRY
+
+      with frmRelContasPagar do begin
+
+        frmRelContasPagar.qrpContasPagar.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+       // qrdbVlrAm.DataSet       := ibCPagar;
+      //  qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+      //  (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpContasPagar.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelContasPagar.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+
+      end;
+
+    end;//if cboservicos <> ''
+
+      if (ckBaixado.Checked)and(cboServicos.Text <> '')Then begin
+
+        Commit(ibCPagar);
+        ibCPagar.Close;
+        ibCPagar.SQL.Clear;
+        ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+        + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+        + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+        + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+        + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.BAIXADO=''Sim'')and TBLCONTASAPAGAR.IDSERVICOS=''' + IntToStr(IDClassServ.ID) + '''ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+        ibCPagar.Open;
+
+        ibCPagar.Close;
+        ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+        ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+        ibCPagar.Open;
+
+      Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+
+    TRY
+
+      with frmRelCPBaixado do begin
+
+        frmRelCPBaixado.qrpCPBaixado.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+      //  qrdbVlrAm.DataSet       := ibCPagar;
+      //  qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+     //   (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+        qrdbDataBx.DataSet       := ibCPagar;
+        qrdbDataBx.DataField     := ibCPagar.FieldByName('DATADABAIXA').FieldName;
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpCPBaixado.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelCPBaixado.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+    //////////////////////////////////////////////////////////////
+      end; //cboservicos
+
+    if cboFornecedores.ItemIndex <> -1 Then begin
+
+      IDClassF:= TClasseCombo( cboFornecedores.Items.Objects[cboFornecedores.ItemIndex]);
+
+      if (ckAberto.Checked)and(cboFornecedores.Text <> '')Then begin
+
+        Commit(ibCPagar);
+        ibCPagar.Close;
+        ibCPagar.SQL.Clear;
+        ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+        + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+        + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+        + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+        + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.CUSTODIARIO is null)and(TBLCONTASAPAGAR.BAIXADO='''')and TBLCONTASAPAGAR.IDFORNECEDOR=''' + IntToStr(IDClassF.ID) + '''ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+        ibCPagar.Open;
+
+
+        ibCPagar.Close;
+        ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+        ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+        ibCPagar.Open;
+
+      Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+
+    TRY
+
+      with frmRelContasPagar do begin
+
+        frmRelContasPagar.qrpContasPagar.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+       // qrdbVlrAm.DataSet       := ibCPagar;
+      //  qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+      //  (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpContasPagar.Preview;
+
+      end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelContasPagar.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+
+
+      end;
+    end;
+
+      if (ckBaixado.Checked)and(cboFornecedores.Text <> '')Then begin
+
+        Commit(ibCPagar);
+        ibCPagar.Close;
+        ibCPagar.SQL.Clear;
+        ibCPagar.SQL.Add('SELECT TBLCONTASAPAGAR.*,BANCOS.DESCRICAO As Bco,'
+        + 'TBLSERVICOSAPAGAR.DESCRICAO As NomeServico,TBLCADASTRO.NOME As Cliente FROM TBLCONTASAPAGAR '
+        + 'LEFT OUTER JOIN BANCOS ON TBLCONTASAPAGAR.IDBANCO=BANCOS.IDBCO '
+        + 'LEFT OUTER JOIN  TBLSERVICOSAPAGAR ON TBLCONTASAPAGAR.IDSERVICOS=TBLSERVICOSAPAGAR.IDSERVICO '
+        + 'LEFT OUTER JOIN TBLCADASTRO ON TBLCONTASAPAGAR.IDFORNECEDOR=TBLCADASTRO.IDCAD WHERE(TBLCONTASAPAGAR.VCTO between :ParamDataIni and :ParamDataF)and(TBLCONTASAPAGAR.BAIXADO=''Sim'')and TBLCONTASAPAGAR.IDFORNECEDOR=''' + IntToStr(IDClassF.ID) + '''and TBLCONTASAPAGAR.IDFORNECEDOR=''' + IntToStr(IDClassF.ID) + '''ORDER BY TBLCONTASAPAGAR.VCTO ASC');
+        ibCPagar.Open;
+
+        ibCPagar.Close;
+        ibCPagar.ParamByName('ParamDataIni').Value      := dtpDataCaixaIni.DateTime;
+        ibCPagar.ParamByName('ParamDataF').Value        := dtpDataCaixaF.DateTime;
+        ibCPagar.Open;
+
+      Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+
+    TRY
+
+      with frmRelCPBaixado do begin
+
+        frmRelCPBaixado.qrpCPBaixado.DataSet := ibCPagar;
+
+
+        //ATRIBUI OS NOMES DOS CAMPOS AOS QRDBTEXT DO QUICKREPORT
+
+        qrdbForn.DataSet     := ibCPagar;
+        qrdbForn.DataField   := ibCPagar.FieldByName('Cliente').FieldName;
+
+        qrdbNumDoc.DataSet     := ibCPagar;
+        qrdbNumDoc.DataField   := ibCPagar.FieldByName('NUMDOC').FieldName;
+
+        qrdbNomeBco.DataSet     := ibCPagar;
+        qrdbNomeBco.DataField   := ibCPagar.FieldByName('Bco').FieldName;
+
+        qrdbEmissao.DataSet     := ibCPagar;
+        qrdbEmissao.DataField   := ibCPagar.FieldByName('EMISSAO').FieldName;
+
+        qrdbVcto.DataSet        := ibCPagar;
+        qrdbVcto.DataField      := ibCPagar.FieldByName('VCTO').FieldName;
+
+        qrdbLocalizacao.DataSet   := ibCPagar;
+        qrdbLocalizacao.DataField := ibCPagar.FieldByName('LOCALIZACAO').FieldName;
+
+        qrdbValor.DataSet       := ibCPagar;
+        qrdbValor.DataField     := ibCPagar.FieldByName('VLREMITIDO').FieldName;
+        //(ibLanctoF.FieldByName('VALOR') as TFloatField).DisplayFormat   := CasasDecimais('Combustiveis'); //CRIA UMA MASCARA PARA O CAMPO
+       // qrdbVlrAm.DataSet       := ibCPagar;
+      //  qrdbVlrAm.DataField     := ibCPagar.FieldByName('VALORABATER').FieldName;
+     //   (ibCPagar.FieldByName('VALORABATER') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrdbTipoServico.DataSet       := ibCPagar;
+        qrdbTipoServico.DataField     := ibCPagar.FieldByName('NomeServico').FieldName;
+
+        qrdbDataBx.DataSet       := ibCPagar;
+        qrdbDataBx.DataField     := ibCPagar.FieldByName('DATADABAIXA').FieldName;
+
+       (ibCPagar.FieldByName('VLREMITIDO') as TFloatField).DisplayFormat := CasasDecimais('Produtos'); //CRIA UMA MASCARA PARA O CAMPO
+
+        qrpCPBaixado.Preview;
+
+     end; {if}
+
+
+      EXCEPT
+        on E : Exception do begin
+           frmRelCPBaixado.Release;
+           MessageDlg('Ocorreu um erro ao tentar mostrar o Formulário: ' + E.Message,mtError,[mbOk],0);
+        end;
+      END;
+    //////////////////////////////////////////////////////////////
+      end;
+  end;{with}
+
+end;
+
+procedure TfrmContasaPagarP.FormShow(Sender: TObject);
+begin
+  dtpDataCaixaIni.DateTime := StrToDateTime(FormatDateTime('dd/mm/yyyy',Date));
+  dtpDataCaixaF.DateTime    := StrToDateTime(FormatDateTime('dd/mm/yyyy',Date));
+
+  with dmModule do begin
+
+    ExecSELECTServicos;
+    ExecSELECTFornecedores;
+    
+  end;//with
+
+end;
+
+procedure TfrmContasaPagarP.ckCustoDiarioCheck(Sender: TObject);
+begin
+
+  if ckCustoDiario.Checked Then begin
+
+    ckAberto.Checked := False;
+    ckBaixado.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmContasaPagarP.ckAbertoCheck(Sender: TObject);
+begin
+
+  if ckAberto.Checked Then begin
+
+    ckCustoDiario.Checked := False;
+    ckBaixado.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmContasaPagarP.ckBaixadoCheck(Sender: TObject);
+begin
+
+  if ckBaixado.Checked Then begin
+
+    ckCustoDiario.Checked := False;
+    ckAberto.Checked := False;
+
+  end;
+
+end;
+
+procedure TfrmContasaPagarP.cboServicosClick(Sender: TObject);
+begin
+
+  cboFornecedores.ClearSelection;
+  
+end;
+
+procedure TfrmContasaPagarP.cboFornecedoresClick(Sender: TObject);
+begin
+
+  cboServicos.ClearSelection;
+  
+end;
+
+end.

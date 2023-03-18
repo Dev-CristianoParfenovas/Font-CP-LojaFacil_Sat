@@ -1,0 +1,72 @@
+unit untContasaReceber;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, ExtCtrls,
+  Grids, DBGrids, classComboBox, DB, IBQuery;
+
+type
+  TfrmContasaReceber = class(TForm)
+    lbl_Clientes: TLabel;
+    lbl_TipoDoc: TLabel;
+    Label3: TLabel;
+    lbl_Obs: TLabel;
+    dbgContasaReceber: TDBGrid;
+    lbl_edtBco: TLabel;
+    Label2: TLabel;
+    lbl_ConsultaIni: TLabel;
+    Label6: TLabel;
+    lbl_TotalGeral: TLabel;
+    Image3: TImage;
+    lbl_Inf: TLabel;
+    Image1: TImage;
+    lbl_BxIndividual: TLabel;
+    Image2: TImage;
+    Image4: TImage;
+    lbl_RetornoP: TLabel;
+    lbl_RetornoInd: TLabel;
+    dtpEmissao: TDateTimePicker;
+    cboCliente: TComboBox;
+    lbl_edtTelefone: TLabeledEdit;
+    lbl_edtNomeAvulso: TLabeledEdit;
+    lbl_edtCpfRg: TLabeledEdit;
+    lbl_edtEndereco: TLabeledEdit;
+    lbl_edtNumero: TLabeledEdit;
+    lbl_edtBairro: TLabeledEdit;
+    lbl_edtEstado: TLabeledEdit;
+    cboTipoDocCR: TComboBox;
+    lbl_edtNumCheque: TLabeledEdit;
+    cboBancoCR: TComboBox;
+    lbl_edtVlrEmitidoCli: TLabeledEdit;
+    dtpVcto: TDateTimePicker;
+    dtpConsultaIni: TDateTimePicker;
+    dtpConsultaF: TDateTimePicker;
+    memoObs: TMemo;
+    grpDadosEnviados: TGroupBox;
+    lbl_NomeEnvio: TLabeledEdit;
+    lbl_edtEndEnvio: TLabeledEdit;
+    lbl_edtNumeroEnvio: TLabeledEdit;
+    lbl_edtBairroEnvio: TLabeledEdit;
+    lbl_edtDDDEnvio: TLabeledEdit;
+    lbl_edtTelEnvio: TLabeledEdit;
+    dtpDtEnvio: TDateTimePicker;
+    Label5: TLabel;
+    lbl_BuscaNumeroCH: TLabeledEdit;
+    lbl_edtTotalGeral: TLabeledEdit;
+    
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+implementation
+
+
+{$R *.dfm}
+
+
+end.
+

@@ -1,0 +1,328 @@
+object frmPedidosLoja: TfrmPedidosLoja
+  Left = 181
+  Top = 7
+  Width = 791
+  Height = 510
+  BorderIcons = []
+  Caption = 'Pedidos Loja'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_F2: TLabel
+    Left = 724
+    Top = 42
+    Width = 49
+    Height = 13
+    Caption = 'F2 - Sair'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F3: TLabel
+    Left = 8
+    Top = 443
+    Width = 232
+    Height = 13
+    Caption = 'F3 - Para selecionar um Cliente na grade'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F4: TLabel
+    Left = 8
+    Top = 461
+    Width = 186
+    Height = 13
+    Caption = 'F4 - Permite Cancelar um Pedido'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object ibeaIncluir: TSpeedButton
+    Left = 401
+    Top = 67
+    Width = 66
+    Height = 34
+    Caption = '&Novo'
+    Flat = True
+    Glyph.Data = {
+      36010000424D3601000000000000760000002800000011000000100000000100
+      040000000000C0000000C40E0000C40E00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+      3333300000003333330000000000300000003333330FFFFFFFF0300000003333
+      330FFFFFFFF0300000003333330F00F000F0300000003330330FFFFFFFF03000
+      00003339030F0800F0F0300000003339900FFFFFFFF0300000000999990F00F0
+      00003000000009999990FFF0FF03300000000999999908F0F033300000000999
+      9990FFF003333000000009999900000033333000000033399033333333333000
+      0000333903333333333330000000333033333333333330000000}
+    OnClick = ibeaIncluirClick
+  end
+  object ibeaSair: TSpeedButton
+    Left = 715
+    Top = 5
+    Width = 63
+    Height = 34
+    Caption = '&Sair'
+    Flat = True
+    Glyph.Data = {
+      F6060000424DF606000000000000360000002800000018000000180000000100
+      180000000000C0060000120B0000120B00000000000000000000FF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B4E1E
+      1FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B
+      8C4B4B914B4B4E1E1FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B89
+      4B4B9C4B4CB64B4CBD4B4C9F4B4C4E1E1FFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B
+      4B9A4D4EAF4E4FC14E4FC04D4EBF4C4DBF4C4D9F4B4C4E1E1F994B4B824B4B82
+      4B4B824B4B824B4B824B4B824B4B824B4B824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BC55455C95455C75354C65253C55152C45051C24F50A04C4D4E1E
+      1FFE8B8CFC9293FB9A9CFAA3A4F8AAABF7B1B1F7B5B6F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BCE5859CC5758CB5657CA5556C95455C75354
+      C65253A34E4F4E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BD15B5CD05A5BCF595ACE
+      5859CC5758CB5657CA5556A550504E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C
+      1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BD55E
+      5FD55E5FD45D5ED35C5DD15B5CD05A5BCF595AA651524E1E1F3F9E4C1EBC4C1E
+      BC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BDA6364D96263D86062D75F60D55E5FD45D5ED35C5DA953544E1E
+      1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BDE6667DD6566DC6465DA6364D96263D86062
+      D75F60AB55554E1E1F3F9E4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4C1EBC4CF7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BE2696AE16869E06768DE
+      6667E06D6EE69091DC6465AC56574E1E1F58A55B1EBC4C1EBC4C1EBC4C1EBC4C
+      1EBC4C1EBC4CF7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BE76D
+      6EE66C6DE56B6CE36A6BEEA6A7FFFFFFEB9C9CAF58594E1E1FEECEAFB7EBAA5E
+      D3775ED37745CA6745CA6745CA67F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BEB7072EA6F70E96E6FE76D6EF2A9AAFFFFFFEB9596B15A5A4E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3D9F6BDD9F6BDF7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BEF7475EE7374ED7273EB7072EA6F70EF9091
+      E76D6EB25B5C4E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF37778F37778F27677F0
+      7576EF7475EE7374ED7273B55D5D4E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3
+      FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF87B
+      7DF77A7BF6797AF47879F37778F27677F07576B75F5F4E1E1FEECEAFFFFFD3FF
+      FFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4BFC7F80FB7E7FFA7D7EF87B7DF77A7BF6797AF47879B860624E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FF824B4BFF8182FF8182FE8081FC7F80FC7F80FB7E7F
+      FA7D7EBB63634E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5
+      B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BFF8182FF8182FF8182FF
+      8182FF8182FE8081FE8081BD65654E1E1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3
+      FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FFFF00FF824B4BF77E
+      7FFF8182FF8182FF8182FF8182FF8182FF8182BF66664E1E1FEECEAFFFFFD3FF
+      FFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF00FFFF00FFFF00FF
+      FF00FF824B4B824B4BAF5E5FD56F70FF8182FF8182FF8182FF8182BF66664E1E
+      1FEECEAFFFFFD3FFFFD3FFFFD3FFFFD3FFFFD3FFFFD3F7B5B6824B4BFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B824B4B915152B66263EE7A7B
+      FF8182BF66664E1E1F914B4B824B4B824B4B824B4B824B4B824B4B824B4B824B
+      4B824B4BFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FF824B4B824B4B9855559F58584E1E1FFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF824B4B4E1E1FFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+    OnClick = ibeaSairClick
+  end
+  object lbl_DataIni: TLabel
+    Left = 9
+    Top = 8
+    Width = 70
+    Height = 13
+    Caption = 'Data Inicial:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_DataF: TLabel
+    Left = 121
+    Top = 8
+    Width = 63
+    Height = 13
+    Caption = 'Data Final:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_IDFunc: TLabel
+    Left = 555
+    Top = 96
+    Width = 21
+    Height = 13
+    AutoSize = False
+    Caption = '.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object dbgPedidoLoja: TDBGrid
+    Left = 7
+    Top = 119
+    Width = 766
+    Height = 315
+    Cursor = crHandPoint
+    BorderStyle = bsNone
+    FixedColor = clInfoBk
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnKeyDown = dbgPedidoLojaKeyDown
+    OnKeyPress = dbgPedidoLojaKeyPress
+    OnKeyUp = dbgPedidoLojaKeyUp
+  end
+  object lbl_edtNomerazao: TLabeledEdit
+    Left = 118
+    Top = 76
+    Width = 279
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 40
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Cliente'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 1
+    OnExit = lbl_edtNomerazaoExit
+    OnKeyPress = lbl_edtNomerazaoKeyPress
+  end
+  object lbl_edtNumPedido: TLabeledEdit
+    Left = 9
+    Top = 76
+    Width = 103
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 80
+    EditLabel.Height = 13
+    EditLabel.Caption = 'N'#186' do Pedido:'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 0
+    OnExit = lbl_edtNumPedidoExit
+    OnKeyPress = lbl_edtNumPedidoKeyPress
+  end
+  object lbl_edtCodCli: TLabeledEdit
+    Left = 553
+    Top = 76
+    Width = 103
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 66
+    EditLabel.Height = 13
+    EditLabel.Caption = 'C'#243'd.Cliente'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    ReadOnly = True
+    TabOrder = 3
+    Visible = False
+  end
+  object lbl_edtIDVenda: TLabeledEdit
+    Left = 473
+    Top = 76
+    Width = 64
+    Height = 19
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 63
+    EditLabel.Height = 13
+    EditLabel.Caption = 'C'#243'd.Venda'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 4
+    OnKeyPress = lbl_edtIDVendaKeyPress
+  end
+  object dtpDataIni: TDateTimePicker
+    Left = 9
+    Top = 24
+    Width = 94
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 43207.866485277780000000
+    Time = 43207.866485277780000000
+    TabOrder = 5
+  end
+  object dtpDataF: TDateTimePicker
+    Left = 121
+    Top = 24
+    Width = 94
+    Height = 21
+    BevelInner = bvSpace
+    BevelOuter = bvSpace
+    BevelKind = bkFlat
+    Date = 43207.866485277780000000
+    Time = 43207.866485277780000000
+    TabOrder = 6
+    OnChange = dtpDataFChange
+  end
+end

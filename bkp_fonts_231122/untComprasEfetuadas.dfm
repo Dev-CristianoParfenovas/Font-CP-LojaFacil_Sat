@@ -1,0 +1,31 @@
+object frmComprasEfetuadas: TfrmComprasEfetuadas
+  Left = 186
+  Top = 113
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Compras Efetuadas'
+  ClientHeight = 341
+  ClientWidth = 536
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object BmsXPButton1: TBmsXPButton
+    Left = 448
+    Top = 8
+    Width = 80
+    Height = 21
+    Caption = '&Sair'
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    TabOrder = 0
+    OnClick = BmsXPButton1Click
+  end
+end

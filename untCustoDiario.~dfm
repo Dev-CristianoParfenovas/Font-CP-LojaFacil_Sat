@@ -1,0 +1,345 @@
+object frmCustoDiario: TfrmCustoDiario
+  Left = 80
+  Top = 188
+  Width = 544
+  Height = 375
+  BorderIcons = [biSystemMenu]
+  Caption = 'Controle de Custos Di'#225'rio'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_Descricao: TLabel
+    Left = 13
+    Top = 33
+    Width = 58
+    Height = 13
+    Caption = 'Descri'#231#227'o'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_ValorCusto: TLabel
+    Left = 217
+    Top = 33
+    Width = 30
+    Height = 13
+    Caption = 'Valor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Data: TLabel
+    Left = 305
+    Top = 33
+    Width = 28
+    Height = 13
+    Caption = 'Data'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_DTF: TLabel
+    Left = 104
+    Top = 171
+    Width = 55
+    Height = 13
+    Caption = 'DataFinal'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_DTIni: TLabel
+    Left = 8
+    Top = 170
+    Width = 66
+    Height = 13
+    Caption = 'Data Inicial'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Obs: TLabel
+    Left = 12
+    Top = 77
+    Width = 23
+    Height = 13
+    Caption = 'Obs'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_Total: TLabel
+    Left = 201
+    Top = 173
+    Width = 30
+    Height = 13
+    Caption = 'Total'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_edtDescricao: TmxFlatEdit
+    Left = 11
+    Top = 48
+    Width = 198
+    Height = 21
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+    TabOrder = 0
+  end
+  object lbl_edtVlrCusto: TmxFlatEdit
+    Left = 214
+    Top = 48
+    Width = 80
+    Height = 21
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+  end
+  object dtpData: TmxFlatDateTimePicker
+    Left = 303
+    Top = 47
+    Width = 85
+    Height = 22
+    CalAlignment = dtaLeft
+    Date = 38296.4274132407
+    Time = 38296.4274132407
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = 2
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+  end
+  object ibeaSair: TBmsXPButton
+    Left = 464
+    Top = 2
+    Width = 66
+    Height = 19
+    Caption = '&Sair'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 3
+    OnClick = ibeaSairClick
+  end
+  object dbgContasaPagar: TDBGrid
+    Left = 3
+    Top = 212
+    Width = 529
+    Height = 126
+    Cursor = crHandPoint
+    BorderStyle = bsNone
+    FixedColor = clInfoBk
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit]
+    ParentFont = False
+    TabOrder = 4
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = [fsBold]
+  end
+  object dtpDataIni: TmxFlatDateTimePicker
+    Left = 8
+    Top = 186
+    Width = 84
+    Height = 21
+    CalAlignment = dtaLeft
+    Date = 39182.3920466551
+    Time = 39182.3920466551
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = 5
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+  end
+  object dtpDataF: TmxFlatDateTimePicker
+    Left = 104
+    Top = 186
+    Width = 84
+    Height = 21
+    CalAlignment = dtaLeft
+    Date = 39182.3920816551
+    Time = 39182.3920816551
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = 6
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+  end
+  object memoObs: TmxFlatMemo
+    Left = 11
+    Top = 91
+    Width = 377
+    Height = 73
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Lines.Strings = (
+      '')
+    MaxLength = 300
+    ParentFont = False
+    TabOrder = 7
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+  end
+  object ibeaIncluir: TBmsXPButton
+    Left = 2
+    Top = 1
+    Width = 66
+    Height = 19
+    Caption = '&Incluir'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 8
+  end
+  object ibeaLimpar: TBmsXPButton
+    Left = 393
+    Top = 2
+    Width = 66
+    Height = 19
+    Caption = '&Limpar'
+    ShowHint = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    ParentShowHint = False
+    TabOrder = 9
+  end
+  object ibeaAlterarCP: TBmsXPButton
+    Left = 82
+    Top = 2
+    Width = 66
+    Height = 19
+    Caption = '&Alterar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clTeal
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 10
+  end
+  object ibeaExcluirCP: TBmsXPButton
+    Left = 156
+    Top = 2
+    Width = 66
+    Height = 19
+    Caption = '&Excluir'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 11
+  end
+  object lbl_edtTotal: TmxFlatEdit
+    Left = 200
+    Top = 186
+    Width = 80
+    Height = 21
+    Activate = False
+    BorderColor = clGradientActiveCaption
+    Flat = True
+    ShowBorder = True
+    Version = '1.26'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 12
+  end
+end

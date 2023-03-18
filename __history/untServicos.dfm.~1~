@@ -1,0 +1,1358 @@
+object frmVendasLoja: TfrmVendasLoja
+  Left = 0
+  Top = 5
+  BorderIcons = [biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'CP SISTEMMAS'
+  ClientHeight = 579
+  ClientWidth = 1016
+  Color = clBackground
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poScreenCenter
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object imgFundoCx: TImage
+    Left = 0
+    Top = 0
+    Width = 1016
+    Height = 579
+    Align = alClient
+    Stretch = True
+  end
+  object lbl_edtSubTotal: TLabel
+    Left = 695
+    Top = 433
+    Width = 161
+    Height = 78
+    Caption = '0,00'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -64
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_edtInformacao: TLabel
+    Left = 238
+    Top = 3
+    Width = 251
+    Height = 45
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clYellow
+    Font.Height = -29
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Layout = tlCenter
+  end
+  object lbl_CancelaItem: TLabel
+    Left = 385
+    Top = 214
+    Width = 144
+    Height = 19
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clYellow
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_TotalVendido: TLabel
+    Left = 698
+    Top = 402
+    Width = 211
+    Height = 32
+    Caption = 'Total a Pagar:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -27
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_NomeProd: TLabel
+    Left = 246
+    Top = 110
+    Width = 458
+    Height = 23
+    AutoSize = False
+    Caption = '     '
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_X: TLabel
+    Left = 290
+    Top = 7
+    Width = 16
+    Height = 24
+    Caption = 'X'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -19
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object lbl_edtIgual: TLabel
+    Left = 332
+    Top = 7
+    Width = 13
+    Height = 24
+    Caption = '='
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -19
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object lbl_Sangria: TLabel
+    Left = 539
+    Top = 523
+    Width = 189
+    Height = 21
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clYellow
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_NomeFuncComissao: TLabel
+    Left = 729
+    Top = 61
+    Width = 280
+    Height = 23
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CodPosVenda: TLabel
+    Left = 536
+    Top = 520
+    Width = 49
+    Height = 25
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_QtdeEstoque: TLabel
+    Left = 468
+    Top = 213
+    Width = 149
+    Height = 16
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_IDCli: TLabel
+    Left = 730
+    Top = 539
+    Width = 55
+    Height = 13
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object lbl_CodVendaMPV: TLabel
+    Left = 679
+    Top = 153
+    Width = 75
+    Height = 20
+    AutoSize = False
+    Transparent = True
+  end
+  object Shape4: TShape
+    Left = 724
+    Top = 2
+    Width = 284
+    Height = 57
+    Pen.Style = psClear
+    Shape = stRoundRect
+  end
+  object Label2: TLabel
+    Left = 729
+    Top = 35
+    Width = 59
+    Height = 13
+    Caption = 'Operador:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Func: TLabel
+    Left = 791
+    Top = 34
+    Width = 82
+    Height = 16
+    AutoSize = False
+    Caption = '.'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Data: TLabel
+    Left = 763
+    Top = 8
+    Width = 88
+    Height = 13
+    AutoSize = False
+    Caption = '.'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Dt: TLabel
+    Left = 729
+    Top = 8
+    Width = 32
+    Height = 13
+    Caption = 'Data:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Cupom: TLabel
+    Left = 877
+    Top = 34
+    Width = 61
+    Height = 16
+    Caption = 'Cupom N'#186
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CodVenda: TLabel
+    Left = 942
+    Top = 34
+    Width = 60
+    Height = 20
+    AutoSize = False
+    Caption = '.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object Shape5: TShape
+    Left = 7
+    Top = 241
+    Width = 650
+    Height = 360
+    Shape = stRoundRect
+  end
+  object Shape2: TShape
+    Left = 684
+    Top = 166
+    Width = 328
+    Height = 43
+    Pen.Style = psClear
+    Shape = stRoundRect
+  end
+  object Shape3: TShape
+    Left = 684
+    Top = 238
+    Width = 328
+    Height = 42
+    Pen.Style = psClear
+    Shape = stRoundRect
+  end
+  object Shape1: TShape
+    Left = 684
+    Top = 309
+    Width = 328
+    Height = 43
+    Pen.Style = psClear
+    Shape = stRoundRect
+  end
+  object shapeImgEmpresa: TShape
+    Left = 7
+    Top = 4
+    Width = 225
+    Height = 232
+    Shape = stRoundRect
+  end
+  object imgLogoCli: TImage
+    Left = 17
+    Top = 16
+    Width = 205
+    Height = 210
+    Picture.Data = {
+      0954474946496D616765510F0000474946383961CD003300F70000371963E0DE
+      EB5A4C92CD251CACA5C7857BAD2C1F77C6C2D6DB3229F8F8FB42318270639B93
+      8AB6BBB5D1811C3DE46C65191576BDB6D3D8D5E5EFEEF3CD25214C3B88EB9490
+      655999651D4C1F0B6A9C94BD7B71A5A6313F38257A271370E0DEE8E92511B022
+      29B1ABCBFAECEC8A7FB1E3635CFFFFFFD0CDE0F9DAD84B3B84A49DBFE1524B29
+      176C7469A361529552438CE77A74E7E5EFF2B7B34126742A1872E04B423F2D7E
+      C4BED7D0261B6C609DF7F6F926116D5B1C51211473D3D0DF952035DB251A2F1B
+      747A6DA6DE443ACCC7DDB8B2CF8276AB978EBAEFA6A2CB707556488E897EB0E0
+      D2DE332178EBE9F093213EC0BBD5A59DC4E7D1D6C8251F3A297C9187B55E5193
+      EB8F897366A2665A96F3F2F712147C4D3F886A5C9CE4E1EDFAE6E5E6756FB3AE
+      C9E62717DC3B31AFA8CA7F1F3FFEF8F8220F6BFFF7FFD5D1E39D2139181478C8
+      C4DB7F73AA471A5AEE5042A594BD998FBB57488ED6261D4735838E84B4511A57
+      A8A1C5C024281F167441307DF3BDBA8B1F3B4E3F86B5AECE30186DE62714E982
+      7DF1AFACE43325F07164F16A5DFFE6E6841E44A62234D72718EFEEF5311F74D7
+      2319DBD7E67A669BDF271AEB27121A167921197B6B5A94FDF1F0F7B5B595213D
+      12157C601C4FF0ABA7421963F29C95FADFDDE97F7AE576700000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000000021F9040007
+      0000002C00000000CD0033000008FF004D081C48B0A0C18308132A5CC8B0A1C3
+      8710234A9C48B1A2C58B18336ADCC8B1A3C78F20438A1C49B2A4C99328113A11
+      B144C8862A0774A49C49B366C60075E8D0F0C0D3030D2B7712D81C4AB4A8C130
+      3678D258CA74A9950F46A34A45A9A2A9D5A6741A4DDDCAB5E381AB6097F699D0
+      B5AC59895A52F80C7B75C9D9B77013DE611BD64012420FC058D84329AEDFAE09
+      B2ACA5DB349203108C12331A72E5CBDFC7469DD0194C7869243B8080CCD9BC79
+      4C26C8A06B9E5854D96A1E00381E715E1D28B4EB935F4B37CDF36780EAD59B19
+      C11818C34F1D1204B41274B2A48071E34B5410D1B2700281E3D097B469908081
+      91E34E04EAF0531CBAF136774C44FF69D3DDFBF125CCA1B4310FDD8888814EC8
+      14D02081A0040D05086427A823429D2A370CF71C7D08F5F65B7007A511C775EC
+      054050231DC8C6541E9A24721B6E9B6D62820636ECC4D3226D902550236CBDF0
+      1E428D54D093073BB4E8E2063A24A5541A26382140532EBA284002729CD19355
+      397A61421594E5E8620E0215A1404F41302050151E7AA0400303357223535D90
+      05C5924A9160501C54AC184488046900A491010E340117945516090F8060C819
+      108338D2034F027411049E227E10E1524D54605515080930181558B48045A239
+      F8A183A04B05A1951083759083A28C6AB0610E58082147530A08A1A8108A6C38
+      D80B422CBA680B39844704587E90FFA1145341106182226A35E5410B44EC6955
+      1C04B5D193157AF264057326A4619512A2AADA025404B5D0266191F001899C9B
+      0172481E4BBD20D4063D093162134CD9A00501413445804101A4CBD489054DA0
+      53A45E68A1C78A4E2E24C28A587CB9A2A6087531980B2F78D041984A58D15417
+      26DC3158051700EA810D3990BB14153108E4304F720845294F6D3C8995500B41
+      21E1522C4C71216E8F50F007B734B42090063D2D525F2316D340057324345501
+      C955BABB945B06C94B6BBD1D3285E442040CB63441710C7644422F3435011B4D
+      41F181D074985080BA2690B694B85C347582093A4CB693CCA646AA551D95DACA
+      9060B25D52C6B5D8428248244CF5FF6B02DC3D39F941CE5490D52E538B384850
+      026C3605AF9AF3D220A9095D5835B5424D2BED2F53971B9440D54C5DDD54048D
+      706D421B60E74C7653B6BEBA94077E47CD5478B1314547A90B7991546597D8F1
+      C8CAB8416209DF4B2D4D04031A68C04080383355B809312C52B37004D5BE5407
+      F5116474A4F57D4085555060EEF4E64B755ED0E74D397143530D4820740A2618
+      D1545039CB5C3653B612C014EC021D21B540945A58437C702FBA6CC10DA9C1D6
+      6620F104E2D1E06906F1C29F74C61C33314501402B93555E2013C8D12A7B45B0
+      8A0D147790CC15CF2034630AC03C07BAA5A88F7DEE630AFCE437BB04D4CF04F7
+      5B4AFEF6C736D92D055826D0821CFF2863BE847CC00561894424300004312870
+      810DD41C8A7266031310E17B4CC9D7417240197179907B03A98355768410133E
+      D020FEEBC91112D0C1C5B590062F644AFBDE17BFF9D99029F6635DC3F6E737FF
+      3105882690C0049712BE864061014DC8030416F9074C840012C09313031D0841
+      8228C20A83694217C4B6942E64B0205A681C53A2F045C965CF04097001658C50
+      C6F111840C58BCD80B2E80AC81A08F29715CCA1C6558C71ADE30873468441A92
+      062827A4B22980344104AC42052139440A1CF8C10F1031054064E6899C99A414
+      0D12830E5066453660C0270D72829C498E0D02D99E2987A300AB3C6E2066ACE4
+      12DAE48126E0CE966FCC250D76B9FF9419DAF1974D090014A67595649A800483
+      F100191B628637581310917CA2364F5823229CE00444A857C468250717B44003
+      245C0819AC4287ECA83308A714C80184468326D0A820F12C881F884903050800
+      0BB514C82D5DB83E39C6B09FBD5C0AFDF088C3A634E20391D39900ACD0CE3F9E
+      EF029429C0433C814D0542420D94EC5F1016B1882010CA4FCE8BC138196204CA
+      F44B119143A941AAD214257C32A605F1E30F1330CE9DC2B1A7BAFC290DFCE94B
+      A202D35673791D16E8EA431A18147A4B1A9D436450556C89010F4D895DD64C10
+      8009EE6C223A5018AD9C90B60F1EA40556412741E05AA6C1ACF07CF9C4EB3EF5
+      CA57A1DE712979C49F09462AD899FF0DE6B02660C304F9C7D02130A2B1180204
+      0FD6B0940B3CA9271D3341F32E262289F8C12A8DE82C182368152A8DD6955033
+      2D42ECAA4F7EEE35A834182A6C8B2A5BFDBD6E0102292C6E29B73FE33A0409BF
+      05EE6A5A36831E488E0164686A13E4B65C9D3557216910811F065C840640B527
+      0AD08116D2FA81950C78C00D104253120753EC0EA4B05888C083072C82FAE4D3
+      7ADE6D6D785F1B33F2EAD004E6DD097A4D50580D24000A0286701468EAA58794
+      20BEF2DD4C219810B11579800E7253AED09AF0DF84B480057421830926D0D4A5
+      C4C08C60A983411C8625341294872680144F9B5204655DD0041B684A14121059
+      132415B0FB5B1A034C3B81267CB3FF2929C8D843BEE0DB1CCFA1062340A51F72
+      400705584103FF0D40051440E817DC532175D003A117BD682B444020975C7449
+      23A068462F5A0EEB32881F181DB282A8A0D2965EB40DA47C01493B810D8C8642
+      23FA4C68019880018C16410252B068A9BA80D13E30810844DD6915309A005A10
+      00A8194D0723EC072228A833706BC089F3E594205A88B6229E9D90044C3BDAD8
+      8E3628A73D6D545E3BDBDADEEEB51551D76F835BDA32D1C2B7212D6DA1801B95
+      13687710B99D6E6E23CBDAE8D6E9B8DD6D6E7953E40B25006E09FAF29A821B25
+      1335E08C6216BE024118FCE1119173472821834EAC600C0840C0185610081998
+      A12813888117463E568867440B05FFF06823BC90698E9881125FF802253E6E14
+      1274C0062FA80017A867728E48E0088A6003165C50C49E17E4032A9E4000EA75
+      044DA5A10E0530020902601D0654610345980003A06E04636B5D533720C1D96A
+      7484028C1D0A5C2701B208509C424A800469AFA51634D0860398E0034BF08322
+      90D708E354A10E4240671A8C50858C25800024500471942C1032B4C10F032942
+      1B0840B21830A000D9B33CE68DAEBD25C559205AA0810DBC30993A9041044E80
+      42013C40853B4840598B200301F483C40AE4800B5BAD171794D08626B021064B
+      890219C82093CF7940093498DABE52207BE2EB54000A58C23E5F7501A44BCA0F
+      D2E20201BC408426B4E1D609A099FF0D2E70016F92B2004D204110A45C874530
+      E08C95BD80006CD00826CB010B1D0832E757EA81E46AA1035CE0042A623ECA62
+      0502210134200703A10834C005077006D897012710011EA0025E4003583001A4
+      5148CFE7014E50390170031EE04504D10034C04A1E600558D30201D0041DC01C
+      14D869D2B2121E500446B00337400726E2016D40662EC0384DE00554A00026D0
+      0201780467A005EBC3000EE37A23C879D9E50152F57F5DD32BFB3410AFE26A26
+      70020D882C8AD0045C70036750042D900169E03047C085C6252B4D704A097023
+      3160262270001E90036D241051400342E0050AB53E58D0822FA86B4F68025015
+      004DB8043B00055C20004D5300C0FF670582D60127600318C446457806311005
+      6750072AE0015170027508850481053CA1645440073241331DA0385928106284
+      8142F1851500056388051900051163033AC130A7E3012F706F704833458050EB
+      5710A4D80493E10226F3872E582AFBE24585E8306C97888B48003B500751504F
+      7410040A308909067A4B42076152059DF889A1288A3AC526BFA800A828100845
+      46AD985B0D2867B2288645608B27D0894BB04CEE950050D5696F48038A408A8D
+      50041ED005876602559103AFA28223E8044DD00432F18C02C14534480688A888
+      8CE8014B100034A0044440071DD00894E8355610036DB0032A908DE4E8014EC8
+      369C27015510074790145DA0033AFF1303507000E227146CE0011570803A7303
+      1100057C680311900177700112282B71F00129E80411C00629D98F0513315255
+      043BA00444090524A33F4290005232012E40077351634DB334CBA4022DB00813
+      80053BA0241510053B2004A1B78E1E30014BD0042240033FD806670005222804
+      31D00439F07E8F068544D0058C99030520244250078DD098BC32220B402826E0
+      054290035D700158F00146B00469D0057E10055DC07D3910013180059F78015D
+      90036D002D2C960339702227B0009C79012D803B44800504A00358E0163A6004
+      2EA002037102AD3210B8880534A2023990062450056C900364A00558C0005A40
+      0219B82173291404F09C69909C692E800517C081E8789E19A10195849EEC1912
+      3140062BD69EF2F9118E679CF3799F1C9106FA879FFCD99FFE191A0101003B}
+    OnClick = imgLogoCliClick
+  end
+  object Shape6: TShape
+    Left = 238
+    Top = 166
+    Width = 421
+    Height = 43
+    Pen.Style = psClear
+    Shape = stRoundRect
+  end
+  object lbl_CnpjCpfP: TLabel
+    Left = 33
+    Top = 558
+    Width = 52
+    Height = 22
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_edtCnpjCpf: TLabel
+    Left = 84
+    Top = 558
+    Width = 184
+    Height = 22
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Layout = tlCenter
+  end
+  object lbl_Cliente: TLabel
+    Left = 17
+    Top = 528
+    Width = 155
+    Height = 22
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Layout = tlCenter
+  end
+  object lbl_CodCliente: TLabel
+    Left = 178
+    Top = 528
+    Width = 52
+    Height = 23
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object lbl_edtPacoteFardo: TLabel
+    Left = 277
+    Top = 558
+    Width = 149
+    Height = 20
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clTeal
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_TipoPreco: TLabel
+    Left = 277
+    Top = 528
+    Width = 160
+    Height = 18
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clTeal
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_IDPlacaVeiculo: TLabel
+    Left = 391
+    Top = 491
+    Width = 34
+    Height = 13
+    AutoSize = False
+    Transparent = True
+  end
+  object Shape7: TShape
+    Left = 1040
+    Top = 686
+    Width = 227
+    Height = 45
+    Pen.Style = psClear
+    Shape = stRoundRect
+    Visible = False
+  end
+  object lbl_IDFuncComissao: TLabel
+    Left = 545
+    Top = 124
+    Width = 55
+    Height = 23
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
+  object lbl_F4: TLabel
+    Left = 32
+    Top = 602
+    Width = 98
+    Height = 16
+    Caption = 'F4 - Inicia Venda'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F3: TLabel
+    Left = 32
+    Top = 621
+    Width = 113
+    Height = 16
+    Caption = 'F3 - Finaliza Venda'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F6: TLabel
+    Left = 32
+    Top = 640
+    Width = 103
+    Height = 16
+    Caption = 'F6 - Cancela Item'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CtrlF6: TLabel
+    Left = 32
+    Top = 680
+    Width = 199
+    Height = 16
+    Caption = 'CTRL_F6 - Cancela todos os itens'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CTRLD: TLabel
+    Left = 32
+    Top = 699
+    Width = 223
+    Height = 16
+    Caption = 'CTRL_D - Cancela '#250'ltimo cupom fiscal'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F8: TLabel
+    Left = 320
+    Top = 602
+    Width = 78
+    Height = 16
+    Caption = 'F8 - Pre'#231'o(B)'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F9: TLabel
+    Left = 320
+    Top = 621
+    Width = 78
+    Height = 16
+    Caption = 'F9 - Pre'#231'o(C)'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F1: TLabel
+    Left = 320
+    Top = 640
+    Width = 165
+    Height = 16
+    Caption = 'F1 - Limpa campos do caixa'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CTRLN: TLabel
+    Left = 320
+    Top = 680
+    Width = 271
+    Height = 16
+    Caption = 'CTRL_U - Reimprime '#250'ltimo cupom fiscal(SAT)'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_CTRLS: TLabel
+    Left = 320
+    Top = 699
+    Width = 136
+    Height = 16
+    Caption = 'CTRL_S - Sair do caixa'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Hr: TLabel
+    Left = 877
+    Top = 8
+    Width = 32
+    Height = 13
+    Caption = 'Hora:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Relogio: TLabel
+    Left = 913
+    Top = 8
+    Width = 82
+    Height = 16
+    AutoSize = False
+    Caption = '.'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F7: TLabel
+    Left = 32
+    Top = 661
+    Width = 137
+    Height = 16
+    Caption = 'F7 - Pesquisa Produtos'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F10: TLabel
+    Left = 320
+    Top = 661
+    Width = 240
+    Height = 16
+    Caption = 'F10 - Abre Vendas Pendente(P'#243's Venda)'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object Label1: TLabel
+    Left = 500
+    Top = 192
+    Width = 149
+    Height = 16
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_TrocaMercadoria: TLabel
+    Left = 828
+    Top = 145
+    Width = 149
+    Height = 16
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clYellow
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Orcamento: TLabel
+    Left = 272
+    Top = 88
+    Width = 121
+    Height = 18
+    AutoSize = False
+    Caption = 'Or'#231'amento N'#186':'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_IdOrc: TLabel
+    Left = 399
+    Top = 88
+    Width = 59
+    Height = 18
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object ListBoxDadosEmpresa: TListBox
+    Left = 365
+    Top = 5
+    Width = 20
+    Height = 20
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BevelOuter = bvSpace
+    BorderStyle = bsNone
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 7
+    Visible = False
+  end
+  object listboxCupom: TListBox
+    Left = 347
+    Top = 6
+    Width = 22
+    Height = 19
+    BevelInner = bvSpace
+    BorderStyle = bsNone
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 0
+    Visible = False
+  end
+  object lbl_edtIDProdCX: TLabeledEdit
+    Left = 393
+    Top = 5
+    Width = 32
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BevelOuter = bvSpace
+    BorderStyle = bsNone
+    EditLabel.Width = 78
+    EditLabel.Height = 13
+    EditLabel.Caption = 'lbl_edtIDProdCX'
+    EditLabel.Transparent = True
+    TabOrder = 8
+    Visible = False
+  end
+  object lbl_edtCodCartao: TLabeledEdit
+    Left = 297
+    Top = -8
+    Width = 24
+    Height = 28
+    BevelInner = bvSpace
+    BorderStyle = bsNone
+    Color = clWhite
+    Ctl3D = True
+    EditLabel.Width = 64
+    EditLabel.Height = 13
+    EditLabel.Caption = 'C'#243'd.Cart'#227'o'
+    EditLabel.Color = clWhite
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold, fsUnderline]
+    EditLabel.ParentColor = False
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    MaxLength = 7
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 1
+    Visible = False
+    OnExit = lbl_edtCodCartaoExit
+  end
+  object lbl_edtCodBarras: TLabeledEdit
+    Left = 241
+    Top = 170
+    Width = 233
+    Height = 34
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Color = clWhite
+    EditLabel.Width = 135
+    EditLabel.Height = 25
+    EditLabel.Caption = ' C'#243'd.Barras'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    MaxLength = 13
+    ParentFont = False
+    TabOrder = 2
+    OnChange = lbl_edtCodBarrasChange
+    OnEnter = lbl_edtCodBarrasEnter
+    OnExit = lbl_edtCodBarrasExit
+    OnKeyPress = lbl_edtCodBarrasKeyPress
+  end
+  object lbl_edtCodProd: TLabeledEdit
+    Left = 490
+    Top = 170
+    Width = 161
+    Height = 34
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Color = clWhite
+    EditLabel.Width = 47
+    EditLabel.Height = 25
+    EditLabel.Caption = 'Ref.'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = []
+    MaxLength = 11
+    ParentFont = False
+    TabOrder = 3
+    OnEnter = lbl_edtCodProdEnter
+    OnExit = lbl_edtCodProdExit
+    OnKeyPress = lbl_edtCodProdKeyPress
+  end
+  object lbl_edtQtde: TLabeledEdit
+    Left = 688
+    Top = 241
+    Width = 319
+    Height = 34
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Color = clWhite
+    EditLabel.Width = 57
+    EditLabel.Height = 25
+    EditLabel.Caption = 'Qtde'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -27
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    MaxLength = 6
+    ParentFont = False
+    TabOrder = 4
+    Text = '0,00'
+    OnEnter = lbl_edtQtdeEnter
+    OnExit = lbl_edtQtdeExit
+    OnKeyPress = lbl_edtQtdeKeyPress
+  end
+  object lbl_edtVlrTotal: TLabeledEdit
+    Left = 689
+    Top = 313
+    Width = 318
+    Height = 34
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Color = clWhite
+    EditLabel.Width = 59
+    EditLabel.Height = 25
+    EditLabel.Caption = 'Total'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -27
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 6
+    Text = '0,00'
+    OnEnter = lbl_edtVlrTotalEnter
+    OnExit = lbl_edtVlrTotalExit
+    OnKeyPress = lbl_edtVlrTotalKeyPress
+  end
+  object lbl_edtFuncComissao: TLabeledEdit
+    Left = 316
+    Top = 8
+    Width = 20
+    Height = 28
+    BevelInner = bvSpace
+    BorderStyle = bsNone
+    Color = clWhite
+    Ctl3D = True
+    EditLabel.Width = 67
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Funcion'#225'rio'
+    EditLabel.Color = clWhite
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold, fsUnderline]
+    EditLabel.ParentColor = False
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    MaxLength = 8
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 9
+    Visible = False
+    OnExit = lbl_edtFuncComissaoExit
+    OnKeyPress = lbl_edtFuncComissaoKeyPress
+  end
+  object lbl_edtVlrUnit: TLabeledEdit
+    Left = 688
+    Top = 170
+    Width = 319
+    Height = 34
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Color = clWhite
+    EditLabel.Width = 135
+    EditLabel.Height = 25
+    EditLabel.Caption = 'Vlr.Unit'#225'rio'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clBlack
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -27
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 5
+    Text = '0,00'
+    OnEnter = lbl_edtVlrUnitEnter
+    OnExit = lbl_edtVlrUnitExit
+    OnKeyPress = lbl_edtVlrUnitKeyPress
+  end
+  object dbgVendas: TDBGrid
+    Left = 23
+    Top = 255
+    Width = 614
+    Height = 271
+    Cursor = crHandPoint
+    BorderStyle = bsNone
+    FixedColor = clInfoBk
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    Options = [dgTitles, dgIndicator, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentFont = False
+    TabOrder = 10
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = dbgServsCellClick
+    OnKeyPress = dbgVendasKeyPress
+  end
+  object lbl_edtDescontoItem: TLabeledEdit
+    Left = 1045
+    Top = 689
+    Width = 217
+    Height = 39
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 248
+    EditLabel.Height = 25
+    EditLabel.Caption = 'lbl_edtDescontoItem'
+    EditLabel.Font.Charset = ANSI_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -21
+    EditLabel.Font.Name = 'Verdana'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    EditLabel.Transparent = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 11
+    Text = '0,00'
+    Visible = False
+    OnExit = lbl_edtDescontoItemExit
+    OnKeyPress = lbl_edtDescontoItemKeyPress
+  end
+  object ckAtualizaValor: TCheckBox
+    Left = 240
+    Top = 216
+    Width = 136
+    Height = 17
+    Caption = 'CTRL_B - Atualiza Valor'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 12
+    OnClick = ckAtualizaValorCheck
+  end
+  object MainMenu1: TMainMenu
+    Left = 464
+    object Venda1: TMenuItem
+      Caption = '&Geral'
+      ShortCut = 16471
+      Visible = False
+      object Venda2: TMenuItem
+        Caption = '&Clientes'
+        ShortCut = 16451
+        OnClick = Venda2Click
+      end
+      object InstrucoesCaixa1: TMenuItem
+        Caption = '&Instrucoes Caixa'
+        ShortCut = 16457
+        OnClick = InstrucoesCaixa1Click
+      end
+      object NotaPaulista1: TMenuItem
+        Caption = '&Nota Paulista'
+        ShortCut = 16462
+        OnClick = NotaPaulista1Click
+      end
+      object LimparClienteCnpj1: TMenuItem
+        Caption = '&Limpar Cliente Cnpj'
+        ShortCut = 16460
+        OnClick = LimparClienteCnpj1Click
+      end
+      object LeituraX1: TMenuItem
+        Caption = '&Leitura X'
+        ShortCut = 16472
+        OnClick = LeituraX1Click
+      end
+      object LeituraZ1: TMenuItem
+        Caption = '&Leitura Z'
+        ShortCut = 16474
+        OnClick = LeituraZ1Click
+      end
+      object CadastrarFormasdePagto1: TMenuItem
+        Caption = '&Cadastrar Formas de Pagto.'
+        ShortCut = 16464
+        OnClick = CadastrarFormasdePagto1Click
+      end
+      object AtualizaValor1: TMenuItem
+        Caption = 'Atualiza Valor'
+        ShortCut = 16450
+        OnClick = AtualizaValor1Click
+      end
+      object CancelarItemCaixa1: TMenuItem
+        Caption = '&Cancelar Cupom'
+        ShortCut = 16452
+        OnClick = CancelarItemCaixa1Click
+      end
+      object FecharCaixa1: TMenuItem
+        Caption = '&Fechar Caixa'
+        ShortCut = 16454
+        OnClick = FecharCaixa1Click
+      end
+      object VendasTeste1: TMenuItem
+        Caption = '&VendasTeste'
+        ShortCut = 16499
+        OnClick = VendasTeste1Click
+      end
+      object PacoteFardo1: TMenuItem
+        Caption = '&PacoteFardo'
+        ShortCut = 16500
+        OnClick = PacoteFardo1Click
+      end
+      object CancelarCupomInteiro1: TMenuItem
+        Caption = '&Cancelar Cupom Inteiro'
+        ShortCut = 16501
+        OnClick = CancelarCupomInteiro1Click
+      end
+      object LimparCPF1: TMenuItem
+        Caption = '&LimparCPF'
+        ShortCut = 16465
+        OnClick = LimparCPF1Click
+      end
+      object Sangria1: TMenuItem
+        Caption = '&Sangria'
+        ShortCut = 16456
+        OnClick = Sangria1Click
+      end
+      object ImprimirResumoVendas1: TMenuItem
+        Caption = 'Imprimir Resumo Vendas'
+        ShortCut = 16449
+      end
+      object roca1: TMenuItem
+        Caption = '&Teste de Impress'#227'o'
+        ShortCut = 16468
+        OnClick = roca1Click
+      end
+      object Sair1: TMenuItem
+        Caption = '&Sair'
+        ShortCut = 16467
+        OnClick = Sair1Click
+      end
+      object AbrirGaveta1: TMenuItem
+        Caption = '&Abrir Gaveta'
+        ShortCut = 16455
+        OnClick = AbrirGaveta1Click
+      end
+      object ImprimiUltimoCupom1: TMenuItem
+        Caption = '&Imprime Ultimo Cupom'
+        ShortCut = 16469
+        OnClick = ImprimiUltimoCupom1Click
+      end
+      object AbreGavetaBematech1: TMenuItem
+        Caption = 'Abre Gaveta Bematech'
+        ShortCut = 16466
+      end
+      object AbreGavetaTeste2: TMenuItem
+        Caption = 'Encerra Or'#231'amento'
+        ShortCut = 16453
+        OnClick = AbreGavetaTeste2Click
+      end
+      object AbrirFuncionarios1: TMenuItem
+        Caption = '&Abrir Funcionarios'
+        ShortCut = 16461
+        OnClick = AbrirFuncionarios1Click
+      end
+      object Orcamento1: TMenuItem
+        Caption = '&Orcamento'
+        ShortCut = 16463
+        OnClick = Orcamento1Click
+      end
+    end
+  end
+  object opDialogImagem: TOpenDialog
+    Filter = 
+      'Todas Imagens (*.bmp,*.jpg)|*.jpg;*.bmp|Imagens JPEG (*.jpg)|*.j' +
+      'pg|Imagens Bitmap (*.bmp)|*.bmp'
+    Left = 432
+    Top = 6
+  end
+  object popMnuImagem: TPopupMenu
+    Left = 384
+    Top = 6
+    object popmnuProcurar: TMenuItem
+      Caption = '&Procurar'
+      ImageIndex = 0
+      OnClick = popmnuProcurarClick
+    end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 272
+    Top = 48
+  end
+end

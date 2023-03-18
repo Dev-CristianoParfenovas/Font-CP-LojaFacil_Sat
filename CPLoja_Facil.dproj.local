@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2022/01/05 10:27:37.192,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\classComboBox.pas</Transaction>
+    <Transaction>2022/01/05 10:27:55.624,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\untClasse.Cadastro.pas</Transaction>
+    <Transaction>2022/01/05 10:27:55.671,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\untClasse.ConfigCX.pas</Transaction>
+    <Transaction>2022/01/05 10:27:55.718,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\untClasse.DataEntrEstoque.pas</Transaction>
+    <Transaction>2022/01/05 10:27:55.765,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\untClasse.ImprimirCupom.pas</Transaction>
+    <Transaction>2022/01/05 10:27:55.812,=C:\CP Sistemmas\CP LojaFacil_Sat\Classes\untClasse.VendasCX.pas</Transaction>
+    <Transaction>2022/01/05 10:34:30.861,=C:\CP Sistemmas\CP LojaFacil_Sat\rel\untRFluxoVendasCaixa.pas</Transaction>
+    <Transaction>2022/01/05 10:34:59.948,=C:\CP Sistemmas\CP LojaFacil_Sat\rel\310321\untR_Orc.pas</Transaction>
+    <Transaction>2022/01/05 11:37:46.323,=C:\CP Sistemmas\CP LojaFacil_Sat\rel\untGrupoSubGrupEstoqueRelat.pas</Transaction>
+    <Transaction>2022/01/05 11:38:57.845,=C:\CP Sistemmas\CP LojaFacil_Sat\rel\untGrupoSubGrupEstoqueRelat.pas</Transaction>
+    <Transaction>2022/01/05 11:45:17.750,C:\CP Sistemmas\CP LojaFacil_Sat\untPimaco6087.pas=</Transaction>
+    <Transaction>2022/01/05 11:45:33.481,C:\CP Sistemmas\CP LojaFacil_Sat\untPimaco6089.pas=</Transaction>
+    <Transaction>2022/01/05 11:46:43.527,C:\CP Sistemmas\CP LojaFacil_Sat\untCliente.pas=</Transaction>
+    <Transaction>2022/01/05 11:47:06.717,C:\CP Sistemmas\CP LojaFacil_Sat\untPimaco6089Variada.pas=</Transaction>
+    <Transaction>2022/01/05 11:47:17.646,C:\CP Sistemmas\CP LojaFacil_Sat\untNotaFiscal.pas=</Transaction>
+    <Transaction>2022/01/05 11:47:36.640,C:\CP Sistemmas\CP LojaFacil_Sat\untTrocasPeriodo.pas=</Transaction>
+    <Transaction>2022/01/05 11:47:50.179,C:\CP Sistemmas\CP LojaFacil_Sat\untFluxoCaixa.pas=</Transaction>
+    <Transaction>2022/01/05 11:48:09.160,C:\CP Sistemmas\CP LojaFacil_Sat\untExportaTXT.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,483 @@
+object frmPrincipal: TfrmPrincipal
+  Left = 0
+  Top = 45
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'CP LOJA FACIL SAT'
+  ClientHeight = 512
+  ClientWidth = 792
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poScreenCenter
+  WindowState = wsMaximized
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object imgPrincipal: TImage
+    Left = 0
+    Top = 50
+    Width = 798
+    Height = 481
+  end
+  object Image1: TImage
+    Left = -6
+    Top = 26
+    Width = 808
+    Height = 481
+  end
+  object lbl_Usuario: TLabel
+    Left = 72
+    Top = 480
+    Width = 55
+    Height = 13
+    Caption = 'Funcion'#225'rio'
+    Visible = False
+  end
+  object ibeaCliente: TSpeedButton
+    Left = 9
+    Top = 3
+    Width = 50
+    Height = 44
+    Hint = 'Cadastro de Clientes'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaClienteClick
+  end
+  object ibeaProduto: TSpeedButton
+    Left = 64
+    Top = 3
+    Width = 50
+    Height = 44
+    Hint = 'Cadastro de Produtos'
+    Caption = 'F5'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaProdutoClick
+  end
+  object ibeaFornecedores: TSpeedButton
+    Left = 119
+    Top = 3
+    Width = 50
+    Height = 44
+    Hint = 'Cadastro de Fornecedores'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaFornecedoresClick
+  end
+  object ibeaPedido: TSpeedButton
+    Left = 175
+    Top = 3
+    Width = 50
+    Height = 44
+    Hint = 'Pedido de Venda'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaPedidoClick
+  end
+  object ibeaVendasLoja: TSpeedButton
+    Left = 230
+    Top = 3
+    Width = 50
+    Height = 44
+    Hint = 'Caixa'
+    Caption = 'F4'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaVendasLojaClick
+  end
+  object btnSair: TSpeedButton
+    Left = 738
+    Top = 3
+    Width = 50
+    Height = 44
+    Flat = True
+    OnClick = btnSairClick
+  end
+  object ibeaPosVenda: TSpeedButton
+    Left = 286
+    Top = 3
+    Width = 52
+    Height = 45
+    Hint = 'P'#243's Venda'
+    Flat = True
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = ibeaPosVendaClick
+  end
+  object lbl_CodUsuario: TLabeledEdit
+    Left = 8
+    Top = 472
+    Width = 25
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 3
+    EditLabel.Height = 13
+    EditLabel.Caption = '.'
+    TabOrder = 0
+    Visible = False
+  end
+  object StatusLine: TStatusBar
+    Left = 0
+    Top = 492
+    Width = 792
+    Height = 20
+    BiDiMode = bdLeftToRight
+    Panels = <
+      item
+        Width = 250
+      end
+      item
+        Alignment = taCenter
+        Style = psOwnerDraw
+        Width = 300
+      end
+      item
+        Alignment = taCenter
+        Text = 'SUPORTE: (11) 97643-6630/98791-3531'
+        Width = 100
+      end>
+    ParentBiDiMode = False
+    SizeGrip = False
+  end
+  object pnlDataHora: TPanel
+    Left = 480
+    Top = 232
+    Width = 185
+    Height = 41
+    Caption = 'pnlDataHora'
+    TabOrder = 2
+  end
+  object MainMenu1: TMainMenu
+    Left = 8
+    Top = 400
+    object mnuCadastro: TMenuItem
+      Caption = '&Cadastro'
+      object mnuClientes: TMenuItem
+        Caption = '&Clientes'
+        OnClick = mnuClientesClick
+      end
+      object mnuFornecedores: TMenuItem
+        Caption = '&Fornecedores'
+        OnClick = mnuFornecedoresClick
+      end
+      object mnuProdutos: TMenuItem
+        Caption = '&Produtos'
+        OnClick = mnuProdutosClick
+      end
+      object DadosEmpresa1: TMenuItem
+        Caption = '&Dados Empresa'
+        OnClick = DadosEmpresa1Click
+      end
+      object mnuSenhadeAcesso1: TMenuItem
+        Caption = '&Senha de Acesso'
+        OnClick = mnuSenhadeAcesso1Click
+      end
+      object mnuTabelas: TMenuItem
+        Caption = '&Tabelas'
+        object mnuGrupoSubgrupo: TMenuItem
+          Caption = '&Grupo e Subgrupo'
+          OnClick = mnuGrupoSubgrupoClick
+        end
+        object mnuLocalEstocagem: TMenuItem
+          Caption = '&Local de Estocagem'
+          OnClick = mnuLocalEstocagemClick
+        end
+        object UnidadedeVenda1: TMenuItem
+          Caption = '&Unidade de Venda'
+          OnClick = UnidadedeVenda1Click
+        end
+        object CondiesdePagto1: TMenuItem
+          Caption = '&Condi'#231#245'es de Pagto.'
+          OnClick = CondiesdePagto1Click
+        end
+        object AtualizaodePreosporFornecedor1: TMenuItem
+          Caption = '&Atualiza'#231#227'o de Pre'#231'os por Fornecedor'
+          OnClick = AtualizaodePreosporFornecedor1Click
+        end
+        object Cores1: TMenuItem
+          Caption = '&Cores'
+          OnClick = Cores1Click
+        end
+        object amanho1: TMenuItem
+          Caption = '&Tamanho'
+          OnClick = amanho1Click
+        end
+        object ServiosaPagarCustoDirio1: TMenuItem
+          Caption = '&Servi'#231'os a Pagar/Custo Di'#225'rio'
+          OnClick = ServiosaPagarCustoDirio1Click
+        end
+        object CadastrarServios1: TMenuItem
+          Caption = '&Cadastrar Servi'#231'os'
+        end
+        object CadastrarCFOP1: TMenuItem
+          Caption = '&Cadastrar CFOP'
+          OnClick = CadastrarCFOP1Click
+        end
+        object CadastrarCST1: TMenuItem
+          Caption = '&Cadastrar CST'
+          OnClick = CadastrarCST1Click
+        end
+        object CadastrarCSOSN1: TMenuItem
+          Caption = '&Cadastrar CSOSN'
+          OnClick = CadastrarCSOSN1Click
+        end
+      end
+      object N1: TMenuItem
+        Caption = '-'
+        Enabled = False
+      end
+      object mnuSair: TMenuItem
+        Caption = '&Sair'
+        OnClick = mnuSairClick
+      end
+    end
+    object mnuServicos: TMenuItem
+      Caption = '&Servi'#231'os'
+      object mnuServLoja: TMenuItem
+        Caption = '&Vendas/Loja e Servi'#231'os'
+        OnClick = mnuServLojaClick
+      end
+      object mnuManutenodeCuponsCaixa1: TMenuItem
+        Caption = '&Manuten'#231#227'o de Cupons/Caixa'
+        OnClick = mnuManutenodeCuponsCaixa1Click
+      end
+      object FrentedeCaixa1: TMenuItem
+        Caption = '&Frente de Caixa'
+        OnClick = FrentedeCaixa1Click
+      end
+    end
+    object mnuFaturamento: TMenuItem
+      Caption = 'Faturamento'
+      object mnuPedidodeVenda1: TMenuItem
+        Caption = '&Pedido de Venda'
+        OnClick = mnuPedidodeVenda1Click
+      end
+    end
+    object mnuFinanceiro: TMenuItem
+      Caption = '&Financeiro'
+      object ContasaPagar1: TMenuItem
+        Caption = '&Contas a Pagar/Custo Di'#225'rio'
+        OnClick = ContasaPagar1Click
+      end
+      object mnuContasPR: TMenuItem
+        Caption = '&Contas a Receber/Rela'#231#227'o de Cheques'
+        OnClick = mnuContasPRClick
+      end
+      object FluxoDetalhado1: TMenuItem
+        Caption = '&Fluxo Detalhado'
+        OnClick = FluxoDetalhado1Click
+      end
+      object FluxodoPedidodeVenda1: TMenuItem
+        Caption = '&Fluxo do Pedido de Venda'
+        OnClick = FluxodoPedidodeVenda1Click
+      end
+      object Cotao1: TMenuItem
+        Caption = '&Cota'#231#227'o'
+        OnClick = Cotao1Click
+      end
+    end
+    object mnuEstoque: TMenuItem
+      Caption = '&Estoque'
+      object EntradadeEstoqueporNF1: TMenuItem
+        Caption = '&Entrada de Estoque por NF'
+        OnClick = EntradadeEstoqueporNF1Click
+      end
+      object EstoqueRpido1: TMenuItem
+        Caption = '&Estoque R'#225'pido'
+        OnClick = EstoqueRpido1Click
+      end
+      object ZerartodooEstoque1: TMenuItem
+        Caption = '&Zerar todo o Estoque'
+        OnClick = ZerartodooEstoque1Click
+      end
+    end
+    object mnuRelatorios: TMenuItem
+      Caption = '&Relat'#243'rios'
+      OnClick = mnuRelatoriosClick
+      object mnuRelClientes: TMenuItem
+        Caption = '&Clientes'
+        OnClick = mnuRelClientesClick
+      end
+      object mnuProd: TMenuItem
+        Caption = '&Produtos'
+        object Geral2: TMenuItem
+          Caption = '&Geral'
+          OnClick = Geral2Click
+        end
+        object VendidosporPerodo1: TMenuItem
+          Caption = '&Vendidos por Per'#237'odo'
+          OnClick = VendidosporPerodo1Click
+        end
+        object PorDatadeCadastro1: TMenuItem
+          Caption = '&Por Data de Cadastro'
+          OnClick = PorDatadeCadastro1Click
+        end
+        object Grupo1: TMenuItem
+          Caption = '&Grupo'
+        end
+        object SubGrupo1: TMenuItem
+          Caption = '&SubGrupo'
+        end
+        object FormatoExcel1: TMenuItem
+          Caption = '&Cor e Tamanho'
+        end
+      end
+      object mnuRelEstoque: TMenuItem
+        Caption = '&Estoque'
+        object Geral3: TMenuItem
+          Caption = '&Geral'
+          OnClick = Geral3Click
+        end
+        object Produtoscomestoquemnimo1: TMenuItem
+          Caption = 'Estoque M'#237'nimo/Negativo Geral'
+          OnClick = Produtoscomestoquemnimo1Click
+        end
+        object EstoqueMnimoNegativoporFornecedor1: TMenuItem
+          Caption = '&Por Fornecedor / Fabricante com estoque m'#237'nimo/negativo'
+          OnClick = EstoqueMnimoNegativoporFornecedor1Click
+        end
+        object Grupo2: TMenuItem
+          Caption = '&Grupo e SubGrupo'
+          OnClick = Grupo2Click
+        end
+      end
+      object abeladePreos1: TMenuItem
+        Caption = '&Tabela de Pre'#231'os'
+        object mnuTblPGeral: TMenuItem
+          Caption = '&Geral'
+          OnClick = mnuTblPGeralClick
+        end
+        object ProFornecedor1: TMenuItem
+          Caption = '&Por Fornecedor'
+          OnClick = ProFornecedor1Click
+        end
+      end
+      object mnuContasaPagar: TMenuItem
+        Caption = '&Contas a Pagar'
+        object Geral1: TMenuItem
+          Caption = '&Geral'
+          OnClick = Geral1Click
+        end
+        object PorPerodo1: TMenuItem
+          Caption = '&Por Per'#237'odo em Aberto/Baixado'
+          OnClick = PorPerodo1Click
+        end
+      end
+      object mnuContasaReceber: TMenuItem
+        Caption = '&Contas a Receber'
+        object mnuGeral2: TMenuItem
+          Caption = '&Geral por Per'#237'odo'
+          OnClick = mnuGeral2Click
+        end
+        object PorCarto1: TMenuItem
+          Caption = '&Por Cart'#227'o e Per'#237'odo'
+          OnClick = PorCarto1Click
+        end
+        object PorPerodoeBaixado1: TMenuItem
+          Caption = '&Por Per'#237'odo e Baixado'
+          OnClick = PorPerodoeBaixado1Click
+        end
+      end
+      object FluxodeCaixaporPeriodo1: TMenuItem
+        Caption = '&Vendas por Per'#237'odo'
+        object mnuFluxoGeral2: TMenuItem
+          Caption = '&Geral'
+          OnClick = mnuFluxoGeral2Click
+        end
+        object PorFuncionario1: TMenuItem
+          Caption = '&Por Funcionario/Vendedor'
+          OnClick = PorFuncionario1Click
+        end
+        object Detalhado1: TMenuItem
+          Caption = '&Detalhado/Detalhado no Cupom'
+          OnClick = Detalhado1Click
+        end
+        object PorFornecedor1: TMenuItem
+          Caption = '&Por Fornecedor'
+          OnClick = PorFornecedor1Click
+        end
+      end
+      object Vendaspornmerodecupom1: TMenuItem
+        Caption = '&Vendas por n'#250'mero de cupom'
+        OnClick = Vendaspornmerodecupom1Click
+      end
+      object rocasporPerodoeFuncionrio1: TMenuItem
+        Caption = 'Trocas por Per'#237'odo e Funcion'#225'rio'
+        OnClick = rocasporPerodoeFuncionrio1Click
+      end
+      object FluxodePedido1: TMenuItem
+        Caption = '&Fluxo de Pedido /Geral ou Detalhado'
+        OnClick = FluxodePedido1Click
+      end
+      object Serviosporperodoefuncionrio1: TMenuItem
+        Caption = '&Servi'#231'os por per'#237'odo e funcion'#225'rio'
+      end
+    end
+    object Etiquetas2: TMenuItem
+      Caption = '&Etiquetas'
+      object N60892: TMenuItem
+        Caption = '6089'
+        OnClick = N60892Click
+      end
+      object N60871: TMenuItem
+        Caption = '6087'
+      end
+      object amanhoGG1: TMenuItem
+        Caption = 'Modelo Mala Direta'
+        OnClick = amanhoGG1Click
+      end
+      object EtiquetaTrmica1: TMenuItem
+        Caption = 'Etiqueta T'#233'rmica'
+        OnClick = EtiquetaTrmica1Click
+      end
+      object EtiquetasLoja1: TMenuItem
+        Caption = 'Etiquetas Loja'
+        OnClick = EtiquetasLoja1Click
+      end
+    end
+    object Utilitrios1: TMenuItem
+      Caption = '&Utilit'#225'rios'
+      object Sobre1: TMenuItem
+        Caption = '&Sobre'
+        OnClick = Sobre1Click
+      end
+      object Configuraes1: TMenuItem
+        Caption = '&Configura'#231#245'es'
+        OnClick = Configuraes1Click
+      end
+      object Configuraodeimpressodeetiquetas1: TMenuItem
+        Caption = 'Configura'#231#227'o de impress'#227'o de etiquetas '
+        OnClick = Configuraodeimpressodeetiquetas1Click
+      end
+    end
+    object Backup1: TMenuItem
+      Caption = '&Backup'
+      object ExecutarBackup1: TMenuItem
+        Caption = '&Executar Backup'
+        OnClick = ExecutarBackup1Click
+      end
+    end
+  end
+  object TimerPrincipal: TTimer
+    OnTimer = TimerPrincipalTimer
+    Left = 88
+    Top = 400
+  end
+end

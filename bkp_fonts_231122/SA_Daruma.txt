@@ -1,0 +1,261 @@
+          if intVendaSAT = 1 Then begin
+
+            if IniciaCupomFiscalF4 = 'Nao' Then begin
+               //**ABRECUPOM SAT**
+              // Str_CPF_ou_CNPJ := '';
+
+              // Int_Retorno := iCFAbrirPadrao_ECF_Daruma();
+
+                Str_Nome := frmVendasLoja.lbl_Cliente.Caption;
+                Str_CPF := frmVendasLoja.lbl_edtCnpjCpf.Caption ;
+                Str_Endereco := '';
+                iRetorno:=  aCFAbrir_SAT_Daruma(Str_CPF, Str_Nome, Str_Endereco);
+                Tratar_RetornoSAT(iRetorno);
+
+            end;
+
+              if frmVendasLoja.lbl_CodPosVenda.Caption = '' Then begin
+
+                Commit(ibTempVendaLoja);
+              ///  ibTempVendaLoja.Close;
+                ibTempVendaLoja.SQL.Clear;
+                ibTempVendaLoja.SQL.Add('SELECT TBLSERVICOSVENDAS.*,'
+                + 'CADPRODUTOS.NOME As Produto,CADPRODUTOS.CODBARRAS FROM TBLSERVICOSVENDAS '
+                + 'INNER JOIN CADPRODUTOS ON TBLSERVICOSVENDAS.IDPROD=CADPRODUTOS.IDPROD WHERE IDSERVSVENDA=''' + (frmVendasLoja.lbl_CodVenda.Caption) + '''');
+                ibTempVendaLoja.Open;
+
+               (ibTempVendaLoja.FieldByName('VLRUNIT') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('VLRTOTAL') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('VALORB') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('VALORC') as TFloatField).DisplayFormat := ',0.00';
+               (ibTempVendaLoja.FieldByName('QTDE') as TFloatField).DisplayFormat := CasasDecimais('Combustiveis');
+
+             end;
+
+
+                  while not ibTempVendaLoja.Eof do begin
+
+                        ProdutoID := ibTempVendaLoja.FieldByName('IDPROD').AsInteger;
+                        ncmexistente := False;
+
+                        Commit(ibProdutos);
+                        ibProdutos.Close;
+                        ibProdutos.SQL.Clear;
+                        ibProdutos.SQL.Add('SELECT * FROM CADPRODUTOS WHERE IDPROD=''' + IntToStr(ProdutoID) + '''');
+                        ibProdutos.Open;
+
+                        Str_Aliquota := ibProdutos.FieldByName('ALIQUOTA').AsString;
+                        InformaNCM   := ibProdutos.FieldByName('NCM').AsString;
+
+                        ibImposto.Close;
+                        ibImposto.SQL.Clear;
+                        ibImposto.SQL.Add('SELECT * FROM TBLIMPOSTO_IBPT WHERE TBLIMPOSTO_IBPT.CODIGO=''' + InformaNCM + '''');
+                        ibImposto.Open;
+
+                        if ibImposto.RecordCount > 0 Then begin
+
+                          ncmexistente := True;
+
+                        end;
+
+                            if (ncmexistente = True)and(AtivarCalcIBPT = 1) Then begin
+
+                            //  InformaNCM   := ibProdutos.FieldByName('NCM').AsString;
+
+                              if InformaNCM <> '' Then begin
+
+                                strNCM          := StringReplace(ibProdutos.FieldByName('NCM').AsString,ThousandSeparator,'',[rfReplaceAll]);
+                               // intNCM := StrToInt(strNCM);
+                              //  NCM := IntToStr(intNCM);
+                                intNacionalidadeProd := (ibProdutos.FieldByName('NACIONALIDADEPROD').AsInteger);
+
+                                  if intNacionalidadeProd = 1 Then begin
+
+                                    ibImposto.Close;
+                                    ibImposto.SQL.Clear;
+                                    ibImposto.SQL.Add('SELECT * FROM TBLIMPOSTO_IBPT WHERE TBLIMPOSTO_IBPT.CODIGO=''' + strNCM + '''');
+                                    ibImposto.Open;
+
+                                    strPorcNCM     := (ibImposto.FieldByName('NACIONALFE').AsString);
+                                    strImpostoEstadual := (ibImposto.FieldByName('ESTADUAL').AsString);
+
+                                  end;
+
+                                  if intNacionalidadeProd = 2 Then begin
+
+                                    ibImposto.Close;
+                                    ibImposto.SQL.Clear;
+                                    ibImposto.SQL.Add('SELECT * FROM TBLIMPOSTO_IBPT WHERE TBLIMPOSTO_IBPT.CODIGO=''' + strNCM + '''');
+                                    ibImposto.Open;
+
+                                    strPorcNCM     := (ibImposto.FieldByName('IMPORTADOS').AsString);
+                                    strImpostoEstadual := (ibImposto.FieldByName('ESTADUAL').AsString);
+
+                                  end;
+
+                              end;
+
+                            end;//calcibpt
+//****************************************************************************//
+  //     .*,CADPRODUTOS.NCM FROM TBLIMPOSTO_IBPT '
+  //    + 'INNER JOIN CADPRODUTOS ON TBLIMPOSTO_IBPT.CODIGO=CADPRODUTOS.NCM
+
+                        rTotalVlrVenda := StrtoFloat(StringReplace(FloattoStr(ibTempVendaLoja.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+                        strTotalVenda  := FormatFloat(CasasDecimais('Produtos'),rTotalVlrVenda);//StringReplace(FloatToStr(RVlrTotal),ThousandSeparator,'',[rfReplaceAll]);
+
+                        rTotalQtde     := StrtoFloat(StringReplace(FloattoStr(ibTempVendaLoja.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+                        strQtde        := FormatFloat(CasasDecimais('Produtos'),rTotalQtde);//StringReplace(FloatToStr(RQtde),ThousandSeparator,'',[rfReplaceAll]);
+
+                      if (AtivarCalcIBPT = 1)and(ncmexistente = True) Then begin
+
+                        if InformaNCM > '0' Then begin
+
+                            //CALCULA ALIQUOTA NACIONAL OU IMORTADO imposto federal
+                            strPorcNCM := StringReplace(strPorcNCM,ThousandSeparator,',',[rfReplaceAll]);
+                            rVlrPorcNCM    :=  StrtoFloat(strPorcNCM);//StrtoFloat(StringReplace(FloattoStr(ibImposto.FieldByName('ALIQNAC').AsFloat),ThousandSeparator,'.',[rfReplaceAll]));
+
+                            //CALCULAIMPOSTO ESTADUAL
+                            strImpostoEstadual := StringReplace(strImpostoEstadual,ThousandSeparator,',',[rfReplaceAll]);
+                            rVlrImpostoEstadual    :=  StrtoFloat(strImpostoEstadual);//StrtoFloat(StringReplace(FloattoStr(ibImposto.FieldByName('ALIQNAC').AsFloat),ThousandSeparator,'.',[rfReplaceAll]));
+
+                          //calcula ref aliquota nacional ou importada imposto federal
+                            CalculoPorcentagem := rTotalVlrVenda * rVlrPorcNCM / 100;
+
+                          //calcula imposto estadual
+                            rCalculoImpEstadual := rTotalVlrVenda * rVlrImpostoEstadual / 100;
+
+                          // ref imposto federal
+                          rTotalImposto := CalculoPorcentagem;
+
+                          // ref imposto estadual
+                          rTotalImpostoEstadual := rCalculoImpEstadual;
+
+                          //total federal
+                          rTotalGeralImposto :=  rTotalImposto + rTotalGeralImposto;
+                          resultado :=  FormatFloat(CasasDecimais('Produtos'),rTotalGeralImposto);
+
+                          //total estadual
+                          rTotalGeralImpostoEstadual :=  rTotalImpostoEstadual + rTotalGeralImpostoEstadual;
+                          resultadoestadual :=  FormatFloat(CasasDecimais('Produtos'),rTotalGeralImpostoEstadual);
+
+                        end;
+
+                      end;
+
+                          RSomaaVenda := rTotalVlrVenda + RSomaaVenda;
+                          rSomaTotaldaVenda := RSomaaVenda - rTotalGeralImposto - rTotalGeralImpostoEstadual;
+                          strTotalpelosprodutos := FormatFloat(CasasDecimais('Produtos'),rSomaTotaldaVenda);
+
+//****************************************************************************//
+
+
+                    if ibProdutos.FieldByName('CODBARRAS').AsString > '0' Then begin
+
+                      CodBarras    := ibProdutos.FieldByName('CODBARRAS').AsString;
+
+                    end else begin
+
+                      CodBarras    := IntToStr(ibProdutos.FieldByName('IDPROD').AsInteger);
+
+                    end;
+
+
+                    NomeProd  := ibProdutos.FieldByName('NOME').AsString;
+
+                    RVlrUnit  := StrtoFloat(StringReplace(FloattoStr(ibTempVendaLoja.FieldByName('VLRUNIT').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+                    VLrUnit   := FormatFloat(CasasDecimais('Combustiveis'),RVlrUnit);//StringReplace(FloatToStr(RVlrUnit),ThousandSeparator,'',[rfReplaceAll]);
+
+
+                    RVlrTotal := StrtoFloat(StringReplace(FloattoStr(ibTempVendaLoja.FieldByName('VLRTOTAL').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+                    Vlrtotal  := FormatFloat(CasasDecimais('Combustiveis'),RVlrTotal);//StringReplace(FloatToStr(RVlrTotal),ThousandSeparator,'',[rfReplaceAll]);
+
+
+                    RQtde     := StrtoFloat(StringReplace(FloattoStr(ibTempVendaLoja.FieldByName('QTDE').AsFloat),ThousandSeparator,'',[rfReplaceAll]));
+                    Qtde      := FormatFloat(CasasDecimais('Combustiveis'),RQtde);//StringReplace(FloatToStr(RQtde),ThousandSeparator,'',[rfReplaceAll]);
+
+
+                      str_Aliquota:= Str_Aliquota;
+                      str_Quantidade:= Trim(Qtde);
+                      str_PrecoUnit:= (VLrUnit);
+                      str_TipoDescAcres:=  'D$';
+                      str_ValorDescAcres:= lbl_edtDesconto.Text;
+                      str_CodigoItem:= Trim(CodBarras);
+                      str_UnidMedida:= 'UN';
+                      str_Descricao:= Trim(NomeProd);
+                      iRetorno:= aCFVender_SAT_Daruma(str_Aliquota, str_Quantidade , str_PrecoUnit , str_TipoDescAcres , str_ValorDescAcres , str_CodigoItem, str_UnidMedida, str_Descricao);
+                      Tratar_RetornoSAT(iRetorno);
+
+                    ibTempVendaLoja.Next;
+
+                  end;//while
+
+////////////////////////////////////////////////////////////////////////////////
+
+                if (lbl_edtDesconto.Text > '0,00') Then begin
+
+                    str_TipoDescAcres:= 'D$';
+                    Str_Valor_do_Desconto:= lbl_edtDesconto.Text;
+                    iRetorno:= aCFTotalizar_SAT_Daruma(str_TipoDescAcres, Str_Valor_do_Desconto);
+                    Tratar_RetornoSAT(iRetorno);
+
+                end;
+
+                if (lbl_edtDesconto.Text = '0,00') Then begin
+
+                    str_TipoDescAcres:= 'D$';
+                    Str_Valor_do_Desconto:= '0,00';
+                    iRetorno:= aCFTotalizar_SAT_Daruma(str_TipoDescAcres, Str_Valor_do_Desconto);
+                    Tratar_RetornoSAT(iRetorno);
+
+                end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+                //EFETUA FORMAPAGTO
+
+                if (cboTipoPagto.Text <> '')and(cboTPagto.Text = '')Then begin
+
+                  str_FormaPgto:= cboTipoPagto.Text;
+                  str_Valor:= lbl_edtValor.Text;
+                  str_CodCred:= '';
+                  iRetorno:= aCFEfetuarPagamento_SAT_Daruma(str_FormaPgto, str_Valor, str_CodCred);
+                  Tratar_RetornoSAT(iRetorno);
+
+                end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+              //TERMINA FECH CUPOM
+                    if  (strTotalpelosprodutos >'0,00') Then begin
+
+                      Str_Mensagem_Promocional  := 'Voce pagou aproximadamente:'+#10+'R$'+resultado+' de tributos federais'+#10+'R$'+resultadoestadual+' de tributos estaduais'+#10+'R$'+strTotalpelosprodutos+' pelos produtos'+#10+'Fonte:IBPT/FECOMERCIO  SP        Xe67Eq';
+
+                    end else begin
+
+                      Str_Mensagem_Promocional := 'Obrigado Volte Sempre!!!';
+
+                    end;
+
+                sTipoCupomAdic := '0';
+
+                Int_Retorno := iCFEncerrar_ECF_Daruma(sTipoCupomAdic,Str_Mensagem_Promocional);
+
+                str_CupomAdic:= '';
+                str_InfoAdic:= Str_Mensagem_Promocional;
+                iRetorno := tCFEncerrar_SAT_Daruma(str_CupomAdic,str_InfoAdic);
+                Tratar_RetornoSAT(iRetorno);
+
+                //imprimir cupom sat
+             {
+                str_Path:= StringOfChar(#0,900);
+                str_Tipo:= StringOfChar(#0,2);
+
+                str_Path:= CaminhoXMLDarumaSAT;
+                str_Tipo:= IntToStr(CB_Tipo.ItemIndex+1);
+                iRetorno:= iImprimirCFe_SAT_Daruma(str_Path, str_Tipo);
+                Tratar_RetornoSAT(iRetorno);
+                                              }
+
+          end;
+
+//****************************************************************************//

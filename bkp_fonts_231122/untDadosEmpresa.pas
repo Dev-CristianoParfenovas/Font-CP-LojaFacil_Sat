@@ -1,0 +1,492 @@
+unit untDadosEmpresa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, IBQuery, classComboBox,
+  Buttons;
+
+type
+  TfrmDadosEmpresa = class(TForm)
+    lbl_edtNome: TLabeledEdit;
+    lbl_edtEndereco: TLabeledEdit;
+    lbl_edtNumero: TLabeledEdit;
+    lbl_edtBairro: TLabeledEdit;
+    lbl_edtEstado: TLabeledEdit;
+    lbl_edtTelefone: TLabeledEdit;
+    lbl_edtDDD: TLabeledEdit;
+    lbl_edtNomeFantasia: TLabeledEdit;
+    lbl_EDTCnpj_Cpf: TLabeledEdit;
+    lbl_edtIE: TLabeledEdit;
+    lbl_edtInformacoes: TLabeledEdit;
+    lbl_edtSite: TLabeledEdit;
+    ibeaSair: TSpeedButton;
+    Label1: TLabel;
+    grbSubstributario: TGroupBox;
+    rbSimSubstTrib: TRadioButton;
+    rbNaoSubstTrib: TRadioButton;
+    Label2: TLabel;
+    lbl_edtMunicipio: TLabeledEdit;
+    lbl_edtInscMun: TLabeledEdit;
+    lbl_edtCidade: TLabeledEdit;
+    lbl_edtCep: TLabeledEdit;
+    lbl_edtCNAE: TLabeledEdit;
+    cboIBGE: TComboBox;
+    cboCRT: TComboBox;
+    lbl_CodIbge: TLabel;
+    ibeaGravar: TSpeedButton;
+    ibeaAlterar: TSpeedButton;
+    procedure Commit(IBQueryExec : TIBQuery);
+    procedure ExecSELECT;
+    procedure ExecSELECTCRT;
+    procedure ExecSELECTIBGE;
+    procedure AlteraDados;
+    procedure ibeaGravarClick(Sender: TObject);
+    procedure ibeaSairClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ibeaAlterarClick(Sender: TObject);
+    procedure cboIBGEChange(Sender: TObject);
+    procedure cboIBGEExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDadosEmpresa: TfrmDadosEmpresa;
+  ConfirmaDados : Integer;
+  
+implementation
+
+uses untdmModule, DB;
+
+{$R *.dfm}
+
+procedure TfrmDadosEmpresa.Commit(IBQueryExec : TIBQuery);
+
+begin
+
+  with dmModule do begin
+
+    with IBQueryExec do begin
+      SQL.Clear;
+      SQL.Add('Commit');
+      Open;
+      Close;
+    end;
+
+  end;
+  
+end;
+
+procedure TfrmDadosEmpresa.ExecSELECTCRT;
+
+var
+
+IDClassCRT    : TClasseCombo;
+
+
+begin
+  with dmModule do begin
+
+    ibCRT.Close;
+    ibCRT.SQL.Clear;
+    ibCRT.SQL.Add('SELECT * FROM TBL_CRT ORDER BY CODIGO_CRT');//('SELECT * FROM TBLCADASTRO WHERE IDCLASS=''' + InttoStr(IDClass) + ''' ORDER BY NOME');
+    ibCRT.Open;
+
+    cboCRT.Clear; //LIMPA O COMBOBOX
+    while not ibCRT.Eof do begin
+      IDClassCRT    := TClasseCombo.Create;
+      IDClassCRT.ID  := ibCRT.FieldByName('IDCRT').AsInteger;
+      cboCRT.Items.AddObject(ibCRT.FieldByName('CODIGO_CRT').AsString+'..'+ibCRT.FieldByName('DESCRICAOCRT').AsString,IDClassCRT);
+      ibCRT.Next;
+    end;
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.ExecSELECTIBGE;
+
+var
+
+IDClassIBGE    : TClasseCombo;
+
+
+begin
+  with dmModule do begin
+
+    ibIBGE.Close;
+    ibIBGE.SQL.Clear;
+    ibIBGE.SQL.Add('SELECT * FROM TBL_IBGE ORDER BY CIDADE');//('SELECT * FROM TBLCADASTRO WHERE IDCLASS=''' + InttoStr(IDClass) + ''' ORDER BY NOME');
+    ibIBGE.Open;
+
+    cboIBGE.Clear; //LIMPA O COMBOBOX
+    while not ibIBGE.Eof do begin
+      IDClassIBGE    := TClasseCombo.Create;
+      IDClassIBGE.ID  := ibIBGE.FieldByName('ID_IBGE').AsInteger;
+      cboIBGE.Items.AddObject(ibIBGE.FieldByName('CIDADE').AsString+'..'+ibIBGE.FieldByName('CODIGO').AsString,IDClassIBGE);
+      ibIBGE.Next;
+    end;
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.ExecSELECT;
+
+var
+i : Integer;
+
+begin
+
+  with dmModule do begin
+
+    Commit(ibDadosEmpresa);
+    ibDadosEmpresa.Close;
+    ibDadosEmpresa.SQL.Clear;
+    ibDadosEmpresa.SQL.Add('SELECT TBLDADOSEMPRESA.*,TBL_CRT.CODIGO_CRT,'
+    + 'TBL_CRT.DESCRICAOCRT,TBL_IBGE.ID_IBGE,TBL_IBGE.MUNICIPIO FROM TBLDADOSEMPRESA '
+    + 'INNER JOIN TBL_IBGE ON TBLDADOSEMPRESA.ID_IBGE=TBL_IBGE.ID_IBGE '
+    + 'INNER JOIN TBL_CRT ON TBLDADOSEMPRESA.IDCRT=TBL_CRT.IDCRT');
+    ibDadosEmpresa.Open;
+
+    for i:=0 to cboCRT.Items.Count -1 do begin
+      if TClasseCombo( cboCRT.Items.Objects[i]).ID = ibDadosEmpresa.FieldByName('IDCRT').AsInteger then begin
+        cboCRT.ItemIndex:= i;
+        Break;
+      end else begin
+        cboCRT.ClearSelection;
+      end;
+    end;
+
+    for i:=0 to cboIBGE.Items.Count -1 do begin
+      if TClasseCombo( cboIBGE.Items.Objects[i]).ID = ibDadosEmpresa.FieldByName('ID_IBGE').AsInteger then begin
+        cboIBGE.ItemIndex:= i;
+        Break;
+      end else begin
+        cboIBGE.ClearSelection;
+      end;
+    end;
+
+    lbl_edtNome.Text        := ibDadosEmpresa.FieldByName('NOME').AsString;
+    lbl_edtEndereco.Text    := ibDadosEmpresa.FieldByName('ENDERECO').AsString;
+    lbl_edtNumero.Text      := ibDadosEmpresa.FieldByName('NUMERO').AsString;
+    lbl_edtBairro.Text      := ibDadosEmpresa.FieldByName('BAIRRO').AsString;
+    lbl_edtEstado.Text      := ibDadosEmpresa.FieldByName('ESTADO').AsString;
+    lbl_edtDDD.Text         := ibDadosEmpresa.FieldByName('DDD').AsString;
+    lbl_edtTelefone.Text    := ibDadosEmpresa.FieldByName('TELEFONE').AsString;
+    lbl_edtIE.Text          := ibDadosEmpresa.FieldByName('IE').AsString;
+    lbl_edtInformacoes.Text := ibDadosEmpresa.FieldByName('INFORMACOES').AsString;
+    lbl_edtSite.Text        := ibDadosEmpresa.FieldByName('SITE').AsString;
+    lbl_edtMunicipio.Text   := ibDadosEmpresa.FieldByName('MUNICIPIO').AsString;
+    lbl_EDTCnpj_Cpf.Text    := ibDadosEmpresa.FieldByName('CNPJCPF').AsString;
+    lbl_edtInscMun.Text     := ibDadosEmpresa.FieldByName('INSC_MUNICIPAL').AsString;
+    lbl_edtCNAE.Text        := ibDadosEmpresa.FieldByName('CNAE').AsString;
+    lbl_CodIbge.Caption     := ibDadosEmpresa.FieldByName('COD_IBGE').AsString;
+    
+    if ibDadosEmpresa.FieldByName('SUBSTITUTOTRIB').AsInteger = 1 Then begin
+
+      rbSimSubstTrib.Checked := True;
+      rbNaoSubstTrib.Checked := False;
+
+    end;
+
+    if ibDadosEmpresa.FieldByName('SUBSTITUTOTRIB').AsInteger = 2 Then begin
+
+      rbNaoSubstTrib.Checked := True;
+      rbSimSubstTrib.Checked := False;
+      
+    end;
+
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.AlteraDados;
+
+var
+
+IDClassCRT,IDClassIBGE : TClasseCombo;
+StringCRT,StringIBGE : String;
+SubstTrib,CodIBGE,Cep : Integer;
+
+begin
+
+  with dmModule do begin
+
+   if cboCRT.ItemIndex = -1 Then begin
+
+      StringCRT       := ' IDCRT = ''0'',';
+
+    end else begin
+
+      IDClassCRT         := TClasseCombo( cboCRT.Items.Objects[cboCRT.ItemIndex] );
+      StringCRT          := ' IDCRT = ''' + InttoStr( IDClassCRT.ID ) + ''',';
+
+    end;
+
+    if rbSimSubstTrib.Checked Then begin
+
+      SubstTrib := 1;
+
+    end else if rbNaoSubstTrib.Checked Then begin
+
+      SubstTrib := 2;
+
+    end;
+
+    if cboIBGE.ItemIndex = -1 Then begin
+
+      StringIBGE       := ' ID_IBGE = ''0'',';
+
+    end else begin
+
+      IDClassIBGE         := TClasseCombo( cboIBGE.Items.Objects[cboIBGE.ItemIndex] );
+      StringIBGE          := ' ID_IBGE = ''' + InttoStr( IDClassIBGE.ID ) + ''',';
+
+    end;
+
+        if lbl_edtCep.Text = '' Then begin  {atribui  vlr 0 a variavel cep}
+          Cep := 0;
+        end else begin // caso esteja em branco atribui o vlr do campo na variavel cep
+          Cep := strtoint( StringReplace(lbl_edtCep.Text,'-','',[rfReplaceAll]) ); //SUBSTITUI REMOVENDO O -
+        end;
+
+    
+    ibDadosEmpresa.Close;
+    ibDadosEmpresa.SQL.Clear;
+    ibDadosEmpresa.SQL.Add('UPDATE TBLDADOSEMPRESA SET '
+    + 'NOME = ''' + lbl_edtNome.Text + ''','
+    + 'NOMEFANTASIA = ''' + lbl_edtNomeFantasia.Text + ''','
+    + 'ENDERECO = ''' + lbl_edtEndereco.Text + ''','
+    + 'NUMERO = ''' + lbl_edtNumero.Text + ''','
+    + 'BAIRRO = ''' + lbl_edtBairro.Text + ''','
+    + 'ESTADO = ''' + lbl_edtEstado.Text + ''','
+    + 'DDD = ''' + lbl_edtDDD.Text + ''','
+    + 'CNPJCPF = ''' + lbl_EDTCnpj_Cpf.Text + ''','
+    + 'IE = ''' + lbl_edtIE.Text + ''','
+    + 'INFORMACOES = ''' + lbl_edtInformacoes.Text + ''','
+    + 'SITE = ''' + lbl_edtSite.Text + ''','
+    + 'CEP = ''' + IntToStr(Cep) + ''','
+    +StringCRT
+    +StringIBGE
+    + 'SUBSTITUTOTRIB = ''' + IntToStr(SubstTrib) + ''','
+    + 'COD_IBGE = ''' + lbl_CodIbge.Caption + ''','
+    + 'MUNICIPIO_IBGE = ''' + lbl_edtMunicipio.Text + ''','
+    + 'INSC_MUNICIPAL = ''' + lbl_edtInscMun.Text + ''','
+    + 'CIDADE = ''' + lbl_edtCidade.Text + ''','
+    + 'CNAE = ''' + lbl_edtCNAE.Text + ''','
+    + 'TELEFONE = ''' + lbl_edtTelefone.Text + '''');
+    ibDadosEmpresa.ExecSQL;
+    Commit(ibDadosEmpresa);
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.ibeaGravarClick(Sender: TObject);
+var
+
+IDClassCRT,IDClassIBGE : TClasseCombo;
+StringCRT, StringIBGE,strCodIBGE : String;
+SubstTrib : Integer;
+
+begin
+
+  with dmModule do begin
+
+    ibDadosEmpresa.Close;
+    ibDadosEmpresa.SQL.Clear;
+    ibDadosEmpresa.SQL.Add('SELECT * FROM TBLDADOSEMPRESA');
+    ibDadosEmpresa.Open;
+
+    if ibDadosEmpresa.RecordCount > 0 Then begin
+
+      Application.MessageBox('Atenção já existe registro, para continuar clique em alterar','Notificação:registro existente',+MB_OK+MB_DEFBUTTON1+MB_ICONINFORMATION);
+
+    end else begin
+
+      ConfirmaDados := Application.MessageBox('Confirma Dados?','Dados da Empresa',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+      if ConfirmaDados = 6 Then begin
+
+       if cboCRT.ItemIndex = -1 Then begin
+
+          StringCRT        :='  ''0'',';
+
+        end else begin
+
+          IDClassCRT         := TClasseCombo( cboCRT.Items.Objects[cboCRT.ItemIndex] );
+          StringCRT          := '  ''' + InttoStr( IDClassCRT.ID ) + ''',';
+
+        end;
+
+       if cboIBGE.ItemIndex = -1 Then begin
+
+          StringIBGE        :='  ''0'',';
+
+        end else begin
+
+          IDClassIBGE         := TClasseCombo( cboIBGE.Items.Objects[cboIBGE.ItemIndex] );
+          StringIBGE          := '  ''' + InttoStr( IDClassIBGE.ID ) + ''',';
+
+        end;
+
+        if rbSimSubstTrib.Checked Then begin
+
+          SubstTrib := 1;
+
+        end else if rbNaoSubstTrib.Checked Then begin
+
+          SubstTrib := 2;
+
+        end;
+
+        if cboIBGE.Text <> '' Then begin
+
+          strCodIBGE := (lbl_CodIbge.Caption);
+
+        end else begin
+
+          strCodIBGE := '0';
+
+        end;
+
+        ibDadosEmpresa.Close;
+        ibDadosEmpresa.SQL.Clear;
+        ibDadosEmpresa.SQL.Add('INSERT INTO TBLDADOSEMPRESA'
+        + '(NOME,NOMEFANTASIA,ENDERECO,NUMERO,BAIRRO,ESTADO,DDD,CNPJCPF,'
+        + 'IE,INFORMACOES,SITE,IDCRT,ID_IBGE,SUBSTITUTOTRIB,COD_IBGE,CNAE,TELEFONE) values '
+        + ' (''' + lbl_edtNome.Text + ''',''' + lbl_edtNomeFantasia.Text + ''','
+        + ' ''' + lbl_edtEndereco.Text + ''','
+        + ' ''' + lbl_edtNumero.Text + ''',''' + lbl_edtBairro.Text + ''','
+        + ' ''' + lbl_edtEstado.Text + ''',''' + lbl_edtDDD.Text + ''','
+        + ' ''' + lbl_EDTCnpj_Cpf.Text + ''','
+        + ' ''' + lbl_edtIE.Text + ''','
+        + ' ''' + lbl_edtInformacoes.Text + ''','
+        + ' ''' + lbl_edtSite.Text + ''','
+        +StringCRT
+        +StringIBGE
+        + ' ''' + IntToStr(SubstTrib) + ''','
+        + ' ''' + (strCodIBGE) + ''','
+        + ' ''' + lbl_edtCNAE.Text + ''','
+        + ' ''' + lbl_edtTelefone.Text + ''')');
+        ibDadosEmpresa.ExecSQL;
+        Commit(ibDadosEmpresa);
+
+      end;//if confirma dados
+
+    end;//if record count
+
+  {  lbl_edtNome.Clear;
+    lbl_edtEndereco.Clear;
+    lbl_edtNumero.Clear;
+    lbl_edtBairro.Clear;
+    lbl_edtEstado.Clear;
+    lbl_edtDDD.Clear;
+    lbl_edtTelefone.Clear;  }
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.ibeaSairClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TfrmDadosEmpresa.FormShow(Sender: TObject);
+begin
+
+  with dmModule do begin
+
+    ExecSELECTIBGE;
+    ExecSELECTCRT;
+    ExecSELECT;
+    
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.ibeaAlterarClick(Sender: TObject);
+begin
+
+  with dmModule do begin
+
+    ConfirmaDados := Application.MessageBox('Confirma Alteração?','Notificação: Alterar Dados',+MB_YESNO+MB_DEFBUTTON1+MB_ICONQUESTION);
+
+    if ConfirmaDados = 6 Then begin
+
+      AlteraDados;
+
+    end;//if confirma dados
+
+  end;//with
+
+end;
+
+procedure TfrmDadosEmpresa.cboIBGEChange(Sender: TObject);
+
+var
+
+IDClassIBGE : TClasseCombo;
+StringIBGE : String;
+
+begin
+
+with dmModule do begin
+
+    if cboIBGE.ItemIndex <> -1 Then begin//SE HOUVER REGISTRO NO COMBO
+      IDClassIBGE     := TClasseCombo( cboIBGE.Items.Objects[cboIBGE.ItemIndex] );//ATRIBUI A CLASSE COMBO NA VARIAVEL
+      StringIBGE    := ' ID_IBGE=''' + InttoStr( IDClassIBGE.ID ) + '''';//ATRIBUI O ID DO FIELD NA VARIAVEL STRING.
+
+      //TRAZ NO COMBO SOMENTE OS COMBUSTIVEIS DO CADASTRO DE PRODUTOS REFERENTE AO ESTOQUE SELECIONADO.
+      ibIBGE.Close;
+      ibIBGE.SQL.Clear;
+      ibIBGE.SQL.Add('SELECT * FROM TBL_IBGE WHERE ' + StringIBGE);
+      ibIBGE.Open;
+
+      lbl_CodIbge.Caption   := ibIBGE.FieldByName('CODIGO').AsString;
+      lbl_edtMunicipio.Text := ibIBGE.FieldByName('MUNICIPIO').AsString;
+
+    end;{if}
+
+  end;{with}
+
+
+end;
+
+procedure TfrmDadosEmpresa.cboIBGEExit(Sender: TObject);
+var
+
+IDClassIBGE : TClasseCombo;
+StringIBGE : String;
+
+begin
+
+with dmModule do begin
+
+    if cboIBGE.ItemIndex <> -1 Then begin//SE HOUVER REGISTRO NO COMBO
+      IDClassIBGE     := TClasseCombo( cboIBGE.Items.Objects[cboIBGE.ItemIndex] );//ATRIBUI A CLASSE COMBO NA VARIAVEL
+      StringIBGE    := ' ID_IBGE=''' + InttoStr( IDClassIBGE.ID ) + '''';//ATRIBUI O ID DO FIELD NA VARIAVEL STRING.
+
+      //TRAZ NO COMBO SOMENTE OS COMBUSTIVEIS DO CADASTRO DE PRODUTOS REFERENTE AO ESTOQUE SELECIONADO.
+      ibIBGE.Close;
+      ibIBGE.SQL.Clear;
+      ibIBGE.SQL.Add('SELECT * FROM TBL_IBGE WHERE ' + StringIBGE);
+      ibIBGE.Open;
+
+      lbl_edtMunicipio.Text := ibIBGE.FieldByName('MUNICIPIO').AsString;
+
+    end;{if}
+
+  end;{with}
+
+
+end;
+
+end.

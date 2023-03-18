@@ -1,0 +1,29 @@
+unit untClasse.ConfigCX;
+
+interface
+
+  type
+  TConfigCX = class
+
+  private
+    FAbreNotaP : Integer;
+    function getFAbreNotaP: Integer;
+
+  public
+  property AbreNotaP : Integer read getFAbreNotaP SetFAbreNotaP;
+
+
+  end;
+
+implementation
+
+uses untClasse.ConfigCX;
+
+{ TConfigCX }
+
+function TConfigCX.getFAbreNotaP: Integer;
+begin
+Result := FAbreNotaP;
+end;
+
+end.

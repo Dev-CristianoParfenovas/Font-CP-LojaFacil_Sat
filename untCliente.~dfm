@@ -1,0 +1,574 @@
+object frmCliente: TfrmCliente
+  Left = 122
+  Top = 176
+  Width = 766
+  Height = 565
+  Caption = 'Busca de Clientes'
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Shape1: TShape
+    Left = 481
+    Top = 1
+    Width = 272
+    Height = 525
+    Brush.Color = clWindow
+  end
+  object lbl_Prods: TLabel
+    Left = 126
+    Top = 175
+    Width = 51
+    Height = 13
+    Caption = 'Produtos'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F1: TLabel
+    Left = 9
+    Top = 275
+    Width = 305
+    Height = 13
+    Caption = 'F1 - Limpa o Cupom junto com os campos de produto.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 239
+    Top = 117
+    Width = 206
+    Height = 13
+    Caption = 'Inclui os dados do cliente no cupom'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 239
+    Top = 141
+    Width = 210
+    Height = 13
+    Caption = 'Limpa todos os campos do formul'#225'rio'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_TipoPreco: TLabel
+    Left = 180
+    Top = 175
+    Width = 208
+    Height = 13
+    AutoSize = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F8: TLabel
+    Left = 8
+    Top = 329
+    Width = 76
+    Height = 13
+    Caption = 'F8 - Pre'#231'o(B)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F9: TLabel
+    Left = 96
+    Top = 330
+    Width = 76
+    Height = 13
+    Caption = 'F9 - Pre'#231'o(C)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F2: TLabel
+    Left = 8
+    Top = 290
+    Width = 58
+    Height = 13
+    Caption = 'F2 - Qtde.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F5: TLabel
+    Left = 9
+    Top = 307
+    Width = 246
+    Height = 13
+    Caption = 'F5 - Limpa somente os campos de produtos'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object ibeaSair: TBmsXPButton
+    Left = 408
+    Top = 16
+    Width = 43
+    Height = 21
+    Caption = 'Sair'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 0
+    OnClick = ibeaSairClick
+  end
+  object dbgClientes: TDBGrid
+    Left = 5
+    Top = 346
+    Width = 476
+    Height = 181
+    Cursor = crHandPoint
+    FixedColor = clInfoBk
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = [fsBold]
+    OnCellClick = dbgClientesCellClick
+  end
+  object ibeaIncluir: TBmsXPButton
+    Left = 187
+    Top = 114
+    Width = 47
+    Height = 19
+    Caption = 'Incluir'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 2
+    OnClick = ibeaIncluirClick
+  end
+  object ibeaFinaliza: TBmsXPButton
+    Left = 292
+    Top = 243
+    Width = 75
+    Height = 18
+    Caption = 'Finalizar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 3
+    OnClick = ibeaFinalizaClick
+  end
+  object listboxCupom: TListBox
+    Left = 488
+    Top = 62
+    Width = 260
+    Height = 435
+    BevelInner = bvSpace
+    BorderStyle = bsNone
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 4
+  end
+  object ListBoxDadosEmpresa: TListBox
+    Left = 490
+    Top = 7
+    Width = 254
+    Height = 56
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BevelOuter = bvSpace
+    BorderStyle = bsNone
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ItemHeight = 13
+    ParentFont = False
+    TabOrder = 5
+  end
+  object ibeaGravar: TBmsXPButton
+    Left = 340
+    Top = 192
+    Width = 133
+    Height = 21
+    Caption = '&Adicionar Produto'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 6
+    OnClick = ibeaGravarClick
+  end
+  object lbl_edtTotalPedido: TLabeledEdit
+    Left = 192
+    Top = 240
+    Width = 93
+    Height = 24
+    BevelInner = bvLowered
+    BevelKind = bkFlat
+    BevelOuter = bvSpace
+    BorderStyle = bsNone
+    Color = clBlack
+    EditLabel.Width = 34
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Total:'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clBlue
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clLime
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 7
+  end
+  object BmsXPButton1: TBmsXPButton
+    Left = 188
+    Top = 138
+    Width = 47
+    Height = 19
+    Caption = 'Limpar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 8
+    OnClick = ibeLimparClick
+  end
+  object ibeaImprimir: TBmsXPButton
+    Left = 373
+    Top = 241
+    Width = 75
+    Height = 21
+    Caption = '&Imprimir'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlTop
+    WordWrap = False
+    ShowAccelChar = True
+    ParentFont = False
+    TabOrder = 9
+    OnClick = ibeaImprimirClick
+  end
+  object lbl_edtTelefone: TLabeledEdit
+    Left = 8
+    Top = 17
+    Width = 64
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 29
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Fone'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 10
+    OnExit = lbl_edtTelefoneExit
+    OnKeyPress = lbl_edtTelefoneKeyPress
+  end
+  object lbl_edtCelular: TLabeledEdit
+    Left = 79
+    Top = 17
+    Width = 64
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 40
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Celular'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 11
+    OnExit = lbl_edtCelularExit
+    OnKeyPress = lbl_edtCelularKeyPress
+  end
+  object lbl_edtNome: TLabeledEdit
+    Left = 151
+    Top = 17
+    Width = 248
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 33
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Nome'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 12
+    OnKeyPress = lbl_edtNomeKeyPress
+  end
+  object lbl_edtEndereco: TLabeledEdit
+    Left = 8
+    Top = 73
+    Width = 195
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 55
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Endere'#231'o'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 13
+    OnKeyPress = lbl_edtEnderecoKeyPress
+  end
+  object lbl_edtNum: TLabeledEdit
+    Left = 208
+    Top = 73
+    Width = 60
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 15
+    EditLabel.Height = 13
+    EditLabel.Caption = 'N'#186
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 14
+    OnKeyPress = lbl_edtNumKeyPress
+  end
+  object lbl_edtCompl: TLabeledEdit
+    Left = 273
+    Top = 73
+    Width = 60
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 35
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Compl'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 15
+    OnKeyPress = lbl_edtComplKeyPress
+  end
+  object lbl_edtBairro: TLabeledEdit
+    Left = 339
+    Top = 73
+    Width = 134
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 34
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Bairro'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 16
+    OnExit = lbl_edtBairroExit
+    OnKeyPress = lbl_edtBairroKeyPress
+  end
+  object lbl_edtCodBarras: TLabeledEdit
+    Left = 8
+    Top = 192
+    Width = 110
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 63
+    EditLabel.Height = 13
+    EditLabel.Caption = 'C'#243'd.Barras'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 17
+    OnChange = lbl_edtCodBarrasChange
+    OnKeyPress = lbl_edtCodBarrasKeyPress
+  end
+  object lbl_edtQtde: TLabeledEdit
+    Left = 8
+    Top = 241
+    Width = 41
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 32
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Qtde.'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 18
+    OnExit = lbl_edtQtdeExit
+    OnKeyPress = lbl_edtQtdeKeyPress
+  end
+  object lbl_edtVlrUnit: TLabeledEdit
+    Left = 55
+    Top = 241
+    Width = 61
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 43
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Vlr.Unit'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 19
+    OnExit = lbl_edtQtdeExit
+    OnKeyPress = lbl_edtQtdeKeyPress
+  end
+  object lbl_edtVlrTotal: TLabeledEdit
+    Left = 122
+    Top = 241
+    Width = 61
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    EditLabel.Width = 49
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Vlr.Total'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clWindowText
+    EditLabel.Font.Height = -11
+    EditLabel.Font.Name = 'MS Sans Serif'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    TabOrder = 20
+    OnKeyPress = lbl_edtVlrTotalKeyPress
+  end
+  object cboProdutos: TComboBox
+    Left = 126
+    Top = 192
+    Width = 208
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    ItemHeight = 13
+    TabOrder = 21
+    OnClick = cboProdutosClick
+  end
+end

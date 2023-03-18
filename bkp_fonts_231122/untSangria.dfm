@@ -1,0 +1,166 @@
+object frmSangria: TfrmSangria
+  Left = 183
+  Top = 134
+  BorderIcons = [biSystemMenu]
+  Caption = 'SANGRIA'
+  ClientHeight = 249
+  ClientWidth = 320
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object imgFundodeTela: TImage
+    Left = -3
+    Top = -4
+    Width = 330
+    Height = 256
+  end
+  object lbl_Senha: TLabel
+    Left = 30
+    Top = 8
+    Width = 37
+    Height = 13
+    Caption = 'Senha'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_VlrSangria: TLabel
+    Left = 159
+    Top = 8
+    Width = 63
+    Height = 13
+    Caption = 'Vlr.Sangria'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Ref: TLabel
+    Left = 22
+    Top = 59
+    Width = 72
+    Height = 13
+    Caption = 'Referente a:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_Sair: TLabel
+    Left = 52
+    Top = 199
+    Width = 214
+    Height = 13
+    Caption = 'Para sair precione F1 de seu teclado.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_EstornoSangria: TLabel
+    Left = 72
+    Top = 161
+    Width = 169
+    Height = 21
+    AutoSize = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -15
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F2: TLabel
+    Left = 52
+    Top = 215
+    Width = 208
+    Height = 13
+    Caption = 'Para Estornar a Sangria Precione F2'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object lbl_F7: TLabel
+    Left = 52
+    Top = 232
+    Width = 138
+    Height = 13
+    Caption = 'Para gravar precione F7'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object memoObs: TMemo
+    Left = 21
+    Top = 78
+    Width = 289
+    Height = 85
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    TabOrder = 0
+  end
+  object lbl_edtSenhaSangria: TEdit
+    Left = 24
+    Top = 24
+    Width = 121
+    Height = 21
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    TabOrder = 1
+    OnChange = lbl_edtSenhaSangriaChange
+    OnExit = lbl_edtSenhaSangriaExit
+    OnKeyPress = lbl_edtSenhaSangriaKeyPress
+  end
+  object lbl_edtVlrSangria: TEdit
+    Left = 160
+    Top = 24
+    Width = 121
+    Height = 49
+    BevelInner = bvSpace
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    Text = '0,00'
+    OnKeyPress = lbl_edtVlrSangriaKeyPress
+  end
+end

@@ -1,0 +1,35 @@
+unit untRelBxAgenda;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, QuickRpt, QRCtrls, ExtCtrls;
+
+type
+  TfrmRelBxAgenda = class(TForm)
+    qrpBxAgenda: TQuickRep;
+    DetailBand1: TQRBand;
+    PageHeaderBand1: TQRBand;
+    TitleBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    qrdbCliente: TQRDBText;
+    qrdbNomeAnimal: TQRDBText;
+    qrdbTipoCompr: TQRDBText;
+    qrdbValor: TQRDBText;
+    qrdbData: TQRDBText;
+    qrdbHora: TQRDBText;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRelBxAgenda: TfrmRelBxAgenda;
+
+implementation
+
+{$R *.dfm}
+
+end.

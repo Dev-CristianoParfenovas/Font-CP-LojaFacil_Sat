@@ -1,0 +1,223 @@
+object frmBuscaClientes: TfrmBuscaClientes
+  Left = 116
+  Top = 145
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Busca de Clientes'
+  ClientHeight = 459
+  ClientWidth = 525
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object sb_ord_nome: TSpeedButton
+    Left = 147
+    Top = 9
+    Width = 129
+    Height = 22
+    Cursor = crHandPoint
+    Hint = 'Ordenar por Nome'
+    Caption = 'Ordenar por Nomes'
+    Flat = True
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000130B0000130B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+      3333333333333333333333333333333333333333FFF33FFFFF33333300033000
+      00333337773377777333333330333300033333337FF33777F333333330733300
+      0333333377FFF777F33333333700000073333333777777773333333333033000
+      3333333337FF777F333333333307300033333333377F777F3333333333703007
+      33333333377F7773333333333330000333333333337777F33333333333300003
+      33333333337777F3333333333337007333333333337777333333333333330033
+      3333333333377333333333333333033333333333333733333333333333333333
+      3333333333333333333333333333333333333333333333333333}
+    NumGlyphs = 2
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = sb_ord_nomeClick
+  end
+  object sb_ord_cod: TSpeedButton
+    Left = 8
+    Top = 9
+    Width = 129
+    Height = 22
+    Cursor = crHandPoint
+    Hint = 'Ordenar por C'#243'digo'
+    Caption = 'Ordenar por C'#243'digo'
+    Flat = True
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000130B0000130B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+      003337777777777777F330FFFFFFFFFFF03337F33F333F3337F330FF0FFF0FFF
+      F03337F37F337F3337F330FF0FFF0FFFF03337F37FFF7FFF37F330F00000000F
+      F03337F77777777337F330FFF0FFF0FFF03337F337F337F337F330FFF0FFF0FF
+      F03337F337FFF7FFF7F330FF00000000F03337F37777777737F330FFFF0FFF0F
+      F03337F3337F337F37F330FFFF0FFF0FF03337F33373337337F330FFFFFFFFFF
+      F03337F33333333FF7F330FFFFFFFF00003337F33333337777F330FFFFFFFF0F
+      F03337FFFFFFFF7F373330999999990F033337777777777F733330FFFFFFFF00
+      333337FFFFFFFF77333330000000000333333777777777733333}
+    NumGlyphs = 2
+    ParentShowHint = False
+    ShowHint = True
+    OnClick = sb_ord_codClick
+  end
+  object lbl_F1: TLabel
+    Left = 10
+    Top = 415
+    Width = 137
+    Height = 13
+    Caption = 'F1 - Atualiza o Cadastro'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F2: TLabel
+    Left = 10
+    Top = 430
+    Width = 49
+    Height = 13
+    Caption = 'F2 - Sair'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_F3: TLabel
+    Left = 10
+    Top = 445
+    Width = 234
+    Height = 13
+    Caption = 'F3 - Para Selecionar um Cliente na grade'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object ibeaIncluir: TSpeedButton
+    Left = 280
+    Top = 8
+    Width = 58
+    Height = 25
+    Caption = 'Incluir'
+  end
+  object ibeaSair: TSpeedButton
+    Left = 464
+    Top = 8
+    Width = 58
+    Height = 25
+    Caption = 'Sair'
+    OnClick = ibeaSairClick
+  end
+  object lbl_edtNome: TLabeledEdit
+    Left = 203
+    Top = 75
+    Width = 192
+    Height = 19
+    BevelInner = bvNone
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    CharCase = ecUpperCase
+    EditLabel.Width = 157
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Primeira Letra ou Nome Completo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    OnChange = lbl_edtNomeChange
+    OnEnter = lbl_edtNomeEnter
+    OnExit = lbl_edtNomeExit
+    OnKeyPress = lbl_edtNomeKeyPress
+  end
+  object dbgClientes: TDBGrid
+    Left = 6
+    Top = 101
+    Width = 507
+    Height = 312
+    Cursor = crHandPoint
+    Hint = 'Clique no Cliente para selecionar'
+    DataSource = dmModule.dtsCadastro
+    DragCursor = crHandPoint
+    FixedColor = clInfoBk
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = dbgClientesCellClick
+    OnKeyPress = dbgClientesKeyPress
+  end
+  object lbl_edtTelefone: TLabeledEdit
+    Left = 7
+    Top = 75
+    Width = 89
+    Height = 19
+    BevelInner = bvNone
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    CharCase = ecUpperCase
+    EditLabel.Width = 42
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Telefone'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnEnter = lbl_edtTelefoneEnter
+    OnExit = lbl_edtTelefoneExit
+    OnKeyPress = lbl_edtTelefoneKeyPress
+  end
+  object lbl_edtCelular: TLabeledEdit
+    Left = 105
+    Top = 75
+    Width = 89
+    Height = 19
+    BevelInner = bvNone
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    CharCase = ecUpperCase
+    EditLabel.Width = 32
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Celular'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    OnEnter = lbl_edtCelularEnter
+    OnExit = lbl_edtCelularExit
+    OnKeyPress = lbl_edtCelularKeyPress
+  end
+end

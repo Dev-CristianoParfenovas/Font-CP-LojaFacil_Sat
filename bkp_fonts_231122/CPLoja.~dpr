@@ -1,0 +1,243 @@
+program CPLoja;
+
+
+
+
+
+
+
+uses
+  Forms,
+  untPrincipal in 'untPrincipal.pas' {frmPrincipal},
+  untGrupo_Subgrupo in 'untGrupo_Subgrupo.pas' {frmGrupo_Subgrupo},
+  untdmModule in 'untdmModule.pas' {dmModule: TDataModule},
+  untLocalEstocagem in 'untLocalEstocagem.pas' {frmLocalEstocagem},
+  funcPosto in 'library\funcPosto.pas',
+  uGrupoeSubgrupo in 'uGrupoeSubgrupo.pas' {frmGrupoeSubgrupo},
+  Fornecedores in 'Fornecedores.pas' {frmFornecedores},
+  uBuscaProdutos in 'library\forms\uBuscaProdutos.pas' {frmBuscaProdutos},
+  untRelClientes in 'rel\untRelClientes.pas' {frmRelClientes},
+  untRelProd in 'rel\untRelProd.pas' {frmRelProd},
+  untServicos in 'untServicos.pas' {frmVendasLoja},
+  untRecebeLoja in 'untRecebeLoja.pas' {frmRecebeLoja},
+  untRelEstoque in 'rel\untRelEstoque.pas' {frmRelEstoque},
+  untFluxoCxP in 'untFluxoCxP.pas' {frmFluxoCxP},
+  untRelFluxoCx in 'rel\untRelFluxoCx.pas' {frmRelFluxoCx},
+  untRelContasaReceber in 'rel\untRelContasaReceber.pas' {frmRelContasaReceber},
+  untRelContasaPagar in 'rel\untRelContasaPagar.pas' {frmRelContasPagar},
+  untGeraCodBarra in 'untGeraCodBarra.pas' {frmCodBarrasAdicional},
+  untRelCodBarrasAD in 'rel\untRelCodBarrasAD.pas' {frmRelCodBarrasAD},
+  untFuncSenha in 'untFuncSenha.pas' {frmFuncSenha},
+  untPedidoVenda in 'untPedidoVenda.pas' {frmPedidodeVenda},
+  unrRelPedOrcamento in 'rel\unrRelPedOrcamento.pas' {frmRelPedOrcamento},
+  untManutCx in 'untManutCx.pas' {frmManutCx},
+  BuscaClientes in 'library\forms\BuscaClientes.pas' {frmBuscaClientes},
+  untRelQtdeVendida in 'rel\untRelQtdeVendida.pas' {frmRelQtdeVendida},
+  untProdutoVendidoP in 'untProdutoVendidoP.pas' {frmProdutosVendidos},
+  untFluxoDetalhado in 'untFluxoDetalhado.pas' {frmFluxoDetalhado},
+  untFormSplash in 'untFormSplash.pas' {frmFormSplash},
+  untRelEstoqueFornecedor in 'untRelEstoqueFornecedor.pas' {frmRelEstoqueFornecedor},
+  untSobre in 'untSobre.pas' {frmSobre},
+  untDadosEmpresa in 'untDadosEmpresa.pas' {frmDadosEmpresa},
+  untConfiguracoes in 'untConfiguracoes.pas' {frmConfiguracoes},
+  untSenhaCx in 'untSenhaCx.pas' {frmSenhaCx},
+  untContasaReceber in 'untContasaReceber.pas' {frmContasaReceber},
+  untRelTotalFluxo in 'rel\untRelTotalFluxo.pas' {frmRelTotalFluxo},
+  untProdutos_MPrima in 'untProdutos_MPrima.pas' {frmProd_MPrima},
+  untUnidVenda in 'untUnidVenda.pas' {frmUnidVenda},
+  untRelTblPreco in 'rel\untRelTblPreco.pas' {frmRelTblPreco},
+  untrelTblPrecoForn in 'untrelTblPrecoForn.pas' {frmTblPrecoForn},
+  untLanctoContasaPagar in 'untLanctoContasaPagar.pas' {frmContasApagar},
+  unClientes in 'unClientes.pas' {frmClientes},
+  Cond_pagto in 'Cond_pagto.pas' {frmCondpagto},
+  untRelEstMin in 'rel\untRelEstMin.pas' {frmRelEstoqueMin},
+  Daruma_Framework_Autenticar in 'Daruma_DS300\Daruma_Framework_Autenticar.pas' {Framework_Autenticar},
+  Daruma_Framework_DUAL_ImprimirTexto in 'Daruma_DS300\Daruma_Framework_DUAL_ImprimirTexto.pas' {Framework_DUAL_ImprimirTexto},
+  Daruma_Framework_Exemplo_Dual_01 in 'Daruma_DS300\Daruma_Framework_Exemplo_Dual_01.pas' {Framework_Exemplo_DUAL_01},
+  Daruma_Framework_Exemplo_DUAL_02 in 'Daruma_DS300\Daruma_Framework_Exemplo_DUAL_02.pas' {Framework_Exemplo_DUAL_02},
+  Daruma_Framework_Impressora_Dual in 'Daruma_DS300\Daruma_Framework_Impressora_Dual.pas' {Framework_Impressora_Dual},
+  Daruma_Framework_Looping_Verificacao_Status in 'Daruma_DS300\Daruma_Framework_Looping_Verificacao_Status.pas' {Framework_LoopingVerificacaoStatus},
+  Daruma_Framework_Looping_Verificacao_Status_Doc in 'Daruma_DS300\Daruma_Framework_Looping_Verificacao_Status_Doc.pas' {Framework_LoopingVerificacaoStatusDoc},
+  Daruma_Framework_Variaveis_Globais in 'Daruma_DS300\Daruma_Framework_Variaveis_Globais.pas',
+  untRelCRCartao in 'untRelCRCartao.pas' {frmRelCRCartao},
+  untCRGeralP in 'untCRGeralP.pas' {frmCRGeralP},
+  untSangria in 'untSangria.pas' {frmSangria},
+  untTblPreco in 'untTblPreco.pas' {frmTblPreco},
+  untEstoqueRapido in 'untEstoqueRapido.pas' {frmEstoqueRapido},
+  untCores in 'untCores.pas' {frmCores},
+  untTamanho in 'untTamanho.pas' {frmTamanho},
+  untEstoqueMForn in 'untEstoqueMForn.pas' {frmEstoqueMForn},
+  untRelProdDataCad in 'untRelProdDataCad.pas' {frmProdDataRegistro},
+  untRelProdCad in 'rel\untRelProdCad.pas' {frmRelProdDataCad},
+  untContasaPagarP in 'untContasaPagarP.pas' {frmContasaPagarP},
+  untVendasDetalhado in 'untVendasDetalhado.pas' {frmVendasDetalhado},
+  untRelFluxoDetalhado in 'rel\untRelFluxoDetalhado.pas' {frmRelFluxoDetalhado},
+  untTroca in 'untTroca.pas' {frmTrocaMercadoria},
+  untVendasFunc in 'untVendasFunc.pas' {frmVendasFunc},
+  untSenha in 'untSenha.pas' {frmSenha},
+  untEtiquetas6087Ref in 'rel\untEtiquetas6087Ref.pas' {frmEtiquetas6087Ref},
+  untEtiquetasPimaco6087 in 'rel\untEtiquetasPimaco6087.pas' {frmEtiquetasPimaco6087},
+  untPimaco6087 in 'untPimaco6087.pas' {frmPimaco6087},
+  untPimaco6089 in 'untPimaco6089.pas' {frmPimaco6089},
+  untEtiquetasPimaco6089 in 'rel\untEtiquetasPimaco6089.pas' {frmEtiquetasPimaco6089},
+  untCliente in 'untCliente.pas' {frmCliente},
+  untEtiquetasLoja in 'untEtiquetasLoja.pas' {frmEtiquetasLoja},
+  untFluxoPrecoA in 'rel\untFluxoPrecoA.pas' {frmFluxoPrecoA},
+  untFluxoPrecoD in 'rel\untFluxoPrecoD.pas' {frmRelFluxoPrecoD},
+  untFluxoPrecoB in 'rel\untFluxoPrecoB.pas' {frmRelFluxoPrecoB},
+  untFluxoPrecoC in 'rel\untFluxoPrecoC.pas' {frmRelFluxoPrecoC},
+  untCRPeriodo in 'untCRPeriodo.pas' {frmCRPeriodo},
+  untRelCRBaixado in 'rel\untRelCRBaixado.pas' {frmRelCRBaixado},
+  untRelCPBaixado in 'rel\untRelCPBaixado.pas' {frmRelCPBaixado},
+  untRelCustoDiario in 'rel\untRelCustoDiario.pas' {frmRelCustoDiario},
+  Transportadora in 'Transportadora.pas' {frmTransportadora},
+  untRelEtiquetas6089Nome in 'rel\untRelEtiquetas6089Nome.pas' {frmEtiquetasNome6089},
+  untRelPedCompra in 'rel\untRelPedCompra.pas' {frmRelPedCompra},
+  untPimaco6089Variada in 'untPimaco6089Variada.pas' {frmPimaco6089Variada},
+  untRelPedido in 'rel\untRelPedido.pas' {frmRelPedido},
+  untPedidoFunc in 'untPedidoFunc.pas' {frmPedidoFunc},
+  untFluxoPedVenda in 'untFluxoPedVenda.pas' {frmFluxoPedVenda},
+  untRelRecibo in 'rel\untRelRecibo.pas' {frmRelRecibo},
+  untPedidosLoja in 'untPedidosLoja.pas' {frmPedidosLoja},
+  untRelVendasFornecedor in 'rel\untRelVendasFornecedor.pas' {frmVendasFornecedor},
+  untRelFluxoTroca in 'rel\untRelFluxoTroca.pas' {frmRelatFluxoTroca},
+  untTrocaPeriodo in 'untTrocaPeriodo.pas' {frm_TrocaP},
+  untConfigNota in 'untConfigNota.pas' {frmConfigNota},
+  untPedDetalhado in 'rel\untPedDetalhado.pas' {frmRelPedDetalhado},
+  untNotaFiscal in 'untNotaFiscal.pas' {frmNotaFiscal},
+  untPosVenda in 'untPosVenda.pas' {frmPosVenda},
+  untComprasEfetuadas in 'untComprasEfetuadas.pas' {frmComprasEfetuadas},
+  untRProdutos in 'untRProdutos.pas' {frmRProdutos},
+  untRClientes in 'untRClientes.pas' {frmRClientes},
+  untRelPendente in 'rel\untRelPendente.pas' {frmRelPendente},
+  untRelatAnalitico in 'rel\untRelatAnalitico.pas' {frmRelatAnalitico},
+  untRPedCompraGeral in 'rel\untRPedCompraGeral.pas' {frmRPedCompraGeral},
+  untPedCompraPeriodo in 'untPedCompraPeriodo.pas' {frmPedCompraP},
+  untBackup in 'untBackup.pas' {frmBackup},
+  untTrocasPeriodo in 'untTrocasPeriodo.pas' {frmTrocasPeriodo},
+  untServicosCPagar in 'untServicosCPagar.pas' {frmServicosCPagar},
+  untEtiquetaGr in 'untEtiquetaGr.pas' {frmEtiquetaGr},
+  untConfigEtiquetaGr in 'untConfigEtiquetaGr.pas' {frmConfigEtiquetaGr},
+  untRelPendentePedido in 'rel\untRelPendentePedido.pas' {frmRelPendentePedido},
+  untInstrucoesCaixa in 'untInstrucoesCaixa.pas' {frmInstrucoesCaixa};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'CP - Loja';
+  frmFormSplash := TfrmFormSplash.Create(Application);
+  frmFormSplash.Show;
+  frmFormSplash.Refresh;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TfrmGrupo_Subgrupo, frmGrupo_Subgrupo);
+  Application.CreateForm(TdmModule, dmModule);
+  Application.CreateForm(TfrmLocalEstocagem, frmLocalEstocagem);
+  Application.CreateForm(TfrmGrupoeSubgrupo, frmGrupoeSubgrupo);
+  Application.CreateForm(TfrmFornecedores, frmFornecedores);
+  Application.CreateForm(TfrmBuscaProdutos, frmBuscaProdutos);
+  Application.CreateForm(TfrmRelClientes, frmRelClientes);
+  Application.CreateForm(TfrmRelProd, frmRelProd);
+  Application.CreateForm(TfrmVendasLoja, frmVendasLoja);
+  Application.CreateForm(TfrmRecebeLoja, frmRecebeLoja);
+  Application.CreateForm(TfrmRelEstoque, frmRelEstoque);
+  Application.CreateForm(TfrmFluxoCxP, frmFluxoCxP);
+  Application.CreateForm(TfrmRelFluxoCx, frmRelFluxoCx);
+  Application.CreateForm(TfrmRelContasaReceber, frmRelContasaReceber);
+  Application.CreateForm(TfrmRelContasPagar, frmRelContasPagar);
+  Application.CreateForm(TfrmCodBarrasAdicional, frmCodBarrasAdicional);
+  Application.CreateForm(TfrmRelCodBarrasAD, frmRelCodBarrasAD);
+  Application.CreateForm(TfrmFuncSenha, frmFuncSenha);
+  Application.CreateForm(TfrmPedidodeVenda, frmPedidodeVenda);
+  Application.CreateForm(TfrmRelPedOrcamento, frmRelPedOrcamento);
+  Application.CreateForm(TfrmManutCx, frmManutCx);
+  Application.CreateForm(TfrmBuscaClientes, frmBuscaClientes);
+  Application.CreateForm(TfrmRelQtdeVendida, frmRelQtdeVendida);
+  Application.CreateForm(TfrmProdutosVendidos, frmProdutosVendidos);
+  Application.CreateForm(TfrmFluxoDetalhado, frmFluxoDetalhado);
+  Application.CreateForm(TfrmFormSplash, frmFormSplash);
+  Application.CreateForm(TfrmRelEstoqueFornecedor, frmRelEstoqueFornecedor);
+  Application.CreateForm(TfrmSobre, frmSobre);
+  Application.CreateForm(TfrmDadosEmpresa, frmDadosEmpresa);
+  Application.CreateForm(TfrmConfiguracoes, frmConfiguracoes);
+  Application.CreateForm(TfrmSenhaCx, frmSenhaCx);
+  Application.CreateForm(TfrmContasaReceber, frmContasaReceber);
+  Application.CreateForm(TfrmRelTotalFluxo, frmRelTotalFluxo);
+  Application.CreateForm(TfrmProd_MPrima, frmProd_MPrima);
+  Application.CreateForm(TfrmUnidVenda, frmUnidVenda);
+  Application.CreateForm(TfrmRelTblPreco, frmRelTblPreco);
+  Application.CreateForm(TfrmTblPrecoForn, frmTblPrecoForn);
+  Application.CreateForm(TfrmContasApagar, frmContasApagar);
+  Application.CreateForm(TfrmClientes, frmClientes);
+  Application.CreateForm(TfrmCondpagto, frmCondpagto);
+  Application.CreateForm(TfrmRelEstoqueMin, frmRelEstoqueMin);
+  Application.CreateForm(TFramework_Autenticar, Framework_Autenticar);
+  Application.CreateForm(TFramework_DUAL_ImprimirTexto, Framework_DUAL_ImprimirTexto);
+  Application.CreateForm(TFramework_Exemplo_DUAL_01, Framework_Exemplo_DUAL_01);
+  Application.CreateForm(TFramework_Exemplo_DUAL_02, Framework_Exemplo_DUAL_02);
+  Application.CreateForm(TFramework_Impressora_Dual, Framework_Impressora_Dual);
+  Application.CreateForm(TFramework_LoopingVerificacaoStatus, Framework_LoopingVerificacaoStatus);
+  Application.CreateForm(TFramework_LoopingVerificacaoStatusDoc, Framework_LoopingVerificacaoStatusDoc);
+  Application.CreateForm(TfrmRelCRCartao, frmRelCRCartao);
+  Application.CreateForm(TfrmCRGeralP, frmCRGeralP);
+  Application.CreateForm(TfrmSangria, frmSangria);
+  Application.CreateForm(TfrmTblPreco, frmTblPreco);
+  Application.CreateForm(TfrmEstoqueRapido, frmEstoqueRapido);
+  Application.CreateForm(TfrmCores, frmCores);
+  Application.CreateForm(TfrmTamanho, frmTamanho);
+  Application.CreateForm(TfrmEstoqueMForn, frmEstoqueMForn);
+  Application.CreateForm(TfrmProdDataRegistro, frmProdDataRegistro);
+  Application.CreateForm(TfrmRelProdDataCad, frmRelProdDataCad);
+  Application.CreateForm(TfrmContasaPagarP, frmContasaPagarP);
+  Application.CreateForm(TfrmVendasDetalhado, frmVendasDetalhado);
+  Application.CreateForm(TfrmRelFluxoDetalhado, frmRelFluxoDetalhado);
+  Application.CreateForm(TfrmTrocaMercadoria, frmTrocaMercadoria);
+  Application.CreateForm(TfrmVendasFunc, frmVendasFunc);
+  Application.CreateForm(TfrmSenha, frmSenha);
+  Application.CreateForm(TfrmEtiquetas6087Ref, frmEtiquetas6087Ref);
+  Application.CreateForm(TfrmEtiquetasPimaco6087, frmEtiquetasPimaco6087);
+  Application.CreateForm(TfrmPimaco6087, frmPimaco6087);
+  Application.CreateForm(TfrmPimaco6089, frmPimaco6089);
+  Application.CreateForm(TfrmEtiquetasPimaco6089, frmEtiquetasPimaco6089);
+  Application.CreateForm(TfrmCliente, frmCliente);
+  Application.CreateForm(TfrmEtiquetasLoja, frmEtiquetasLoja);
+  Application.CreateForm(TfrmFluxoPrecoA, frmFluxoPrecoA);
+  Application.CreateForm(TfrmRelFluxoPrecoD, frmRelFluxoPrecoD);
+  Application.CreateForm(TfrmRelFluxoPrecoB, frmRelFluxoPrecoB);
+  Application.CreateForm(TfrmRelFluxoPrecoC, frmRelFluxoPrecoC);
+  Application.CreateForm(TfrmCRPeriodo, frmCRPeriodo);
+  Application.CreateForm(TfrmRelCRBaixado, frmRelCRBaixado);
+  Application.CreateForm(TfrmRelCPBaixado, frmRelCPBaixado);
+  Application.CreateForm(TfrmRelCustoDiario, frmRelCustoDiario);
+  Application.CreateForm(TfrmTransportadora, frmTransportadora);
+  Application.CreateForm(TfrmEtiquetasNome6089, frmEtiquetasNome6089);
+  Application.CreateForm(TfrmRelPedCompra, frmRelPedCompra);
+  Application.CreateForm(TfrmPimaco6089Variada, frmPimaco6089Variada);
+  Application.CreateForm(TfrmRelPedido, frmRelPedido);
+  Application.CreateForm(TfrmPedidoFunc, frmPedidoFunc);
+  Application.CreateForm(TfrmFluxoPedVenda, frmFluxoPedVenda);
+  Application.CreateForm(TfrmRelRecibo, frmRelRecibo);
+  Application.CreateForm(TfrmPedidosLoja, frmPedidosLoja);
+  Application.CreateForm(TfrmVendasFornecedor, frmVendasFornecedor);
+  Application.CreateForm(TfrmRelatFluxoTroca, frmRelatFluxoTroca);
+  Application.CreateForm(Tfrm_TrocaP, frm_TrocaP);
+  Application.CreateForm(TfrmConfigNota, frmConfigNota);
+  Application.CreateForm(TfrmRelPedDetalhado, frmRelPedDetalhado);
+  Application.CreateForm(TfrmNotaFiscal, frmNotaFiscal);
+  Application.CreateForm(TfrmPosVenda, frmPosVenda);
+  Application.CreateForm(TfrmComprasEfetuadas, frmComprasEfetuadas);
+  Application.CreateForm(TfrmRProdutos, frmRProdutos);
+  Application.CreateForm(TfrmRClientes, frmRClientes);
+  Application.CreateForm(TfrmRelPendente, frmRelPendente);
+  Application.CreateForm(TfrmRelatAnalitico, frmRelatAnalitico);
+  Application.CreateForm(TfrmRPedCompraGeral, frmRPedCompraGeral);
+  Application.CreateForm(TfrmPedCompraP, frmPedCompraP);
+  Application.CreateForm(TfrmBackup, frmBackup);
+  Application.CreateForm(TfrmTrocasPeriodo, frmTrocasPeriodo);
+  Application.CreateForm(TfrmServicosCPagar, frmServicosCPagar);
+  Application.CreateForm(TfrmEtiquetaGr, frmEtiquetaGr);
+  Application.CreateForm(TfrmConfigEtiquetaGr, frmConfigEtiquetaGr);
+  Application.CreateForm(TfrmRelPendentePedido, frmRelPendentePedido);
+  Application.CreateForm(TfrmInstrucoesCaixa, frmInstrucoesCaixa);
+  Application.Run;
+end.
